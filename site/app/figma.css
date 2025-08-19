@@ -1,0 +1,260 @@
+/* Primitive Colors */
+:root {
+  --color-primary-100: 255, 244, 225;
+  --color-primary-200: 255, 224, 163;
+  --color-primary-300: 255, 205, 102;
+  --color-primary-400: 255, 175, 51;
+  --color-primary-500: 255, 155, 0;
+  --color-primary-600: 230, 130, 0;
+  --color-primary-700: 179, 93, 0;
+  --color-primary-800: 128, 65, 0;
+  --color-primary-900: 77, 38, 0;
+  --color-white: 255, 255, 255;
+  --color-secondary-100: 242, 248, 236;
+  --color-secondary-200: 216, 234, 198;
+  --color-secondary-300: 191, 221, 161;
+  --color-secondary-400: 153, 201, 105;
+  --color-secondary-500: 127, 187, 67;
+  --color-secondary-600: 102, 150, 54;
+  --color-secondary-700: 76, 112, 40;
+  --color-secondary-800: 51, 75, 27;
+  --color-secondary-900: 25, 37, 13;
+  --color-accent-100: 229, 251, 255;
+  --color-accent-200: 178, 244, 255;
+  --color-accent-300: 127, 238, 255;
+  --color-accent-400: 50, 228, 255;
+  --color-accent-500: 0, 221, 255;
+  --color-accent-600: 0, 177, 204;
+  --color-accent-700: 0, 132, 153;
+  --color-accent-800: 0, 88, 102;
+  --color-accent-900: 0, 44, 51;
+  --color-neutral-100: 234, 234, 234;
+  --color-neutral-200: 208, 208, 208;
+  --color-neutral-300: 182, 182, 182;
+  --color-neutral-400: 156, 156, 156;
+  --color-neutral-500: 130, 130, 130;
+  --color-neutral-600: 104, 104, 104;
+  --color-neutral-700: 78, 78, 78;
+  --color-neutral-800: 52, 52, 52;
+  --color-neutral-900: 26, 26, 26;
+  --color-neutral-1000: 0, 0, 0;
+}
+
+/* Semantic Colors */
+:root {
+  --color-font-default: var(--color-neutral-100);
+  --color-font-secondary: var(--color-secondary-500);
+  --color-font-accent: var(--color-accent-400);
+  --color-font-primary: var(--color-primary-600);
+  --color-font-dark: var(--color-neutral-900);
+  --color-background-primary: var(--color-neutral-900);
+  --color-stroke-normal: var(--color-neutral-1000);
+}
+
+/* Text Reset */
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, span, a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-weight: normal;
+  line-height: normal;
+}
+
+body {
+  background-color: rgb(var(--color-background-primary));
+}
+
+.FontTitle {
+  font-size: 3.2rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 3.2rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.FontH1 {
+  font-size: 2.4rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 2.88rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.FontH2 {
+  font-size: 1.8rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 2.16rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.FontH3 {
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 1.8rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.FontH4 {
+  font-size: 1.2rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 1.44rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.FontH5 {
+  font-size: 1rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 1.2rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodyLarge {
+  font-size: 0.9rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 1.08rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodyLargeHeavy {
+  font-size: 0.9rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 1.08rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodyRegular {
+  font-size: 0.8rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 0.96rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodyRegularHeavy {
+  font-size: 0.8rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 0.96rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodySmall {
+  font-size: 0.7rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 0.84rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodySmallHeavy {
+  font-size: 0.7rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 0.84rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodyCaption {
+  font-size: 0.6rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 0.72rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.BodyCaptionHeavy {
+  font-size: 0.6rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 0.72rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.SubtitleRegular {
+  font-size: 1.2rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 1.5rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}

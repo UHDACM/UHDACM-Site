@@ -1,0 +1,68 @@
+:root {
+  --cool-border-radius: 1rem;
+  --dist: 0.5rem;
+}
+
+.CoolImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: var(--cool-border-radius);
+  border: rgb(var(--color-stroke-normal)) 1px solid;
+}
+
+.CoolBorder { 
+  position: absolute;
+  border: rgba(var(--color-font-primary), 0.75) 2px solid;
+  height: 2rem;
+  width: 2rem;
+  border-radius: var(--cool-border-radius);
+}
+
+.CoolBorderPulse {
+  animation: coolPulse 5s infinite;
+}
+
+@keyframes coolPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.CoolBorder--TopLeft {
+  border-right: none;
+  border-bottom: none;
+  border-radius: var(--cool-border-radius) 0 0 0;
+  top: calc(-1 * var(--dist));
+  left: calc(-1 * var(--dist));
+}
+
+.CoolBorder--TopRight {
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0 var(--cool-border-radius) 0 0;
+  top: calc(-1 * var(--dist));
+  right: calc(-1 * var(--dist));
+}
+
+.CoolBorder--BottomLeft {
+  border-right: none;
+  border-top: none;
+  border-radius: 0 0 0 var(--cool-border-radius);
+  bottom: calc(-1 * var(--dist));
+  left: calc(-1 * var(--dist));
+}
+
+.CoolBorder--BottomRight {
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 var(--cool-border-radius) 0;
+  bottom: calc(-1 * var(--dist));
+  right: calc(-1 * var(--dist));
+}

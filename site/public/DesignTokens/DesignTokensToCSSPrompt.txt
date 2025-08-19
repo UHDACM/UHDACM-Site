@@ -1,0 +1,23 @@
+Convert the attached file to CSS by following the given instructions.
+
+1. For every entry in primitives.color, name them following lower case (color-primary-100). 
+Take the specified value and convert it to rgb (ignore the alpha value), as these will be used like so: rbga(var(var_name))
+
+2. for semantics.font and semantics["stroke normal"], follow the same conventions as specified in step 1, except correctly point to the specified primitive.
+
+3. Ignore typography.
+
+4. every entry in the font property should be converted to a class. (Title, H1, etc.)
+Convert units to rem if defined where 1rem = 20px. 
+Disregard the extensions property. 
+Follow the TitleCase naming convention (e.g.: BodyLargeHeavy)
+use the default font color for each font
+
+5. for color variables, group them as primitive and semantic, providing a comment to indicate where one starts.
+
+set the background color of the body to the default background color
+
+remove all default styling for text (headings, spans, etc.)
+
+adjust rem size with the following breakpoints:
+- TODO: add breakpoint sizes

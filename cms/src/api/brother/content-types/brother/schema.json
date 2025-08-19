@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "brothers",
+  "info": {
+    "singularName": "brother",
+    "pluralName": "brothers",
+    "displayName": "brother"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "isBrother": {
+      "type": "boolean"
+    },
+    "BrotherCount": {
+      "type": "integer"
+    },
+    "sister": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sister.sister",
+      "inversedBy": "brothers"
+    }
+  }
+}

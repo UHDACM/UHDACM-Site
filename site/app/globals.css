@@ -1,0 +1,33 @@
+input {
+  width: 100%;
+  background: rgb(var(--color-neutral-800));
+  padding: 0.5rem 0.25rem 0.5rem 0.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  padding-right: 2rem;
+  box-sizing: border-box;
+  outline: 1px solid transparent;
+}
+
+input:focus {
+  outline: 1px solid rgb(var(--color-font-secondary));
+}
+
+input:focus,
+.glowOnFocus:focus {
+  outline: 1px solid rgb(var(--color-font-secondary));
+  transition: outline ease-in-out 100ms;
+}
+
+
+.no-scrollbar {
+  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  /* IE and old Edge */
+}
+
+no-scrollbar::-webkit-scrollbar { /* Chrome, Safari, Opera */
+  display: none;
+}

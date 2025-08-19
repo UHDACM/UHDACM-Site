@@ -1,0 +1,23 @@
+.bright_placeholder::placeholder {
+  color: rgba(var(--color-font-default), 0.8);        /* any color you want */
+  transition: color 200ms;
+}
+
+
+.bright_placeholder:focus::placeholder {
+  color: rgba(var(--color-font-default), 0.5);
+}
+
+.select {
+  width: 100%;
+  padding-left: 0.75rem;
+  padding-right: 0;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  background-color: rgb(var(--color-neutral-900));
+  transition: border-radius 200ms;
+}
+
+.select:focus {
+  border-radius: 0.5rem 0.5rem 0 0;
+}

@@ -1,0 +1,41 @@
+.LinkStyle {
+	text-decoration: none;
+	color: rgb(var(--color-font-primary));
+	transition: color 0.2s;
+}
+
+/* Button base styles */
+.Button {
+	background-color: rgb(var(--color-font-primary));
+	color: #fff;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	cursor: pointer;
+	font-family: "Inter", sans-serif;
+	font-weight: 600;
+	font-size: 1rem;
+	border: 1px solid rgb(var(--color-font-primary));
+	transition: background-color 0.2s;
+}
+
+.Button:hover {
+	background-color: rgba(var(--color-font-primary), 0.75);
+	transition: background-color 0.2s;
+}
+
+/* Button size variants */
+.Button--small {
+	border-radius: 0.4rem;
+	padding: 0.375rem 0.5rem;
+	font-size: 0.875rem;
+}
+
+.Button--large {
+	padding: 0.75rem 1.5rem;
+	font-size: 1.25rem;
+}

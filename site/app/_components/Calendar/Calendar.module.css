@@ -1,0 +1,50 @@
+.CalendarDay {
+  position: relative;
+	background-color: transparent;
+	border-radius: 100rem;
+	aspect-ratio: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: rgba(var(--color-font-default), 0.75);
+	font-weight: 600;
+	transition: background-color 200ms;
+  user-select: none;
+  cursor: pointer;
+}
+
+.CalendarDay.buffer {
+  pointer-events: none;
+  user-select: none;
+  background: transparent;
+  color: transparent;
+  cursor: default;
+}
+
+.CalendarDay:hover {
+	background-color: rgba(var(--color-font-secondary), 0.25);
+}
+
+.CalendarDay.active {
+	background-color: rgba(var(--color-font-secondary), 0.5);
+}
+
+.Chevron {
+  background-color: transparent;
+  transition: background-color 200ms;
+  border-radius: 100rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.Chevron:hover {
+  background-color: rgba(var(--color-font-default), 0.25);
+}
+
+.Chevron.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
+}
