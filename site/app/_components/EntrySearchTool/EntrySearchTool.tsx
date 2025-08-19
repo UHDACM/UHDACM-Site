@@ -1,7 +1,7 @@
 "use client";
 import { SearchBar } from "@/app/_components/SearchBar/SearchBar";
 import Calendar from "@/app/_components/Calendar/Calendar";
-import { EventListing } from "./EventListing";
+import { EventListing } from "./EntryListing";
 import { useState } from "react";
 import { intToMonth, toTitleCase } from "@/app/_utils/tools";
 
@@ -61,6 +61,8 @@ export default function EntrySearchTool() {
           flexDirection: "column",
           alignItems: "flex-start",
           justifyContent: "flex-start",
+          paddingRight: '3rem',
+          boxSizing: 'border-box'
         }}
       >
         <EventListing day={day} month={month} year={year} />
