@@ -16,6 +16,7 @@
   box-sizing: border-box;
   background-color: rgb(var(--color-neutral-900));
   transition: border-radius 200ms;
+  user-select: none;
 }
 
 .select:focus {

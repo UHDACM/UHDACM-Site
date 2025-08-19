@@ -8,7 +8,7 @@ import styles from "./Button.module.css";
 interface ButtonProps {
   onClick?: FunctionUnknown;
   href?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   style?: React.CSSProperties;
   className?: string;
 }

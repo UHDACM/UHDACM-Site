@@ -7,8 +7,8 @@ import PersonTile from "../_components/PersonTile/PersonTile";
 import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEvent";
 import { SearchBar } from "../_components/SearchBar/SearchBar";
 import Calendar from "../_components/Calendar/Calendar";
-import { EventListing } from "./_components/EventListing";
-import EntrySearchTool from "./_components/EntrySearchTool";
+import { EventListing } from "../_components/EntrySearchTool/EntryListing";
+import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 
 export default async function Page() {
   const persontilecomp = (key: string) => {
@@ -42,7 +42,11 @@ export default async function Page() {
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <FeaturedEventSection />
-      <EntrySearchTool />
+      <div style={{display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{width: '100%', maxWidth: '80rem'}}>
+          <EntrySearchTool />
+        </div>
+      </div>
       <div
         style={{
           width: "100%",
