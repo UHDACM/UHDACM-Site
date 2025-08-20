@@ -5,20 +5,21 @@ import { EventListing } from "./EntryListing";
 import { useState } from "react";
 import { intToMonth, toTitleCase } from "@/app/_utils/tools";
 
-export default function EntrySearchTool() {
+export default function EntrySearchTool({ entryName }: { entryName: string }) {
   const now = new Date();
   const [day, setDay] = useState(now.getDate());
   const [month, setMonth] = useState<string>(
     toTitleCase(intToMonth(now.getMonth()) || "january")
   );
   const [year, setYear] = useState<string>(`${now.getFullYear()}`);
+  const [search, setSearch] = useState('');
 
   return (
     <div
       style={{
         width: "100%",
         height: "auto",
-        padding: "12rem 0",
+        padding: "0rem 1rem",
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "center",
@@ -27,45 +28,60 @@ export default function EntrySearchTool() {
     >
       <div
         style={{
-          flex: 3,
+          width: "95vw",
+          maxWidth: "var(--page-max-width)",
+          height: "auto",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
-          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          gap: "2rem",
         }}
       >
         <div
           style={{
-            maxWidth: "25rem",
-            boxSizing: "border-box",
+            flex: 3,
             display: "flex",
             flexDirection: "column",
-            gap: "0.5rem",
+            alignItems: "flex-end",
+            justifyContent: "flex-start",
           }}
         >
-          <SearchBar />
-          <Calendar
-            day={day}
-            month={month}
-            year={year}
-            setDay={setDay}
-            setMonth={setMonth}
-            setYear={setYear}
-          />
+          <div
+            style={{
+              maxWidth: "25rem",
+              boxSizing: "border-box",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+            }}
+          >
+            <SearchBar
+              inputValue={search}
+              onInputValueChange={(v) => setSearch(v)}
+            />
+            <Calendar
+              day={day}
+              month={month}
+              year={year}
+              setDay={setDay}
+              setMonth={setMonth}
+              setYear={setYear}
+            />
+          </div>
         </div>
-      </div>
-      <div
-        style={{
-          flex: 5,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          paddingRight: '3rem',
-          boxSizing: 'border-box'
-        }}
-      >
-        <EventListing day={day} month={month} year={year} />
+        <div
+          style={{
+            flex: 5,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            boxSizing: "border-box",
+            paddingRight: "1rem",
+          }}
+        >
+          <EventListing day={day} month={month} year={year} entryName={entryName} />
+        </div>
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export default async function Page() {
       />
       <MainHeroSection
         title={`Join our Discord`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle={`We post a lot on Discord and stuff.\n Announcements, emails, events, and more.\n\nJoin our discord NOW!`}
         reverseOrder={true}
         leftStyle={{ flex: 1 }}
@@ -50,7 +50,7 @@ export default async function Page() {
       />
       <MainHeroSection
         title={`Join our CampusGroups\nGet our emails!`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle={`Something about campus groups bro. Idk, I don’t really care about campus groups bru`}
         reverseOrder={false}
         leftStyle={{ flex: 1 }}
@@ -82,7 +82,7 @@ export default async function Page() {
       />
       <MainHeroSection
         title={`Become an Officer\nof UHD ACM`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle={`One of us, one of us, one of us. One of us, one of us, one of us. One of us, one of us, one of us.`}
         reverseOrder={true}
         leftStyle={{ flex: 1 }}

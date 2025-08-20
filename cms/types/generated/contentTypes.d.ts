@@ -396,6 +396,7 @@ export interface ApiBrotherBrother extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     Name: Schema.Attribute.String;
+    picture: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
     sister: Schema.Attribute.Relation<'manyToOne', 'api::sister.sister'>;
     updatedAt: Schema.Attribute.DateTime;

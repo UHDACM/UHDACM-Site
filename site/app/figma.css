@@ -1,3 +1,12 @@
+/* Text Reset */
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, span, a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-weight: normal;
+  line-height: normal;
+}
+
 /* Primitive Colors */
 :root {
   --color-primary-100: 255, 244, 225;
@@ -51,46 +60,71 @@
   --color-stroke-normal: var(--color-neutral-1000);
 }
 
-/* Text Reset */
-h1, h2, h3, h4, h5, h6, p, ul, ol, li, span, a {
-  margin: 0;
-  padding: 0;
-  font-size: 100%;
-  font-weight: normal;
-  line-height: normal;
+/* Global Variables */
+:root {
+  --page-max-width: 70rem;
 }
 
 body {
   background-color: rgb(var(--color-background-primary));
 }
 
-.FontTitle {
-  font-size: 3.2rem;
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 576px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 992px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Font Styles */
+.Title {
+  font-size: 2.6rem;
   text-decoration: none;
   font-family: "Inter";
   font-weight: 700;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0rem;
-  line-height: 3.2rem;
+  line-height: 2.6rem;
   text-transform: none;
   color: rgb(var(--color-font-default));
 }
 
-.FontH1 {
-  font-size: 2.4rem;
+.H1 {
+  font-size: 2.2rem;
   text-decoration: none;
   font-family: "Inter";
   font-weight: 700;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0rem;
-  line-height: 2.88rem;
+  line-height: 2.64rem;
   text-transform: none;
   color: rgb(var(--color-font-default));
 }
 
-.FontH2 {
+.H2 {
   font-size: 1.8rem;
   text-decoration: none;
   font-family: "Inter";
@@ -103,20 +137,33 @@ body {
   color: rgb(var(--color-font-default));
 }
 
-.FontH3 {
-  font-size: 1.5rem;
+.H3 {
+  font-size: 1.6rem;
   text-decoration: none;
   font-family: "Inter";
   font-weight: 600;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0rem;
-  line-height: 1.8rem;
+  line-height: 1.92rem;
   text-transform: none;
   color: rgb(var(--color-font-default));
 }
 
-.FontH4 {
+.H4 {
+  font-size: 1.4rem;
+  text-decoration: none;
+  font-family: "Inter";
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0rem;
+  line-height: 1.68rem;
+  text-transform: none;
+  color: rgb(var(--color-font-default));
+}
+
+.H5 {
   font-size: 1.2rem;
   text-decoration: none;
   font-family: "Inter";
@@ -125,19 +172,6 @@ body {
   font-stretch: normal;
   letter-spacing: 0rem;
   line-height: 1.44rem;
-  text-transform: none;
-  color: rgb(var(--color-font-default));
-}
-
-.FontH5 {
-  font-size: 1rem;
-  text-decoration: none;
-  font-family: "Inter";
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0rem;
-  line-height: 1.2rem;
   text-transform: none;
   color: rgb(var(--color-font-default));
 }
@@ -247,7 +281,7 @@ body {
 }
 
 .SubtitleRegular {
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   text-decoration: none;
   font-family: "Inter";
   font-weight: 500;

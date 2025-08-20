@@ -4,14 +4,14 @@
       "description": "Neutral",
       "type": "custom-fontStyle",
       "value": {
-        "fontSize": 64,
+        "fontSize": 52,
         "textDecoration": "none",
         "fontFamily": "Inter",
         "fontWeight": 700,
         "fontStyle": "normal",
         "fontStretch": "normal",
         "letterSpacing": 0,
-        "lineHeight": 64,
+        "lineHeight": 52,
         "paragraphIndent": 0,
         "paragraphSpacing": 0,
         "textCase": "none"
@@ -27,14 +27,14 @@
       "description": "Main Heading",
       "type": "custom-fontStyle",
       "value": {
-        "fontSize": 48,
+        "fontSize": 44,
         "textDecoration": "none",
         "fontFamily": "Inter",
         "fontWeight": 700,
         "fontStyle": "normal",
         "fontStretch": "normal",
         "letterSpacing": 0,
-        "lineHeight": 57.6,
+        "lineHeight": 52.8,
         "paragraphIndent": 0,
         "paragraphSpacing": 0,
         "textCase": "none"
@@ -73,14 +73,14 @@
       "description": "Secondary Heading",
       "type": "custom-fontStyle",
       "value": {
-        "fontSize": 30,
+        "fontSize": 32,
         "textDecoration": "none",
         "fontFamily": "Inter",
         "fontWeight": 600,
         "fontStyle": "normal",
         "fontStretch": "normal",
         "letterSpacing": 0,
-        "lineHeight": 36,
+        "lineHeight": 38.4,
         "paragraphIndent": 0,
         "paragraphSpacing": 0,
         "textCase": "none"
@@ -93,6 +93,29 @@
       }
     },
     "h4": {
+      "description": "Secondary Heading",
+      "type": "custom-fontStyle",
+      "value": {
+        "fontSize": 28,
+        "textDecoration": "none",
+        "fontFamily": "Inter",
+        "fontWeight": 600,
+        "fontStyle": "normal",
+        "fontStretch": "normal",
+        "letterSpacing": 0,
+        "lineHeight": 33.6,
+        "paragraphIndent": 0,
+        "paragraphSpacing": 0,
+        "textCase": "none"
+      },
+      "extensions": {
+        "org.lukasoppermann.figmaDesignTokens": {
+          "styleId": "S:bb5d0e3242957754081f03e2de53342050b1efbd,",
+          "exportKey": "font"
+        }
+      }
+    },
+    "h5": {
       "description": "Secondary Heading",
       "type": "custom-fontStyle",
       "value": {
@@ -110,29 +133,6 @@
       },
       "extensions": {
         "org.lukasoppermann.figmaDesignTokens": {
-          "styleId": "S:bb5d0e3242957754081f03e2de53342050b1efbd,",
-          "exportKey": "font"
-        }
-      }
-    },
-    "h5": {
-      "description": "Secondary Heading",
-      "type": "custom-fontStyle",
-      "value": {
-        "fontSize": 20,
-        "textDecoration": "none",
-        "fontFamily": "Inter",
-        "fontWeight": 600,
-        "fontStyle": "normal",
-        "fontStretch": "normal",
-        "letterSpacing": 0,
-        "lineHeight": 24,
-        "paragraphIndent": 0,
-        "paragraphSpacing": 0,
-        "textCase": "none"
-      },
-      "extensions": {
-        "org.lukasoppermann.figmaDesignTokens": {
           "styleId": "S:17a0bc53aff096bfc1983c45c55a2eb704c05be0,",
           "exportKey": "font"
         }
@@ -142,14 +142,14 @@
       "description": "Main Body",
       "type": "custom-fontStyle",
       "value": {
-        "fontSize": 18,
+        "fontSize": 20,
         "textDecoration": "none",
         "fontFamily": "Inter",
         "fontWeight": 400,
         "fontStyle": "normal",
         "fontStretch": "normal",
         "letterSpacing": 0,
-        "lineHeight": 21.6,
+        "lineHeight": 24,
         "paragraphIndent": 0,
         "paragraphSpacing": 0,
         "textCase": "none"
@@ -165,14 +165,14 @@
       "description": "Main Body",
       "type": "custom-fontStyle",
       "value": {
-        "fontSize": 18,
+        "fontSize": 20,
         "textDecoration": "none",
         "fontFamily": "Inter",
         "fontWeight": 700,
         "fontStyle": "normal",
         "fontStretch": "normal",
         "letterSpacing": 0,
-        "lineHeight": 21.6,
+        "lineHeight": 24,
         "paragraphIndent": 0,
         "paragraphSpacing": 0,
         "textCase": "none"
@@ -978,7 +978,7 @@
           },
           "size": {
             "type": "dimension",
-            "value": 48,
+            "value": 44,
             "extensions": {
               "org.lukasoppermann.figmaDesignTokens": {
                 "collection": "Primitives",
@@ -1068,7 +1068,7 @@
           },
           "size": {
             "type": "dimension",
-            "value": 30,
+            "value": 32,
             "extensions": {
               "org.lukasoppermann.figmaDesignTokens": {
                 "collection": "Primitives",
@@ -1113,7 +1113,7 @@
           },
           "size": {
             "type": "dimension",
-            "value": 24,
+            "value": 28,
             "extensions": {
               "org.lukasoppermann.figmaDesignTokens": {
                 "collection": "Primitives",
@@ -1158,7 +1158,7 @@
           },
           "size": {
             "type": "dimension",
-            "value": 20,
+            "value": 24,
             "extensions": {
               "org.lukasoppermann.figmaDesignTokens": {
                 "collection": "Primitives",
@@ -1166,6 +1166,51 @@
                   "ALL_SCOPES"
                 ],
                 "variableId": "VariableID:5:60",
+                "exportKey": "variables"
+              }
+            }
+          }
+        },
+        "title": {
+          "family": {
+            "description": "",
+            "type": "string",
+            "value": "{primitives.font.main-family}",
+            "extensions": {
+              "org.lukasoppermann.figmaDesignTokens": {
+                "collection": "Primitives",
+                "scopes": [
+                  "ALL_SCOPES"
+                ],
+                "variableId": "VariableID:233:1125",
+                "exportKey": "variables"
+              }
+            }
+          },
+          "weight": {
+            "type": "dimension",
+            "value": 700,
+            "extensions": {
+              "org.lukasoppermann.figmaDesignTokens": {
+                "collection": "Primitives",
+                "scopes": [
+                  "ALL_SCOPES"
+                ],
+                "variableId": "VariableID:233:1126",
+                "exportKey": "variables"
+              }
+            }
+          },
+          "size": {
+            "type": "dimension",
+            "value": 52,
+            "extensions": {
+              "org.lukasoppermann.figmaDesignTokens": {
+                "collection": "Primitives",
+                "scopes": [
+                  "ALL_SCOPES"
+                ],
+                "variableId": "VariableID:233:1127",
                 "exportKey": "variables"
               }
             }
@@ -1264,7 +1309,7 @@
           },
           "size": {
             "type": "dimension",
-            "value": 18,
+            "value": 20,
             "extensions": {
               "org.lukasoppermann.figmaDesignTokens": {
                 "collection": "Primitives",
@@ -1427,21 +1472,6 @@
     }
   },
   "semantic": {
-    "14:10 blank": {
-      "description": "",
-      "type": "color",
-      "value": "{primitives.color.neutral.800}",
-      "extensions": {
-        "org.lukasoppermann.figmaDesignTokens": {
-          "collection": "Semantic",
-          "scopes": [
-            "ALL_SCOPES"
-          ],
-          "variableId": "VariableID:31:1108",
-          "exportKey": "variables"
-        }
-      }
-    },
     "font": {
       "default": {
         "description": "",
@@ -1476,7 +1506,7 @@
       "accent": {
         "description": "",
         "type": "color",
-        "value": "{primitives.color.accent.400}",
+        "value": "{primitives.color.accent.500}",
         "extensions": {
           "org.lukasoppermann.figmaDesignTokens": {
             "collection": "Semantic",
@@ -1499,6 +1529,21 @@
               "ALL_SCOPES"
             ],
             "variableId": "VariableID:66:452",
+            "exportKey": "variables"
+          }
+        }
+      },
+      "dark": {
+        "description": "",
+        "type": "color",
+        "value": "{primitives.color.neutral.900}",
+        "extensions": {
+          "org.lukasoppermann.figmaDesignTokens": {
+            "collection": "Semantic",
+            "scopes": [
+              "ALL_SCOPES"
+            ],
+            "variableId": "VariableID:190:991",
             "exportKey": "variables"
           }
         }
@@ -1525,7 +1570,7 @@
       "description": "Neutral",
       "fontSize": {
         "type": "dimension",
-        "value": 64
+        "value": 52
       },
       "textDecoration": {
         "type": "string",
@@ -1553,7 +1598,7 @@
       },
       "lineHeight": {
         "type": "dimension",
-        "value": 64
+        "value": 52
       },
       "paragraphIndent": {
         "type": "dimension",
@@ -1572,7 +1617,7 @@
       "description": "Main Heading",
       "fontSize": {
         "type": "dimension",
-        "value": 48
+        "value": 44
       },
       "textDecoration": {
         "type": "string",
@@ -1600,7 +1645,7 @@
       },
       "lineHeight": {
         "type": "dimension",
-        "value": 57.6
+        "value": 52.8
       },
       "paragraphIndent": {
         "type": "dimension",
@@ -1666,7 +1711,7 @@
       "description": "Secondary Heading",
       "fontSize": {
         "type": "dimension",
-        "value": 30
+        "value": 32
       },
       "textDecoration": {
         "type": "string",
@@ -1694,7 +1739,7 @@
       },
       "lineHeight": {
         "type": "dimension",
-        "value": 36
+        "value": 38.4
       },
       "paragraphIndent": {
         "type": "dimension",
@@ -1710,6 +1755,53 @@
       }
     },
     "h4": {
+      "description": "Secondary Heading",
+      "fontSize": {
+        "type": "dimension",
+        "value": 28
+      },
+      "textDecoration": {
+        "type": "string",
+        "value": "none"
+      },
+      "fontFamily": {
+        "type": "string",
+        "value": "Inter"
+      },
+      "fontWeight": {
+        "type": "number",
+        "value": 600
+      },
+      "fontStyle": {
+        "type": "string",
+        "value": "normal"
+      },
+      "fontStretch": {
+        "type": "string",
+        "value": "normal"
+      },
+      "letterSpacing": {
+        "type": "dimension",
+        "value": 0
+      },
+      "lineHeight": {
+        "type": "dimension",
+        "value": 33.6
+      },
+      "paragraphIndent": {
+        "type": "dimension",
+        "value": 0
+      },
+      "paragraphSpacing": {
+        "type": "dimension",
+        "value": 0
+      },
+      "textCase": {
+        "type": "string",
+        "value": "none"
+      }
+    },
+    "h5": {
       "description": "Secondary Heading",
       "fontSize": {
         "type": "dimension",
@@ -1756,8 +1848,8 @@
         "value": "none"
       }
     },
-    "h5": {
-      "description": "Secondary Heading",
+    "body - large": {
+      "description": "Main Body",
       "fontSize": {
         "type": "dimension",
         "value": 20
@@ -1772,7 +1864,7 @@
       },
       "fontWeight": {
         "type": "number",
-        "value": 600
+        "value": 400
       },
       "fontStyle": {
         "type": "string",
@@ -1803,58 +1895,11 @@
         "value": "none"
       }
     },
-    "body - large": {
-      "description": "Main Body",
-      "fontSize": {
-        "type": "dimension",
-        "value": 18
-      },
-      "textDecoration": {
-        "type": "string",
-        "value": "none"
-      },
-      "fontFamily": {
-        "type": "string",
-        "value": "Inter"
-      },
-      "fontWeight": {
-        "type": "number",
-        "value": 400
-      },
-      "fontStyle": {
-        "type": "string",
-        "value": "normal"
-      },
-      "fontStretch": {
-        "type": "string",
-        "value": "normal"
-      },
-      "letterSpacing": {
-        "type": "dimension",
-        "value": 0
-      },
-      "lineHeight": {
-        "type": "dimension",
-        "value": 21.6
-      },
-      "paragraphIndent": {
-        "type": "dimension",
-        "value": 0
-      },
-      "paragraphSpacing": {
-        "type": "dimension",
-        "value": 0
-      },
-      "textCase": {
-        "type": "string",
-        "value": "none"
-      }
-    },
     "body - large (heavy)": {
       "description": "Main Body",
       "fontSize": {
         "type": "dimension",
-        "value": 18
+        "value": 20
       },
       "textDecoration": {
         "type": "string",
@@ -1882,7 +1927,7 @@
       },
       "lineHeight": {
         "type": "dimension",
-        "value": 21.6
+        "value": 24
       },
       "paragraphIndent": {
         "type": "dimension",

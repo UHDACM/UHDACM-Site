@@ -25,7 +25,7 @@ export default function CallToActionSection({
       }}
     >
       <h1
-        className="FontTitle"
+        className="Title"
         style={{ whiteSpace: "pre-wrap", textAlign: "center" }}
       >
         {title}

@@ -2,7 +2,7 @@ import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
 import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
 import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
-import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEvent";
+// import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEvent";
 import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
 
@@ -10,16 +10,16 @@ export default async function Page() {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <MainHeroSection
-        spanText="EVENTS"
+        spanText="GALLERIES"
         title={`Something Catchy\nN'Stuff Here`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
-      <FeaturedEventSection />
+      {/* <FeaturedEventSection /> */}
       <div style={{display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-        <div style={{width: '100%', maxWidth: '80rem', padding: '6rem 0rem', paddingTop: '12rem' }}>
-          <EntrySearchTool entryName="Events" />
+        <div style={{width: '100%', maxWidth: '80rem' , padding: '6rem 0rem' }}>
+          <EntrySearchTool entryName="Galleries" />
         </div>
       </div>
       <CallToActionSection

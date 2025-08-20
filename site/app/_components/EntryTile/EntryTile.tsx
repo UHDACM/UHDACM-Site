@@ -12,6 +12,7 @@ interface EntryTileProps {
   imageAlt?: string;
 }
 
+const maxDescriptionLength = 200;
 const EntryTile: React.FC<EntryTileProps> = ({
   imageSrc,
   header,
@@ -28,9 +29,9 @@ const EntryTile: React.FC<EntryTileProps> = ({
         <img src={imageSrc || 'sjd.JPG'} alt={imageAlt} className={styles.image} />
       </div>
       <div className={styles.contentContainer}>
-        <h2 className="FontH2">{header}</h2>
+        <h2 className="H3">{header}</h2>
         <h4
-          className="FontH4"
+          className="H5"
           style={{
             color: "rgb(var(--color-font-primary))",
             whiteSpace: "pre-wrap",
@@ -39,7 +40,7 @@ const EntryTile: React.FC<EntryTileProps> = ({
           {subheader}
         </h4>
         <h5
-          className="FontH5"
+          className="BodyLarge"
           style={{
             color: "rgb(var(--color-font-secondary))",
             whiteSpace: "pre-wrap",
@@ -47,7 +48,7 @@ const EntryTile: React.FC<EntryTileProps> = ({
         >
           {subheaderTwo}
         </h5>
-        <div className="BodyLarge">{description}</div>
+        <div className="BodyRegular">{description?.slice(0, maxDescriptionLength)}{(description?.length || 0) > maxDescriptionLength && "..."}</div>
         <div className={styles.ctaRow}>{CallToAction}</div>
       </div>
     </div>

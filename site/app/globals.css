@@ -31,3 +31,7 @@ input:focus,
 no-scrollbar::-webkit-scrollbar { /* Chrome, Safari, Opera */
   display: none;
 }
+
+body { 
+  margin: 0;
+}

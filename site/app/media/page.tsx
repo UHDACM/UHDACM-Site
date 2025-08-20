@@ -18,7 +18,7 @@ export default async function Page() {
       />
       <MainHeroSection
         title={`Our Memories in HD 4K IMAX`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle={`Something about our gallery and stuff like that.`}
         reverseOrder={true}
         leftStyle={{ flex: 1 }}
@@ -49,8 +49,7 @@ export default async function Page() {
         bottomContent={
           <Button
             style={{ marginTop: "0.5rem" }}
-            href="https://discord.com/invite/362vxfy7SE"
-            target="_blank"
+            href="/galleries"
           >
             <div
               style={{
@@ -72,7 +71,7 @@ export default async function Page() {
       />
       <MainHeroSection
         title={`Watch our QnA\nwith Andy Berrios`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle={`We asked: \nHow do you get better DS? Should I learn React.js? Do you think AI is a threat?\n\nAnd much more!`}
         reverseOrder={false}
         leftStyle={{ flex: 1 }}
@@ -104,7 +103,7 @@ export default async function Page() {
       />
       <MainHeroSection
         title={`Something about Newsletters`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle={`One of us, one of us, one of us. One of us, one of us, one of us. One of us, one of us, one of us.`}
         reverseOrder={true}
         leftStyle={{ flex: 1 }}

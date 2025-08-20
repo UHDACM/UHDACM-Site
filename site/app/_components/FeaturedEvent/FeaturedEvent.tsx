@@ -26,7 +26,7 @@ const FeaturedEvent: React.FC<FeaturedEventProps> = ({
   return (
     <div className={styles.container} style={containerStyle}>
       <div className={styles.content} style={contentStyle}>
-        <div className="FontTitle">{title}</div>
+        <div className="Title">{title}</div>
         <div className="BodyLargeHeavy">{largeHeavy}</div>
         <div className="BodySmallHeavy">{smallHeavy}</div>
         <div className="BodyCaption">{caption}</div>
