@@ -1,27 +1,18 @@
 import React from "react";
 
-import Button from "../../_components/Button/Button";
 import styles from "./MainHeroSection.module.css";
 
-
-interface MainHeroSectionButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  href?: string;
-  // You can add more Button props if needed
-}
 interface MainHeroSectionProps {
   reverseOrder?: boolean;
   topLevelStyle?: React.CSSProperties;
   leftStyle?: React.CSSProperties;
-
   rightContent?: React.ReactNode;
   rightStyle?: React.CSSProperties;
   spanText?: string;
   title?: string;
   titleClassName?: string;
   subtitle?: string;
-  buttonProps?: MainHeroSectionButtonProps;
+  bottomContent?: React.ReactNode;
 }
 
 const MainHeroSection: React.FC<MainHeroSectionProps> = ({
@@ -33,7 +24,7 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
   title,
   titleClassName,
   subtitle,
-  buttonProps,
+  bottomContent,
   rightContent,
 }) => {
   return (
@@ -55,29 +46,37 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
           display: "flex",
           flexDirection: "column",
           gap: "0.5rem",
-          alignItems: 'start',
-          padding: '0rem 2rem',
-          boxSizing: 'border-box',
+          alignItems: "start",
+          padding: "0rem 2rem",
+          boxSizing: "border-box",
           ...leftStyle,
         }}
       >
         {(spanText || title) && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "0rem" }}>
-            {spanText && <span className={`BodySmall ${styles.span}`}>{spanText}</span>}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0rem" }}
+          >
+            {spanText && (
+              <span className={`BodySmall ${styles.span}`}>{spanText}</span>
+            )}
             {title && (
               <div
-                className={`${titleClassName ? ` ${titleClassName}` : "FontTitle"}`}
-                style={{ whiteSpace: 'pre-line' }}
+                className={`${
+                  titleClassName ? ` ${titleClassName}` : "FontTitle"
+                }`}
+                style={{ whiteSpace: "pre-line" }}
               >
                 {title}
               </div>
             )}
           </div>
         )}
-        {subtitle && <div style={{whiteSpace: 'pre-line'}} className="SubtitleRegular">{subtitle}</div>}
-        {
-          buttonProps && <Button style={{ marginTop: '1rem' }} {...buttonProps}>{buttonProps.children}</Button>
-        }
+        {subtitle && (
+          <div style={{ whiteSpace: "pre-line" }} className="SubtitleRegular">
+            {subtitle}
+          </div>
+        )}
+        {bottomContent && <>{bottomContent}</>}
       </div>
       <div style={{ ...rightStyle }}>{rightContent}</div>
     </div>

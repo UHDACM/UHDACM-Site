@@ -7,12 +7,15 @@ export default function FeaturedEventSection() {
       width: "100%",
       height: "80vh",
       display: "flex",
-      alignItems: "center",
+      flexDirection: 'column',
+      alignItems: "start",
       justifyContent: "center",
       padding: "6vw",
+      gap: '0.5rem',
       boxSizing: "border-box",
     }}
   >
+    <h1 className='FontH1'>Featured Event</h1>
     <div style={{ width: "100%", height: "25rem" }}>
       <FeaturedEvent
         title="Hello"

@@ -1,9 +1,8 @@
-import MainHeroSection from "./_sections/MainHeroSection/MainHeroSection";
+import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
 import { DefaultChevronRight } from "@/app/_icons/Icons";
-import CoolImage from "./_components/CoolImage/CoolImage";
-import CallToActionSection from "./_sections/CallToActionSection/CallToActionSection";
-import FeaturedEventSection from "./_sections/FeaturedEventSection/FeaturedEvent";
-import Button from "./_components/Button/Button";
+import CoolImage from "../_components/CoolImage/CoolImage";
+import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
+import Button from "../_components/Button/Button";
 
 export default async function Page() {
   // const data = await fetchAPI("sisters", { populate: "*" });
@@ -11,40 +10,26 @@ export default async function Page() {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <MainHeroSection
-        spanText="UHD ACM"
-        title={`Rise above the noise,\nOne step at a time.`}
-        subtitle="Together, we push past doubts and distractions, amplifying each other’s strengths every step of the way."
-        // reverseOrder={true}
-        bottomContent={
-          <Button style={{ marginTop: "0.5rem" }}>
-            <div
-              style={{
-                display: "flex",
-                gap: "0.25rem",
-                alignItems: "center",
-                fontWeight: 800,
-              }}
-            >
-              <span style={{ fontWeight: 500 }}>Join the Club</span>
-              <DefaultChevronRight
-                fontSize={"inherit"}
-                style={{ marginRight: "-0.25rem" }}
-                strokeWidth={"0.20rem"}
-              />
-            </div>
-          </Button>
-        }
+        spanText="JOIN"
+        title={`Join the Computing\nMovement at UHD`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection
-        title={`Meet Our People,\nLearn Our Purpose.`}
+        title={`Join our Discord`}
         titleClassName="FontH1"
-        subtitle="Find out who we are, and what it means to be part of UHD ACM."
+        subtitle={`We post a lot on Discord and stuff.\n Announcements, emails, events, and more.\n\nJoin our discord NOW!`}
         reverseOrder={true}
+        leftStyle={{ flex: 1 }}
+        rightStyle={{ flex: 1 }}
+        rightContent={<CoolImage src="/discord3d.webp" />}
         bottomContent={
-          <Button style={{ marginTop: "0.5rem" }}>
+          <Button
+            style={{ marginTop: "0.5rem" }}
+            href="https://discord.com/invite/362vxfy7SE"
+            target="_blank"
+          >
             <div
               style={{
                 display: "flex",
@@ -53,7 +38,7 @@ export default async function Page() {
                 fontWeight: 800,
               }}
             >
-              <span style={{ fontWeight: 500 }}>More About Us</span>
+              <span style={{ fontWeight: 500 }}>Join Our Discord</span>
               <DefaultChevronRight
                 fontSize={"inherit"}
                 style={{ marginRight: "-0.25rem" }}
@@ -62,17 +47,21 @@ export default async function Page() {
             </div>
           </Button>
         }
-        leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
-        rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection
-        title={`Be at the Right Place,\nAt the Right Time.`}
+        title={`Join our CampusGroups\nGet our emails!`}
         titleClassName="FontH1"
-        subtitle="View our calendar and find what stuff we have planned soon."
-        // reverseOrder={true}
+        subtitle={`Something about campus groups bro. Idk, I don’t really care about campus groups bru`}
+        reverseOrder={false}
+        leftStyle={{ flex: 1 }}
+        rightStyle={{ flex: 1 }}
+        rightContent={<CoolImage src="/sjd.JPG" />}
         bottomContent={
-          <Button style={{ marginTop: "0.5rem" }}>
+          <Button
+            style={{ marginTop: "0.5rem" }}
+            href="https://uhd.campusgroups.com/ACM/club_signup"
+            target="_blank"
+          >
             <div
               style={{
                 display: "flex",
@@ -81,7 +70,7 @@ export default async function Page() {
                 fontWeight: 800,
               }}
             >
-              <span style={{ fontWeight: 500 }}>Upcoming Events</span>
+              <span style={{ fontWeight: 500 }}>Join Campus Groups</span>
               <DefaultChevronRight
                 fontSize={"inherit"}
                 style={{ marginRight: "-0.25rem" }}
@@ -90,14 +79,19 @@ export default async function Page() {
             </div>
           </Button>
         }
+      />
+      <MainHeroSection
+        title={`Become an Officer\nof UHD ACM`}
+        titleClassName="FontH1"
+        subtitle={`One of us, one of us, one of us. One of us, one of us, one of us. One of us, one of us, one of us.`}
+        reverseOrder={true}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
-      <FeaturedEventSection />
-      <CallToActionSection
-        title={`UHD ACM\nJoin Today!`}
-        subtitle="We await your arrival or something"
+      {/* <CallToActionSection
+        title={`Want to be\nan officer?`}
+        subtitle="Your leadership journey starts here"
         actionComponent={
           <Button>
             <div
@@ -108,7 +102,7 @@ export default async function Page() {
                 fontWeight: 800,
               }}
             >
-              <span style={{ fontWeight: 500 }}>Join UHDACM Today</span>
+              <span style={{ fontWeight: 500 }}>Become an Officer</span>
               <DefaultChevronRight
                 fontSize={"inherit"}
                 style={{ marginRight: "-0.25rem" }}
@@ -117,7 +111,7 @@ export default async function Page() {
             </div>
           </Button>
         }
-      />
+      /> */}
     </div>
   );
 }

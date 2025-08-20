@@ -8,7 +8,7 @@
 .Button {
 	background-color: rgb(var(--color-font-primary));
 	color: #fff;
-	padding: 0.75rem 1rem;
+	padding: 0.5rem 1rem;
 	border-radius: 0.5rem;
 	display: flex;
 	flex-direction: row;
@@ -28,8 +28,18 @@
 	transition: background-color 0.2s;
 }
 
+.Button--Hallow {
+	background-color: transparent;
+	border: 1px solid rgb(var(--color-font-primary));
+	color: rgb(var(--color-font-primary));
+}
+
+.Button--Hallow:hover {
+	background-color: rgba(var(--color-font-primary), 0.08);
+}
+
 /* Button size variants */
-.Button--small {
+/* .Button--small {
 	border-radius: 0.4rem;
 	padding: 0.375rem 0.5rem;
 	font-size: 0.875rem;
@@ -38,4 +48,4 @@
 .Button--large {
 	padding: 0.75rem 1.5rem;
 	font-size: 1.25rem;
-}
+} */

@@ -99,7 +99,7 @@ export default function Select({
             borderTop: "none",
             borderRadius: "0 0 0.5rem 0.5rem",
             zIndex: 10,
-            maxHeight: "9rem",
+            maxHeight: "12rem",
             overflowY: "auto",
             color: "rgba(var(--color-font-default), 1)"
           }}

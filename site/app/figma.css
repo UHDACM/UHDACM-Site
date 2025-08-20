@@ -44,7 +44,7 @@
 :root {
   --color-font-default: var(--color-neutral-100);
   --color-font-secondary: var(--color-secondary-500);
-  --color-font-accent: var(--color-accent-400);
+  --color-font-accent: var(--color-accent-500);
   --color-font-primary: var(--color-primary-600);
   --color-font-dark: var(--color-neutral-900);
   --color-background-primary: var(--color-neutral-900);
@@ -143,27 +143,27 @@ body {
 }
 
 .BodyLarge {
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-decoration: none;
   font-family: "Inter";
   font-weight: 400;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0rem;
-  line-height: 1.08rem;
+  line-height: 1.2rem;
   text-transform: none;
   color: rgb(var(--color-font-default));
 }
 
 .BodyLargeHeavy {
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-decoration: none;
   font-family: "Inter";
   font-weight: 700;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0rem;
-  line-height: 1.08rem;
+  line-height: 1.2rem;
   text-transform: none;
   color: rgb(var(--color-font-default));
 }
