@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type FunctionUnknown = (...args: unknown[]) => unknown;
 export type CardinalDirection = 'down' | 'left' | 'up' | 'right';
 
@@ -17,3 +19,9 @@ export const Months: Month[] = [
   'november',
   'december'
 ];
+
+export type NavigationEntryObj = {
+  title: ReactNode;
+  path: string;
+  children?: NavigationEntryObj[];
+};

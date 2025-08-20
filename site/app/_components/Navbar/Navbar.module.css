@@ -1,0 +1,71 @@
+.Navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 90vw;
+  max-width: 60rem;
+  height: 3.25rem;
+  margin: 0.5rem auto 0 auto;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  transition: background-color 0.3s, border 0.3s, transform 0.3s;
+  border: 1px solid transparent;
+  transform: translateY(0.5rem);
+  backdrop-filter: blur(5px);
+}
+
+.Navbar.scrolled {
+  background-color: rgba(var(--color-neutral-800), 0.5);
+  border: 1px solid rgba(var(--color-stroke-normal), 0.5);
+  transform: translateY(0);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+  position: absolute;
+  left: 1rem;
+}
+
+.logo {
+  height: 2.5rem;
+  width: auto;
+  border-radius: 0.5rem;
+  padding: 0rem 2rem;
+}
+
+.navLinks {
+  width: 30rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navButton {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.navButton:hover {
+  color: rgb(var(--color-font-primary));
+}
+
+.joinButton {
+  font-weight: 700;
+  border-radius: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
+}

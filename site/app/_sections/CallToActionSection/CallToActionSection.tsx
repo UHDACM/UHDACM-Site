@@ -1,15 +1,15 @@
-import Button from "@/app/_components/Button/Button";
+import { ReactNode } from "react";
 
 interface CallToActionSectionProps {
   title: string;
   subtitle: string;
-  buttonProps: React.ComponentProps<typeof Button>;
+  actionComponent: ReactNode;
 }
 
 export default function CallToActionSection({
   title,
   subtitle,
-  buttonProps,
+  actionComponent,
 }: CallToActionSectionProps) {
   return (
     <div
@@ -31,7 +31,7 @@ export default function CallToActionSection({
         {title}
       </h1>
       <span className="SubtitleRegular">{subtitle}</span>
-      <Button {...buttonProps} />
+      {actionComponent}
     </div>
   );
 }

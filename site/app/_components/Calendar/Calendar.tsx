@@ -1,35 +1,11 @@
 "use client";
 
 import { DefaultChevronLeft, DefaultChevronRight } from "@/app/_icons/Icons";
-import React, { useState } from "react";
+import React from "react";
 import Select from "../Select/Select";
 import { Month, Months } from "@/app/_utils/types";
-import { intToMonth, toTitleCase } from "@/app/_utils/tools";
+import { toTitleCase } from "@/app/_utils/tools";
 import styles from "./Calendar.module.css";
-
-const gridColors = [
-  "#FFB300",
-  "#FF7043",
-  "#29B6F6",
-  "#66BB6A",
-  "#AB47BC",
-  "#EC407A",
-  "#FFA726",
-  "#8D6E63",
-  "#789262",
-  "#D4E157",
-  "#FF8A65",
-  "#BA68C8",
-  "#4DD0E1",
-  "#FFD54F",
-  "#A1887F",
-  "#90A4AE",
-  "#AED581",
-  "#FFCCBC",
-  "#B39DDB",
-  "#80CBC4",
-  "#FFF176",
-];
 
 const startingYear = new Date().getFullYear() + 1;
 const Years = Array.from({ length: 3 }, (_, i) => `${startingYear - i}`);
@@ -51,6 +27,8 @@ export default function Calendar({
   year,
   setYear,
 }: CalendarProps) {
+
+
   const CalendarDate = new Date(
     parseInt(year),
     Months.indexOf(month.toLowerCase() as Month),
@@ -66,8 +44,36 @@ export default function Calendar({
   ).getDate();
 
   function handleSetDay(newDay: number) {
-    if (newDay < 1 || newDay > daysInMonth) return;
-    setDay(newDay);
+    let newMonthIndex = Months.indexOf(month.toLowerCase() as Month);
+    let newYear = parseInt(year);
+    let finalDay = newDay;
+    let finalMonthIndex = newMonthIndex;
+    let finalYear = newYear;
+
+    if (newDay < 1) {
+      // Go to previous month
+      finalMonthIndex -= 1;
+      if (finalMonthIndex < 0) {
+        finalMonthIndex = 11;
+        finalYear -= 1;
+      }
+      finalDay = new Date(finalYear, finalMonthIndex + 1, 0).getDate();
+    } else {
+      const daysInCurrentMonth = new Date(newYear, newMonthIndex + 1, 0).getDate();
+      if (newDay > daysInCurrentMonth) {
+        // Go to next month
+        finalMonthIndex += 1;
+        if (finalMonthIndex > 11) {
+          finalMonthIndex = 0;
+          finalYear += 1;
+        }
+        finalDay = 1;
+      }
+    }
+
+    setYear(finalYear.toString());
+    setMonth(toTitleCase(Months[finalMonthIndex]));
+    setDay(finalDay);
   }
 
   return (
@@ -123,25 +129,16 @@ export default function Calendar({
           {/* Right chevrons */}
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <DefaultChevronLeft
-              className={`${styles["Chevron"]} ${
-                day === 1 ? styles["disabled"] : ""
-              }`}
+              className={`${styles["Chevron"]}`}
               size="1.5rem"
               strokeWidth={"0.175rem"}
               onClick={() => handleSetDay(day - 1)}
             />
             <DefaultChevronRight
-              className={`${styles["Chevron"]} ${
-                day === daysInMonth ? styles["disabled"] : ""
-              }`}
+              className={`${styles["Chevron"]}`}
               size="1.5rem"
               strokeWidth={"0.175rem"}
               onClick={() => handleSetDay(day + 1)}
-              style={{
-                cursor: "pointer",
-                opacity: day === daysInMonth ? 0 : 1,
-                pointerEvents: day === daysInMonth ? "none" : "auto",
-              }}
             />
           </div>
         </div>
@@ -174,6 +171,7 @@ export default function Calendar({
             {d}
           </div>
         ))}
+        {/* Puts buffer before first day of the month */}
         {Array.from({ length: firstDayOfWeek }).map((_, i) => {
           return (
             <div
@@ -184,11 +182,18 @@ export default function Calendar({
         })}
         {Array.from({ length: daysInMonth }).map((_, i) => (
           <div
-            key={i}
+            key={`${month}${i}`} // makes component update if month changes too (fixes increment changes)
             className={`${styles["CalendarDay"]} ${
               i + 1 == day ? styles["active"] : ""
             }`}
             onClick={() => setDay(i + 1)}
+            style={{
+              color:
+                i + 1 === new Date().getDate() &&
+                Months.indexOf(month.toLowerCase() as Month) === new Date().getMonth()
+                  ? "rgb(var(--color-font-secondary))"
+                  : undefined,
+            }}
           >
             {i + 1}
           </div>

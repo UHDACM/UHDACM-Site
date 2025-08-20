@@ -3,6 +3,7 @@ import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
 import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
 import PersonTile from "../_components/PersonTile/PersonTile";
+import Button from "../_components/Button/Button";
 
 export default async function Page() {
   // const data = await fetchAPI("sisters", { populate: "*" });
@@ -78,8 +79,9 @@ export default async function Page() {
       <CallToActionSection
         title={`Want to be\nan officer?`}
         subtitle="Your leadership journey starts here"
-        buttonProps={{
-          children: (
+        
+        actionComponent={
+          <Button>
             <div
               style={{
                 display: "flex",
@@ -95,8 +97,8 @@ export default async function Page() {
                 strokeWidth={"0.20rem"}
               />
             </div>
-          ),
-        }}
+          </Button>
+        }
       />
     </div>
   );

@@ -8,6 +8,7 @@ import styles from "./Button.module.css";
 interface ButtonProps {
   onClick?: FunctionUnknown;
   href?: string;
+  target?: React.HTMLAttributeAnchorTarget;
   children?: React.ReactNode;
   style?: React.CSSProperties;
   className?: string;
@@ -18,11 +19,11 @@ const defaultProps = {
   tabIndex: 0,
 };
 
-const Button: React.FC<ButtonProps> = ({ onClick, href, children, style, className }) => {
+const Button: React.FC<ButtonProps> = ({ onClick, href, target, children, style, className }) => {
   const classes = [defaultProps.className, styles[className||'']].filter(Boolean).join(' ');
   if (href) {
     return (
-      <Link {...defaultProps} href={href} style={style} className={classes}>
+      <Link {...defaultProps} href={href} style={style} className={classes} target={target}>
         {children}
       </Link>
     );
