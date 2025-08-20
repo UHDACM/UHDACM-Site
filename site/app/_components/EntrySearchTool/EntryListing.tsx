@@ -12,9 +12,10 @@ interface EventListingProps {
   day: number;
   month: string;
   year: string;
+  entryName: string;
 }
 
-export function EventListing({ day, month, year }: EventListingProps) {
+export function EventListing({ day, month, year, entryName }: EventListingProps) {
   const [listingMode, setListingMode] = useState("After");
   return (
     <div
@@ -27,10 +28,10 @@ export function EventListing({ day, month, year }: EventListingProps) {
       }}
     >
       <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-        <h3 className={`FontH2`} style={{ margin: 0, userSelect: "none" }}>
-          Events
+        <h3 className={`H2`} style={{ margin: 0, userSelect: "none" }}>
+          {entryName}
         </h3>
-        <div style={{ width: `6.5rem` }} className="FontH4">
+        <div style={{ width: `6.5rem` }} className="H4">
           <Select
             inputStyling={{
               backgroundColor: "rgba(var(--color-neutral-1000), 0.5)",
@@ -41,7 +42,7 @@ export function EventListing({ day, month, year }: EventListingProps) {
           />
         </div>
         <h3
-          className={`FontH2`}
+          className={`H2`}
           style={{
             margin: 0,
             color: "rgb(var(--color-font-secondary))",
@@ -52,7 +53,30 @@ export function EventListing({ day, month, year }: EventListingProps) {
         </h3>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxHeight: '80vh', overflowY: 'auto' }}>
-        <div style={{ width: "100%", height: "12rem" }}>
+        <div style={{ width: "100%", height: "16rem" }}>
+          <EntryTile
+            header={"Event Name"}
+            subheader={`October 3rd, 2025 | 8:00 am - 6:00 pm`}
+            subheaderTwo={`1234 Location Place, 76543 | Room A123`}
+            description="We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? We can talk about the event and stuff right now? You know the only thing we can really do about life is to make the most of it."
+            CallToAction={
+              <div className='BodyLarge' style={{display: 'flex', gap: '0.5rem'}}>
+                <Button>
+                  <DefaultEllipsis />
+                </Button>
+                <Button>
+                  <span style={{ fontWeight: 500 }}>View Event</span>
+                  <DefaultChevronRight
+                    fontSize={"inherit"}
+                    style={{ marginRight: "-0.25rem" }}
+                    strokeWidth={"0.20rem"}
+                  />
+                </Button>
+              </div>
+            }
+          />
+        </div>
+        <div style={{ width: "100%", height: "16rem" }}>
           <EntryTile
             header={"Event Name"}
             subheader={`October 3rd, 2025 | 8:00 am - 6:00 pm`}
@@ -75,7 +99,7 @@ export function EventListing({ day, month, year }: EventListingProps) {
             }
           />
         </div>
-        <div style={{ width: "100%", height: "12rem" }}>
+        <div style={{ width: "100%", height: "16rem" }}>
           <EntryTile
             header={"Event Name"}
             subheader={`October 3rd, 2025 | 8:00 am - 6:00 pm`}
@@ -98,30 +122,7 @@ export function EventListing({ day, month, year }: EventListingProps) {
             }
           />
         </div>
-        <div style={{ width: "100%", height: "12rem" }}>
-          <EntryTile
-            header={"Event Name"}
-            subheader={`October 3rd, 2025 | 8:00 am - 6:00 pm`}
-            subheaderTwo={`1234 Location Place, 76543 | Room A123`}
-            description="We can talk about the event and stuff right now? You know the only thing we can really do about life is to make the most of it."
-            CallToAction={
-              <div className='BodyLarge' style={{display: 'flex', gap: '0.5rem'}}>
-                <Button>
-                  <DefaultEllipsis />
-                </Button>
-                <Button>
-                  <span style={{ fontWeight: 500 }}>View Event</span>
-                  <DefaultChevronRight
-                    fontSize={"inherit"}
-                    style={{ marginRight: "-0.25rem" }}
-                    strokeWidth={"0.20rem"}
-                  />
-                </Button>
-              </div>
-            }
-          />
-        </div>
-        <div style={{ width: "100%", height: "12rem" }}>
+        <div style={{ width: "100%", height: "16rem" }}>
           <EntryTile
             header={"Event Name"}
             subheader={`October 3rd, 2025 | 8:00 am - 6:00 pm`}

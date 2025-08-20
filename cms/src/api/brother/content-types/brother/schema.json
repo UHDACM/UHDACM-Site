@@ -25,6 +25,16 @@
       "relation": "manyToOne",
       "target": "api::sister.sister",
       "inversedBy": "brothers"
+    },
+    "picture": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

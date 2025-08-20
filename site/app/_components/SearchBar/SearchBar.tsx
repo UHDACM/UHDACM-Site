@@ -6,12 +6,16 @@ import { DefaultSearch } from "@/app/_icons/Icons";
 type SearchBarProps = InputHTMLAttributes<HTMLInputElement> & {
   onFocusInput?: () => void;
   onBlurInput?: () => void;
+  inputValue?: string;
+  onInputValueChange?: (value: string) => void;
 };
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = "Search...",
   onFocusInput,
   onBlurInput,
+  inputValue,
+  onInputValueChange,
   ...props
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -25,6 +29,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         width: "100%",
       }}
       className="SubtitleRegular"
+      {...props}
     >
       <input
         ref={inputRef}
@@ -32,10 +37,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         placeholder={placeholder}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
+        value={inputValue}
+        onChange={(e) => onInputValueChange?.(e.target.value)}
         style={{
           paddingLeft: '2.25rem'
         }}
-        {...props}
       />
       <DefaultSearch
         style={{

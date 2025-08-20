@@ -14,8 +14,11 @@ export default function Navbar() {
       setScrolled(window.scrollY > 32); // 2rem = 32px
     };
     window.addEventListener("scroll", onScroll);
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+
 
   return (
     <nav

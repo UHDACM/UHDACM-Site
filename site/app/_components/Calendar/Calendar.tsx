@@ -105,11 +105,11 @@ export default function Calendar({
             alignItems: "center",
             width: "100%",
           }}
-          className="FontH5"
+          className="H5"
         >
           {/* Left controls */}
-          <div style={{ display: "flex", gap: "0.5rem", width: "60%" }}>
-            <div style={{ flex: 6 }}>
+          <div style={{ display: "flex", gap: "0.5rem", marginRight: '1rem' }}>
+            <div style={{ width: '9rem' }}>
               <Select
                 options={Months}
                 selected={month}
@@ -117,7 +117,7 @@ export default function Calendar({
                 placeholder="Month"
               />
             </div>
-            <div style={{ flex: 4 }}>
+            <div style={{ width: '6rem' }}>
               <Select
                 options={Years}
                 selected={year}
@@ -156,7 +156,7 @@ export default function Calendar({
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d, i) => (
           <div
             key={d}
-            className={"FontH5"}
+            className={"H5"}
             style={{
               background: "transparent",
               width: "100%",

@@ -28,57 +28,60 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
   rightContent,
 }) => {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100vh",
-        display: "flex",
-        padding: "0rem 2rem",
-        boxSizing: "border-box",
-        flexDirection: reverseOrder ? "row-reverse" : "row",
-        alignItems: "center",
-        justifyContent: "center",
-        ...topLevelStyle,
-      }}
-    >
+    <div style={{width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
       <div
         style={{
+          width: "95vw",
+          maxWidth: 'var(--page-max-width)',
+          height: '100%',
           display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-          alignItems: "start",
-          padding: "0rem 2rem",
+          padding: "0rem 1rem",
           boxSizing: "border-box",
-          ...leftStyle,
+          flexDirection: reverseOrder ? "row-reverse" : "row",
+          alignItems: "center",
+          justifyContent: "center",
+          ...topLevelStyle,
         }}
       >
-        {(spanText || title) && (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "0rem" }}
-          >
-            {spanText && (
-              <span className={`BodySmall ${styles.span}`}>{spanText}</span>
-            )}
-            {title && (
-              <div
-                className={`${
-                  titleClassName ? ` ${titleClassName}` : "FontTitle"
-                }`}
-                style={{ whiteSpace: "pre-line" }}
-              >
-                {title}
-              </div>
-            )}
-          </div>
-        )}
-        {subtitle && (
-          <div style={{ whiteSpace: "pre-line" }} className="SubtitleRegular">
-            {subtitle}
-          </div>
-        )}
-        {bottomContent && <>{bottomContent}</>}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+            alignItems: "start",
+            padding: "0rem 1rem",
+            boxSizing: "border-box",
+            ...leftStyle,
+          }}
+        >
+          {(spanText || title) && (
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "0rem" }}
+            >
+              {spanText && (
+                <span className={`BodySmall ${styles.span}`}>{spanText}</span>
+              )}
+              {title && (
+                <div
+                  className={`${
+                    titleClassName ? ` ${titleClassName}` : "Title"
+                  }`}
+                  style={{ whiteSpace: "pre-line" }}
+                >
+                  {title}
+                </div>
+              )}
+            </div>
+          )}
+          {subtitle && (
+            <div style={{ whiteSpace: "pre-line" }} className="SubtitleRegular">
+              {subtitle}
+            </div>
+          )}
+          {bottomContent && <>{bottomContent}</>}
+        </div>
+        <div style={{ ...rightStyle }}>{rightContent}</div>
       </div>
-      <div style={{ ...rightStyle }}>{rightContent}</div>
     </div>
   );
 };

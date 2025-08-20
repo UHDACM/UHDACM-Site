@@ -4,16 +4,18 @@ import CoolImage from "./_components/CoolImage/CoolImage";
 import CallToActionSection from "./_sections/CallToActionSection/CallToActionSection";
 import FeaturedEventSection from "./_sections/FeaturedEventSection/FeaturedEvent";
 import Button from "./_components/Button/Button";
+import { fetchAPI } from "./_utils/cms";
+import HomeHeroSection from "./_sections/HomeHeroSection/HomeHeroSection";
 
 export default async function Page() {
-  // const data = await fetchAPI("sisters", { populate: "*" });
+  // const data = await fetchAPI("brothers", { populate: "*" });
   // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <MainHeroSection
+      <HomeHeroSection
         spanText="UHD ACM"
-        title={`Rise above the noise,\nOne step at a time.`}
-        subtitle="Together, we push past doubts and distractions, amplifying each other’s strengths every step of the way."
+        title={`Rise above the noise\nOne step at a time`}
+        subtitle={`Together, we push past doubts and distractions\namplifying each other’s strengths every step of the way.`}
         // reverseOrder={true}
         bottomContent={
           <Button style={{ marginTop: "0.5rem" }}>
@@ -35,12 +37,10 @@ export default async function Page() {
           </Button>
         }
         leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
-        rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection
         title={`Meet Our People,\nLearn Our Purpose.`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle="Find out who we are, and what it means to be part of UHD ACM."
         reverseOrder={true}
         bottomContent={
@@ -62,13 +62,13 @@ export default async function Page() {
             </div>
           </Button>
         }
-        leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
+        leftStyle={{ flex: 4 }}
+        rightStyle={{ flex: 5 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection
         title={`Be at the Right Place,\nAt the Right Time.`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle="View our calendar and find what stuff we have planned soon."
         // reverseOrder={true}
         bottomContent={
@@ -90,8 +90,8 @@ export default async function Page() {
             </div>
           </Button>
         }
-        leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
+        leftStyle={{ flex: 4 }}
+        rightStyle={{ flex: 5 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <FeaturedEventSection />

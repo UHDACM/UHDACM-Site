@@ -75,7 +75,6 @@ export default function PersonTile({
           width: 160,
           height: 200,
           borderRadius: 10,
-          backgroundColor: "#0002",
           overflow: "hidden",
           border: "1px solid rgb(var(--color-stroke-normal))",
           ...tileStyle,
@@ -86,7 +85,7 @@ export default function PersonTile({
             position: "absolute",
             bottom: 0,
             left: 0,
-            margin: 10,
+            margin: '0.5rem',
             zIndex: 2,
             display: 'flex',
             flexDirection: 'column',
@@ -140,7 +139,7 @@ const SocialIconStyle: React.CSSProperties = {
   padding: 3,
   borderRadius: 10,
   cursor: "pointer",
-  color: 'rgb(var(--color-neutral-900))'
+  color: 'rgb(var(--color-font-default))'
 };
 
 function PersonTileExpanded({
@@ -238,10 +237,10 @@ function PersonTileExpanded({
             easing="inOutQuart"
           >
             <div className={"expandedDescriptionCard"}>
-              <div style={{ margin: 10, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ margin: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <p
                   style={{
-                    color: "rgb(var(--color-font-dark))",
+                    color: "rgb(var(--color-font-default))",
                     margin: 0,
                     fontSize: "1.5rem",
                     textWrap: "nowrap",
@@ -252,7 +251,7 @@ function PersonTileExpanded({
                 </p>
                 <p
                   style={{
-                    color: "rgb(var(--color-font-dark))",
+                    color: "rgb(var(--color-font-default))",
                     margin: 0,
                     fontSize: "1rem",
                     textWrap: "nowrap",
@@ -303,7 +302,7 @@ function PersonTileExpanded({
                   top: 10,
                   right: 10,
                   cursor: "pointer",
-                  color: "black",
+                  color: "rgb(var(--color-font-default))",
                 }}
                 onClick={() => {
                   setOpen(false);

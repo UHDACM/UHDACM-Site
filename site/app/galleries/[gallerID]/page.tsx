@@ -48,7 +48,7 @@ import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActio
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 
 type EventPageParams = Promise<{
-  eventID: string;
+  galleryID: string;
 }>;
 
 export default async function EventPage({
@@ -56,7 +56,7 @@ export default async function EventPage({
 }: {
   params: EventPageParams;
 }) {
-  const { eventID } = await params;
+  const { galleryID } = await params;
 
   return (
     <div
@@ -67,87 +67,84 @@ export default async function EventPage({
         position: "relative",
       }}
     >
-      <Button
+      {/* <Button
         className="Button--Hallow"
-        style={{ position: "absolute", top: "1rem", left: "1rem" }}
         href='/events'
       >
         <DefaultChevronLeft strokeWidth={'0.2rem'} style={{ marginLeft: "-0.25rem" }} /> Back
-      </Button>
+      </Button> */}
       <MainHeroSection
-        spanText="EVENT"
-        title={`Event Name`}
+        spanText="GALLERY"
+        title={`Gallery Name`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
-            <AddToCalendarButton />
             <ShareButton />
           </div>
         }
       />
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "start",
-          gap: "2rem",
-          margin: "2rem 0rem",
-        }}
-      >
-        <EventDetails
-          icon="clock"
-          header="When"
-          body="Saturday, December 7th, 2024 from 2:00 PM to 5:00 PM CST"
-          bodyColor="rgb(var(--color-font-primary))"
-        />
-        <EventDetails
-          icon="location"
-          header="Where"
-          body="Room 123, One Main Building, UHD"
-          bodyColor="rgb(var(--color-font-secondary))"
-        />
-        <EventDetails
-          icon="people"
-          header="Host"
-          body={`UHD ACM\nGirl Genius`}
-          bodyColor="rgb(var(--color-font-accent))"
-        />
-      </div>
+
       <div
         style={{
           width: "100%",
-          boxSizing: "border-box",
-          padding: "4rem 1rem",
-          marginTop: "4rem",
           display: "flex",
           justifyContent: "center",
+          margin: "0 auto",
         }}
       >
         <div
           style={{
-            maxWidth: "50rem",
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
+            width: "95vw",
+            maxWidth: "var(--page-max-width)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: "0.5rem",
+            padding: "2rem 1rem",
+            boxSizing: "border-box",
           }}
         >
-          <h1 className="H1">Event Description</h1>
-          <span
+          {/* Example images, replace src with your gallery images */}
+          <img
+            src="/sjd.JPG"
+            alt="Gallery image 1"
             style={{
               width: "100%",
+              borderRadius: "0.5rem",
+              objectFit: "cover",
             }}
-            className="BodyLarge"
-          >
-            {/* Add your rich text here... */}
-            This is a rich text area for the event description.
-          </span>
+          />
+          <img
+            src="/sjd.JPG"
+            alt="Gallery image 2"
+            style={{
+              width: "100%",
+              borderRadius: "0.5rem",
+              objectFit: "cover",
+            }}
+          />
+          <img
+            src="/sjd.JPG"
+            alt="Gallery image 3"
+            style={{
+              width: "100%",
+              borderRadius: "0.5rem",
+              objectFit: "cover",
+            }}
+          />
+          <img
+            src="/sjd.JPG"
+            alt="Gallery image 4"
+            style={{
+              width: "100%",
+              borderRadius: "0.5rem",
+              objectFit: "cover",
+            }}
+          />
         </div>
       </div>
+
       <CallToActionSection
         title={`Show up, Schedule, Share`}
         subtitle="Your next step is your best step. Be sure to make it count!"

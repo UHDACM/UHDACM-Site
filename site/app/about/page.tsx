@@ -29,7 +29,7 @@ export default async function Page() {
     />;
   };
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
       <MainHeroSection
         spanText="ABOUT"
         title={`UHD's home for all things computing`}
@@ -39,7 +39,7 @@ export default async function Page() {
       />
       <MainHeroSection
         title={`We are UHD ACM`}
-        titleClassName="FontH1"
+        titleClassName="H1"
         subtitle={`The University of Houston-Downtown’s Chapter of the Association for Computing Machinery.\nFostering community, learning, and innovation through events, projects, and collaboration for students of all skill levels at UHD.`}
         reverseOrder={true}
         leftStyle={{ flex: 1 }}
@@ -48,7 +48,8 @@ export default async function Page() {
       />
       <div
         style={{
-          width: "100%",
+          width: "95vw",
+          maxWidth: 'var(--page-max-width)',
           height: "80vh",
           display: "flex",
           alignItems: "center",
@@ -59,7 +60,7 @@ export default async function Page() {
           flexDirection: "column",
         }}
       >
-        <h1 className={`FontH1`} style={{ whiteSpace: "pre-line" }}>
+        <h1 className={`H1`} style={{ whiteSpace: "pre-line" }}>
           Meet our Leadership
         </h1>
         <div
