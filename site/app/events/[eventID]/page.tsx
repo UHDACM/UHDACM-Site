@@ -2,8 +2,6 @@ import Button from "@/app/_components/Button/Button";
 import CoolImage from "@/app/_components/CoolImage/CoolImage";
 import {
   DefaultCalendar,
-  DefaultChevronLeft,
-  DefaultChevronRight,
   DefaultClock,
   DefaultLocation,
   DefaultPeople,
@@ -46,6 +44,8 @@ function ShareButton() {
 }
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
+import { fetchAPI } from "@/app/_utils/cms";
+import { isValidEvent } from "@/app/_utils/validation";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -57,6 +57,69 @@ export default async function EventPage({
   params: EventPageParams;
 }) {
   const { eventID } = await params;
+  const res = await fetchAPI("events", {
+    populate: "*",
+    "filters[UrlSlug][$eq]": eventID,
+  });
+
+  const event = res.data[0]; // Assuming the API returns an array of events
+
+  console.log('ev', res);
+
+  if (!event || !isValidEvent(event)) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h1 className="H1">Event not found</h1>
+      </div>
+    );
+  }
+
+  const dateStart = new Date(event.DateStart);
+  const dateEnd = new Date(event.DateEnd);
+
+  // Format date as "MMM D, YYYY"
+  const formatDate = (date: Date) =>
+    date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+
+  // Format time as "h:mm AM/PM"
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+  const sameDay =
+    dateStart.getFullYear() === dateEnd.getFullYear() &&
+    dateStart.getMonth() === dateEnd.getMonth() &&
+    dateStart.getDate() === dateEnd.getDate();
+
+  const sameTime =
+    dateStart.getHours() === dateEnd.getHours() &&
+    dateStart.getMinutes() === dateEnd.getMinutes();
+
+  let subheader = "";
+  if (!sameDay) {
+    subheader = `${formatDate(dateStart)} - ${formatDate(dateEnd)}`;
+  } else if (!sameTime) {
+    subheader = `${formatDate(dateStart)} | ${formatTime(
+      dateStart
+    )} - ${formatTime(dateEnd)}`;
+  } else {
+    subheader = `${formatDate(dateStart)} | ${formatTime(dateStart)}`;
+  }
 
   return (
     <div
@@ -67,19 +130,20 @@ export default async function EventPage({
         position: "relative",
       }}
     >
-      <Button
-        className="Button--Hallow"
-        style={{ position: "absolute", top: "1rem", left: "1rem" }}
-        href='/events'
-      >
-        <DefaultChevronLeft strokeWidth={'0.2rem'} style={{ marginLeft: "-0.25rem" }} /> Back
-      </Button>
       <MainHeroSection
         spanText="EVENT"
-        title={`Event Name`}
+        title={event.Name}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        rightContent={<CoolImage src="/sjd.JPG" />}
+        rightContent={
+          <CoolImage
+            style={{ height: "20rem", overflow: "hidden" }}
+            src={
+              `${process.env.NEXT_PUBLIC_STRAPI_URL}${event.PreviewImage?.url}` ||
+              "/sjd.JPG"
+            }
+          />
+        }
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <AddToCalendarButton />
@@ -100,19 +164,19 @@ export default async function EventPage({
         <EventDetails
           icon="clock"
           header="When"
-          body="Saturday, December 7th, 2024 from 2:00 PM to 5:00 PM CST"
+          body={`${subheader}`}
           bodyColor="rgb(var(--color-font-primary))"
         />
         <EventDetails
           icon="location"
           header="Where"
-          body="Room 123, One Main Building, UHD"
+          body={event.Location || "Location not specified"}
           bodyColor="rgb(var(--color-font-secondary))"
         />
         <EventDetails
           icon="people"
           header="Host"
-          body={`UHD ACM\nGirl Genius`}
+          body={event.Organizations?.map((org) => org.Name).join(", ") || "No host specified"}
           bodyColor="rgb(var(--color-font-accent))"
         />
       </div>
@@ -143,8 +207,9 @@ export default async function EventPage({
             }}
             className="BodyLarge"
           >
-            {/* Add your rich text here... */}
-            This is a rich text area for the event description.
+            {Array.isArray(event.DescriptionFull)
+              ? event.DescriptionFull.join(" ")
+              : ""}
           </span>
         </div>
       </div>

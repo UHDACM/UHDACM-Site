@@ -31,7 +31,7 @@ const EntryTile: React.FC<EntryTileProps> = ({
       <div className={styles.contentContainer}>
         <h2 className="H3">{header}</h2>
         <h4
-          className="H5"
+          className="BodyLargeHeavy"
           style={{
             color: "rgb(var(--color-font-primary))",
             whiteSpace: "pre-wrap",
@@ -40,7 +40,7 @@ const EntryTile: React.FC<EntryTileProps> = ({
           {subheader}
         </h4>
         <h5
-          className="BodyLarge"
+          className="BodyLargeHeavy"
           style={{
             color: "rgb(var(--color-font-secondary))",
             whiteSpace: "pre-wrap",

@@ -4,32 +4,32 @@ import CoolImage from "../_components/CoolImage/CoolImage";
 import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
 import PersonTile from "../_components/PersonTile/PersonTile";
 import Button from "../_components/Button/Button";
+import { fetchAPI } from "../_utils/cms";
+import { isPerson } from "../_utils/validation";
+import { Person, SocialObj } from "../_utils/types";
 
 export default async function Page() {
-  // const data = await fetchAPI("sisters", { populate: "*" });
-  // console.log(data);
+  const res = await fetchAPI("leadership", {
+    "populate[people][populate]": "*",
+  });
+  const { people } = res.data;
 
-  const persontilecomp = (key: string) => {
-    return <PersonTile
-      key={key}
-      imgCoverOrContain="cover"
-      img="/Arbaz.jpeg"
-      // img="/white.png"
-      previewTitle="Arbaz K."
-      fullTitle="Arbaz Khan"
-      previewSubTitle="Official Cheer-leader"
-      fullSubtitle="Official UHD ACM Cheer-leader"
-      fullDescription="IBM Software Developer with a strong computer science foundation, specializing in enterprise storage, large-scale software, and data-driven solutions. Magna Cum Laude graduate from UHD, now pursuing a Master’s in Data Analytics to deepen expertise in scalable system design."
-      socials={[
-        {
-          icon: "linkedin",
-          href: "https://www.linkedin.com/in/akhan-/",
-        },
-      ]}
-    />;
-  };
+  const validPeople: Person[] = people.filter((person: any) => {
+    if (!isPerson(person)) {
+      return false;
+    }
+    return true;
+  });
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <MainHeroSection
         spanText="ABOUT"
         title={`UHD's home for all things computing`}
@@ -49,7 +49,7 @@ export default async function Page() {
       <div
         style={{
           width: "95vw",
-          maxWidth: 'var(--page-max-width)',
+          maxWidth: "var(--page-max-width)",
           height: "80vh",
           display: "flex",
           alignItems: "center",
@@ -72,15 +72,27 @@ export default async function Page() {
             gap: "0.5rem",
           }}
         >
-          {Array.from({ length: 11 }).map((_, i) => {
-            return persontilecomp(`${i}`)
-          })}
+          {validPeople.map((person, idx) => (
+            <PersonTile
+              key={idx}
+              imgCoverOrContain="cover"
+              img={`${process.env.NEXT_PUBLIC_STRAPI_URL}${person.Picture?.url}`}
+              previewTitle={person.NameShort}
+              fullTitle={person.Name}
+              previewSubTitle={person.RoleShort}
+              fullSubtitle={person.Role}
+              fullDescription={person.Description}
+              socials={person.Socials.map((social: SocialObj) => ({
+                icon: social.type,
+                href: social.url,
+              }))}
+            />
+          ))}
         </div>
       </div>
       <CallToActionSection
         title={`Want to be\nan officer?`}
         subtitle="Your leadership journey starts here"
-        
         actionComponent={
           <Button>
             <div

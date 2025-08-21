@@ -5,8 +5,19 @@ import CallToActionSection from "../_sections/CallToActionSection/CallToActionSe
 // import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEvent";
 import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
+import { fetchAPI } from "../_utils/cms";
+import { SiteEvent } from "../_utils/types";
+import { isValidEvent } from "../_utils/validation";
 
 export default async function Page() {
+  const res = await fetchAPI("events", { populate: 'PreviewImage' });
+  const eventsRaw = res.data;
+  const validEvents: SiteEvent[] = []
+  for (const event of eventsRaw) {
+    if (isValidEvent(event)) {
+      validEvents.push(event);
+    }
+  }
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <MainHeroSection
@@ -19,7 +30,7 @@ export default async function Page() {
       {/* <FeaturedEventSection /> */}
       <div style={{display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
         <div style={{width: '100%', maxWidth: '80rem' , padding: '6rem 0rem' }}>
-          <EntrySearchTool entryName="Galleries" />
+          <EntrySearchTool events={validEvents} entryName="Galleries" />
         </div>
       </div>
       <CallToActionSection

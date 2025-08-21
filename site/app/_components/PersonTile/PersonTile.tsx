@@ -1,6 +1,6 @@
 'use client'
 
-import React, { HTMLAttributeAnchorTarget, useState } from "react";
+import React, { HTMLAttributeAnchorTarget, useEffect, useState } from "react";
 import "./PersonTile.css";
 import Transition from "../Transition/Transition";
 import {
@@ -13,16 +13,11 @@ import {
   DefaultYoutube,
   DefaultClose
 } from "@/app/_icons/Icons";
-import { FunctionUnknown, CardinalDirection } from "@/app/_utils/types";
+import { FunctionUnknown, CardinalDirection, SocialSite } from "@/app/_utils/types";
+import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
+import IndicateScrollableDiv from "../IndicateScrollableDiv/IndicateScrollableDiv";
 
-type SocialSite =
-  | "linkedin"
-  | "x"
-  | "facebook"
-  | "instagram"
-  | "personal_site"
-  | "github"
-  | "youtube";
+
 type PersonTileSocial = {
   icon: SocialSite;
   style?: React.CSSProperties;
@@ -62,6 +57,16 @@ export default function PersonTile({
   onClose?: FunctionUnknown;
 }) {
   const [open, setOpen] = useState(false);
+  const { disableOverflowY, enableOverflowY } = useBodyOverflowY();
+
+  useEffect(() => {
+    if (open) {
+      disableOverflowY();
+    } else {
+      enableOverflowY();
+    }
+  }, [open]);
+
   return (
     <>
       <div
@@ -237,33 +242,27 @@ function PersonTileExpanded({
             easing="inOutQuart"
           >
             <div className={"expandedDescriptionCard"}>
-              <div style={{ margin: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ margin: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <p
                   style={{
                     color: "rgb(var(--color-font-default))",
-                    margin: 0,
-                    fontSize: "1.5rem",
-                    textWrap: "nowrap",
                   }}
-                  className={"expandedCardText BodyLargeHeavy"}
+                  className={"expandedCardText H4"}
                 >
                   {t || "Title"}
                 </p>
                 <p
                   style={{
                     color: "rgb(var(--color-font-default))",
-                    margin: 0,
-                    fontSize: "1rem",
-                    textWrap: "nowrap",
                     fontWeight: 500,
                   }}
-                  className={"expandedCardText BodyRegular"}
+                  className={"expandedCardText BodyLargeHeavy"}
                 >
                   {sT || "Subtitle"}
                 </p>
-                <p className={"expandedCardText expandedCardFullDescription BodyLarge"}>
+                <IndicateScrollableDiv className={"expandedCardText expandedCardFullDescription BodyRegular"}>
                   {desc || "Description"}
-                </p>
+                </IndicateScrollableDiv>
               </div>
               <div className="expandedCardIconContainer">
                 {socials?.map(
@@ -299,8 +298,8 @@ function PersonTileExpanded({
               <DefaultClose
                 style={{
                   position: "absolute",
-                  top: 10,
-                  right: 10,
+                  top: '0.5rem',
+                  right: '0.5rem',
                   cursor: "pointer",
                   color: "rgb(var(--color-font-default))",
                 }}

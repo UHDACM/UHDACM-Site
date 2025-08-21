@@ -19,7 +19,7 @@
   background-color: rgba(var(--color-neutral-1000), 0.75);
   /* blur */
   backdrop-filter: blur(2px);
-
+  max-width: 25rem;
   padding: 1.5rem;
   border-radius: 0.5rem;
 }

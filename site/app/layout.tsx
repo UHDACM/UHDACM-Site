@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./figma.css";
 import "./globals.css";
 import Navbar from "./_components/Navbar/Navbar";
+import ReduxProvider from "./_features/ReduxProvider";
+import Body from "./body";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,10 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
-        <Navbar />
-        {children}
-      </body>
+      <ReduxProvider>
+        <Body className={`${inter.variable} antialiased`}>{children}</Body>
+      </ReduxProvider>
     </html>
   );
 }

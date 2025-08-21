@@ -7,7 +7,7 @@ import { FiChevronRight, FiChevronLeft, FiSearch, FiShare2, FiCalendar, FiClock,
 import { FaFacebook, FaGithub, FaGlobe, FaLinkedin, FaInstagram, FaTwitter, FaYoutube, FaTimes } from "react-icons/fa";
 import { FaEllipsis } from "react-icons/fa6";
 import { CiLocationOn } from "react-icons/ci";
-import { IoPeopleOutline } from "react-icons/io5";
+import { IoCloseOutline } from "react-icons/io5";
 
 export const DefaultEllipsis = FaEllipsis;
 
@@ -18,7 +18,7 @@ export const DefaultLinkedin = FaLinkedin;
 export const DefaultInstagram = FaInstagram;
 export const DefaultTwitter = FaTwitter;
 export const DefaultYoutube = FaYoutube;
-export const DefaultClose = FaTimes;
+export const DefaultClose = IoCloseOutline;
 
 export const DefaultChevronRight = FiChevronRight;
 export const DefaultChevronLeft = FiChevronLeft;
