@@ -1,5 +1,6 @@
 import Button from "@/app/_components/Button/Button";
 import CoolImage from "@/app/_components/CoolImage/CoolImage";
+import StrapiRichTextRenderer from "@/app/_components/StrapiRichTextRenderer/StrapiRichTextRenderer";
 import {
   DefaultCalendar,
   DefaultClock,
@@ -46,6 +47,7 @@ import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActio
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import { fetchAPI } from "@/app/_utils/cms";
 import { isValidEvent } from "@/app/_utils/validation";
+import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -63,8 +65,6 @@ export default async function EventPage({
   });
 
   const event = res.data[0]; // Assuming the API returns an array of events
-
-  console.log('ev', res);
 
   if (!event || !isValidEvent(event)) {
     return (
@@ -114,12 +114,14 @@ export default async function EventPage({
   if (!sameDay) {
     subheader = `${formatDate(dateStart)} - ${formatDate(dateEnd)}`;
   } else if (!sameTime) {
-    subheader = `${formatDate(dateStart)} | ${formatTime(
+    subheader = `${formatDate(dateStart)}, ${formatTime(
       dateStart
     )} - ${formatTime(dateEnd)}`;
   } else {
-    subheader = `${formatDate(dateStart)} | ${formatTime(dateStart)}`;
+    subheader = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
   }
+
+  console.log(event);
 
   return (
     <div
@@ -135,9 +137,12 @@ export default async function EventPage({
         title={event.Name}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
+        topLevelStyle={{
+          paddingTop: '2.5rem',
+        }}
         rightContent={
           <CoolImage
-            style={{ height: "20rem", overflow: "hidden" }}
+            style={{ height: "24rem", overflow: "hidden" }}
             src={
               `${process.env.NEXT_PUBLIC_STRAPI_URL}${event.PreviewImage?.url}` ||
               "/sjd.JPG"
@@ -176,7 +181,10 @@ export default async function EventPage({
         <EventDetails
           icon="people"
           header="Host"
-          body={event.Organizations?.map((org) => org.Name).join(", ") || "No host specified"}
+          body={
+            event.Organizations?.map((org) => org.Name).join(", ") ||
+            "No host specified"
+          }
           bodyColor="rgb(var(--color-font-accent))"
         />
       </div>
@@ -184,7 +192,7 @@ export default async function EventPage({
         style={{
           width: "100%",
           boxSizing: "border-box",
-          padding: "4rem 1rem",
+          padding: "2rem 1rem",
           marginTop: "4rem",
           display: "flex",
           justifyContent: "center",
@@ -192,7 +200,7 @@ export default async function EventPage({
       >
         <div
           style={{
-            maxWidth: "50rem",
+            maxWidth: "40rem",
             width: "100%",
             display: "flex",
             flexDirection: "column",
@@ -201,16 +209,11 @@ export default async function EventPage({
           }}
         >
           <h1 className="H1">Event Description</h1>
-          <span
-            style={{
-              width: "100%",
-            }}
-            className="BodyLarge"
-          >
-            {Array.isArray(event.DescriptionFull)
-              ? event.DescriptionFull.join(" ")
-              : ""}
-          </span>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            {event.DescriptionFull && (
+              <StrapiRichTextRenderer content={event.DescriptionFull} />
+            )}
+          </div>
         </div>
       </div>
       <CallToActionSection
@@ -273,7 +276,7 @@ function EventDetails({ icon, header, body, bodyColor }: EventDetailsProps) {
         width: "12rem",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: 'center', gap: "0.5rem" }}>
         <IconComponent
           size={"2rem"}
           color={"rgb(var(--color-font-default))"}

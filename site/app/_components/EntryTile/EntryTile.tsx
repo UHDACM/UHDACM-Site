@@ -29,7 +29,7 @@ const EntryTile: React.FC<EntryTileProps> = ({
         <img src={imageSrc || 'sjd.JPG'} alt={imageAlt} className={styles.image} />
       </div>
       <div className={styles.contentContainer}>
-        <h2 className="H3">{header}</h2>
+        <h2 className="H5">{header}</h2>
         <h4
           className="BodyLargeHeavy"
           style={{

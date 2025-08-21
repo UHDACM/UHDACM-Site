@@ -1,41 +1,158 @@
 "use client";
 import { SearchBar } from "@/app/_components/SearchBar/SearchBar";
 import Calendar from "@/app/_components/Calendar/Calendar";
-import { EventListing } from "./EntryListing";
-import { useState } from "react";
+import { EntrySortMode, EventListing } from "./EntryListing";
+import { useEffect, useState } from "react";
 import { intToMonth, toTitleCase } from "@/app/_utils/tools";
-import { SiteEvent } from "@/app/_utils/types";
+import { ListingMode, SiteEvent } from "@/app/_utils/types";
+import { DefaultClose } from "@/app/_icons/Icons";
+import { useDispatch } from "react-redux";
+import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 
-export default function EntrySearchTool({ entryName, events }: { entryName: string, events: SiteEvent[] }) {
+export default function EntrySearchTool({
+  entryTypePlural,
+  entryTypeSingular,
+  events,
+  defaultListingMode,
+  defaultSortingMode,
+}: {
+  entryTypePlural: string;
+  entryTypeSingular: string;
+  events: SiteEvent[];
+  defaultListingMode: ListingMode;
+  defaultSortingMode?: EntrySortMode;
+}) {
+  const { disableOverflowY, enableOverflowY } = useBodyOverflowY();
   const now = new Date();
   const [day, setDay] = useState(now.getDate());
   const [month, setMonth] = useState<string>(
     toTitleCase(intToMonth(now.getMonth()) || "january")
   );
   const [year, setYear] = useState<string>(`${now.getFullYear()}`);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
+  const [calendarActive, setCalendarActive] = useState(false);
 
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "auto",
-        padding: "0rem 1rem",
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        gap: "2rem",
-      }}
-    >
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 992 : false
+  );
+
+  const handleSetCalendarActive = (state: boolean) => {
+    setCalendarActive(state);
+    if (!state) {
+      enableOverflowY();
+    } else {
+      disableOverflowY();
+    }
+  };
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth <= 992) {
+        setIsMobile(true);
+        setSearch(""); // no search on mobile
+      } else {
+        setIsMobile(false);
+      }
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const SearchBarComp = (
+    <SearchBar inputValue={search} onInputValueChange={(v) => setSearch(v)} />
+  );
+
+  const CalendarComp = (
+    <Calendar
+      day={day}
+      month={month}
+      year={year}
+      setDay={setDay}
+      setMonth={setMonth}
+      setYear={setYear}
+      dotsOnDates={events.map((e) => new Date(e.DateStart))}
+    />
+  );
+
+  const EventListingComp = (
+    <EventListing
+      events={events}
+      day={day}
+      month={month}
+      year={year}
+      entryTypePlural={entryTypePlural}
+      entryTypeSingular={entryTypeSingular}
+      search={search}
+      defaultListingMode={defaultListingMode}
+      defaultSortingMode={defaultSortingMode}
+      onDatePress={() => setCalendarActive(true)}
+    />
+  );
+
+  if (isMobile) {
+    return (
       <div
         style={{
-          width: "95vw",
-          maxWidth: "var(--page-max-width)",
+          width: "100%",
           height: "auto",
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "center",
-          gap: "2rem",
+          gap: "1rem",
+          boxSizing: "border-box",
+        }}
+      >
+        {EventListingComp}
+        {calendarActive && (
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              position: "fixed",
+              backgroundColor: "rgba(var(--color-neutral-1000), 0.75)",
+              top: 0,
+              left: 0,
+              zIndex: 1000,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "95vw",
+                maxWidth: "25rem",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: '0.5rem'
+              }}
+            >
+              <span className="H3">Select A Date</span>
+              {CalendarComp}
+            </div>
+            <DefaultClose
+              style={{ position: "absolute", top: "1rem", right: "1rem" }}
+              color={"rgb(var(--color-font-default))"}
+              size={"2.5rem"}
+              onClick={() => setCalendarActive(false)}
+            />
+          </div>
+        )}
+      </div>
+    );
+  } else {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "auto",
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          gap: "1rem",
+          boxSizing: "border-box",
         }}
       >
         <div
@@ -49,26 +166,16 @@ export default function EntrySearchTool({ entryName, events }: { entryName: stri
         >
           <div
             style={{
-              maxWidth: "25rem",
+              // maxWidth: "25rem",
+              width: "100%",
               boxSizing: "border-box",
               display: "flex",
               flexDirection: "column",
               gap: "0.5rem",
             }}
           >
-            <SearchBar
-              inputValue={search}
-              onInputValueChange={(v) => setSearch(v)}
-            />
-            <Calendar
-              day={day}
-              month={month}
-              year={year}
-              setDay={setDay}
-              setMonth={setMonth}
-              setYear={setYear}
-              dotsOnDates={events.map((e)  => new Date(e.DateStart))}
-            />
+            {SearchBarComp}
+            {CalendarComp}
           </div>
         </div>
         <div
@@ -79,12 +186,11 @@ export default function EntrySearchTool({ entryName, events }: { entryName: stri
             alignItems: "flex-start",
             justifyContent: "flex-start",
             boxSizing: "border-box",
-            paddingRight: "1rem",
           }}
         >
-          <EventListing events={events} day={day} month={month} year={year} entryName={entryName} />
+          {EventListingComp}
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

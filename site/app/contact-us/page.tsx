@@ -11,6 +11,9 @@ export default async function Page() {
         subtitle={`We’re just a couple clicks away!\nQuestions, Suggestions, Collaboration, Sponsors, etc.\n\nJust enter your email, leave a message, and we’ll reply to you in 24-48 hours.`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
+        topLevelStyle={{
+          paddingTop: '2.5rem'
+        }}
         rightContent={
           <div style={{ width: "100%", height: "80vh" }}>
             <iframe

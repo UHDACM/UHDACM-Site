@@ -14,6 +14,9 @@ export default async function Page() {
         title={`Something about\nmedia here`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
+        topLevelStyle={{
+          paddingTop: '2.5rem'
+        }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection

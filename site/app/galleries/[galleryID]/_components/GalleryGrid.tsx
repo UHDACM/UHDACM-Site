@@ -5,49 +5,35 @@ import { AppDispatch, RootState } from "@/app/_features/store";
 import { useDispatch, useSelector } from "react-redux";
 import { CarouselFullScreenImage } from "./CarouselFullScreenImage";
 import { CarouselThumbnail } from "./CarouselThumbnail";
+import { StrapiPicture } from "@/app/_utils/types";
 
-export default function GalleryGrid() {
+
+export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
   const dispatch = useDispatch<AppDispatch>();
+
   const onImageClick = (index: number) => {
-    dispatch(setPopupCarousel({
-      items: [
-        <CarouselFullScreenImage
-          key={index}
-          src={`/sjd.JPG`}
-          alt={`Gallery image ${index + 1}`}
-        />,
-        <CarouselFullScreenImage
-          key={index}
-          src={`/Arbaz.jpeg`}
-          alt={`Gallery image ${index + 1}`}
-        />,
-        <CarouselFullScreenImage
-          key={index}
-          src={`/sjd.JPG`}
-          alt={`Gallery image ${index + 1}`}
-        />,
-      ],
-      thumbnails: [
-        <CarouselThumbnail
-          key={index}
-          src={`/sjd.JPG`}
-          alt={`Gallery image ${index + 1}`}
-        />,
-        <CarouselThumbnail
-          key={index}
-          src={`/Arbaz.jpeg`}
-          alt={`Gallery image ${index + 1}`}
-        />,
-        <CarouselThumbnail
-          key={index}
-          src={`/sjd.JPG`}
-          alt={`Gallery image ${index + 1}`}
-        />,
-      ],
-      showArrows: true,
-      showThumbnails: true,
-      activeIndex: 0,
-    }));
+    dispatch(
+      setPopupCarousel({
+        items: media.map((img, i) => (
+          <CarouselFullScreenImage
+            key={img.id || i}
+            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${img.url}`}
+            alt={img.alternativeText || `Gallery image ${i + 1}`}
+            caption={img.caption}
+          />
+        )),
+        thumbnails: media.map((img, i) => (
+          <CarouselThumbnail
+            key={img.id || i}
+            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${img.url}`}
+            alt={img.alternativeText || `Gallery image ${i + 1}`}
+          />
+        )),
+        showArrows: true,
+        showThumbnails: true,
+        activeIndex: index,
+      })
+    );
   };
 
   return (
@@ -71,44 +57,21 @@ export default function GalleryGrid() {
           boxSizing: "border-box",
         }}
       >
-        <img
-          src="/sjd.JPG"
-          alt="Gallery image 1"
-          style={{
-            width: "100%",
-            borderRadius: "0.5rem",
-            objectFit: "cover",
-            cursor: "pointer",
-          }}
-          onClick={() => onImageClick(0)}
-        />
-        <img
-          src="/sjd.JPG"
-          alt="Gallery image 2"
-          style={{
-            width: "100%",
-            borderRadius: "0.5rem",
-            objectFit: "cover",
-          }}
-        />
-        <img
-          src="/sjd.JPG"
-          alt="Gallery image 3"
-          style={{
-            width: "100%",
-            borderRadius: "0.5rem",
-            objectFit: "cover",
-          }}
-        />
-        <img
-          src="/sjd.JPG"
-          alt="Gallery image 4"
-          style={{
-            width: "100%",
-            borderRadius: "0.5rem",
-            objectFit: "cover",
-          }}
-        />
+        {media.map((img, i) => (
+          <img
+            key={img.id || i}
+            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${img.url}`}
+            alt={img.alternativeText || `Gallery image ${i + 1}`}
+            style={{
+              width: "100%",
+              borderRadius: "0.5rem",
+              objectFit: "cover",
+              cursor: "pointer",
+            }}
+            className="dimOnHover"
+            onClick={() => onImageClick(i)}
+          />
+        ))}
       </div>
     </div>
   );

@@ -27,9 +27,10 @@ const HomeHeroSection: React.FC<MainHeroSectionProps> = ({
     <div
       style={{
         width: "100%",
-        height: "100vh",
-        display: "flex",
+        height: "80vh",
         padding: "0rem 1rem",
+        paddingTop: '2.5rem',
+        display: "flex",
         boxSizing: "border-box",
         flexDirection: reverseOrder ? "row-reverse" : "row",
         alignItems: "center",

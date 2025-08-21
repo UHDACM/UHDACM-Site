@@ -47,6 +47,9 @@ function ShareButton() {
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import GalleryGrid from "./_components/GalleryGrid";
+import { fetchAPI } from "@/app/_utils/cms";
+import { isStrapiPicture, isValidEvent } from "@/app/_utils/validation";
+import { StrapiPicture } from "@/app/_utils/types";
 
 type EventPageParams = Promise<{
   galleryID: string;
@@ -58,6 +61,30 @@ export default async function EventPage({
   params: EventPageParams;
 }) {
   const { galleryID } = await params;
+  const res = await fetchAPI("events", {
+    "populate[0]": "PreviewImage",
+    "populate[1]": "Gallery.media",
+    "filters[UrlSlug][$eq]": galleryID,
+  });
+
+  const event = res.data[0];
+  if (!isValidEvent(event) || !event.Gallery) {
+    return <div>404 - Event Not Found</div>;
+  }
+  
+  const { media } = event.Gallery;
+  console.log("saihud", media);
+  if (!media) {
+    return <div>No media</div>;
+  }
+
+  const validMedia: StrapiPicture[] = [];
+  for (let pic of media) {
+    if (isStrapiPicture(pic)) {
+      validMedia.push(pic);
+    }
+  }
+  // TODO: add 404 page
 
   return (
     <div
@@ -76,10 +103,17 @@ export default async function EventPage({
       </Button> */}
       <MainHeroSection
         spanText="GALLERY"
-        title={`Gallery Name`}
+        title={`${event.Name}`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        rightContent={<CoolImage src="/sjd.JPG" />}
+        topLevelStyle={{
+          paddingTop: '2.5rem',
+        }}
+        rightContent={
+          <CoolImage
+            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${event.PreviewImage?.url}`}
+          />
+        }
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <ShareButton />
@@ -87,7 +121,7 @@ export default async function EventPage({
         }
       />
 
-      <GalleryGrid />
+      <GalleryGrid media={validMedia} />
 
       <CallToActionSection
         title={`Show up, Schedule, Share`}

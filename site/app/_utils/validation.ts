@@ -7,6 +7,7 @@ export function isValidEvent(event: any): event is SiteEvent {
     isoDateRegex.test(dateStr) && !isNaN(Date.parse(dateStr));
 
   if (typeof event !== 'object') return false;
+  if (typeof event.id != 'number') return false;
   if (typeof event.UrlSlug !== 'string') return false;
   if (typeof event.Name !== 'string') return false;
   if (typeof event.PreviewImage !== 'undefined' && !isStrapiPicture(event.PreviewImage)) return false;
@@ -19,6 +20,7 @@ export function isValidEvent(event: any): event is SiteEvent {
     typeof event.Organizations !== 'undefined' &&
     (!Array.isArray(event.Organizations) || !event.Organizations.every(isOrganization))
   ) return false;
+  if (event.Gallery != undefined && typeof(event.Gallery) != 'object') return false;
   if (!isValidISODate(event.DateStart)) return false;
   if (!isValidISODate(event.DateEnd)) return false;
   return true;
