@@ -4,8 +4,9 @@ import Calendar from "@/app/_components/Calendar/Calendar";
 import { EventListing } from "./EntryListing";
 import { useState } from "react";
 import { intToMonth, toTitleCase } from "@/app/_utils/tools";
+import { SiteEvent } from "@/app/_utils/types";
 
-export default function EntrySearchTool({ entryName }: { entryName: string }) {
+export default function EntrySearchTool({ entryName, events }: { entryName: string, events: SiteEvent[] }) {
   const now = new Date();
   const [day, setDay] = useState(now.getDate());
   const [month, setMonth] = useState<string>(
@@ -66,6 +67,7 @@ export default function EntrySearchTool({ entryName }: { entryName: string }) {
               setDay={setDay}
               setMonth={setMonth}
               setYear={setYear}
+              dotsOnDates={events.map((e)  => new Date(e.DateStart))}
             />
           </div>
         </div>
@@ -80,7 +82,7 @@ export default function EntrySearchTool({ entryName }: { entryName: string }) {
             paddingRight: "1rem",
           }}
         >
-          <EventListing day={day} month={month} year={year} entryName={entryName} />
+          <EventListing events={events} day={day} month={month} year={year} entryName={entryName} />
         </div>
       </div>
     </div>

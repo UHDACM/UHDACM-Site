@@ -74,7 +74,7 @@
 }
 
 .expandedCardFullDescription {
-    max-height: 7.5rem;
+    max-height: 7rem;
     overflow-y: auto;
     color: rgb(var(--color-font-default));
 }

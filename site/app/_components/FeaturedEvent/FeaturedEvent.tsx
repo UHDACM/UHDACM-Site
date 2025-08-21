@@ -11,9 +11,10 @@ interface FeaturedEventProps {
   rightButtonProps: React.ComponentProps<typeof Button>;
   containerStyle?: React.CSSProperties;
   contentStyle?: React.CSSProperties;
+  img?: string;
 }
 
-const FeaturedEvent: React.FC<FeaturedEventProps> = ({
+const FeaturedEvent: React.FC<FeaturedEventProps> = async ({
   title,
   largeHeavy,
   smallHeavy,
@@ -22,20 +23,21 @@ const FeaturedEvent: React.FC<FeaturedEventProps> = ({
   rightButtonProps,
   containerStyle = {},
   contentStyle = {},
+  img
 }) => {
   return (
     <div className={styles.container} style={containerStyle}>
       <div className={styles.content} style={contentStyle}>
-        <div className="Title">{title}</div>
+        <div className="H2">{title}</div>
         <div className="BodyLargeHeavy">{largeHeavy}</div>
-        <div className="BodySmallHeavy">{smallHeavy}</div>
-        <div className="BodyCaption">{caption}</div>
+        <div className="BodyLargeHeavy">{smallHeavy}</div>
+        <div className="BodyRegular">{caption}</div>
         <div className={styles.buttonRow}>
           <Button {...leftButtonProps}>{leftButtonProps.children}</Button>
           <Button {...rightButtonProps}>{rightButtonProps.children}</Button>
         </div>
       </div>
-      <img style={{width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, zIndex: -1 }} src='/sjd.JPG' />
+      <img style={{width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, zIndex: -1 }} src={img||'/sjd.JPG'} />
     </div>
   );
 };

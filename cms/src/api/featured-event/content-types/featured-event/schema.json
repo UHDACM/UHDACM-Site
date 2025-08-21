@@ -1,0 +1,30 @@
+{
+  "kind": "singleType",
+  "collectionName": "featured_events",
+  "info": {
+    "singularName": "featured-event",
+    "pluralName": "featured-events",
+    "displayName": "featured-event"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "event": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event.event"
+    },
+    "PreviewImageHD": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

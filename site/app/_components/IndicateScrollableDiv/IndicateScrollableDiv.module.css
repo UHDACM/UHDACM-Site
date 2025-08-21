@@ -1,0 +1,49 @@
+:root {
+  --glow-max-opacity: 0.5;
+  --glow-border-color: var(--color-font-default);
+  --glow-animation-time: 3s;
+}
+
+.IndicateScrollableDiv {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+@keyframes pulseGlowBottom {
+  20% {
+    border-bottom-color: rgba(var(--glow-border-color), 0);
+  }
+  50% {
+    border-bottom-color: rgba(var(--glow-border-color), var(--glow-max-opacity));
+  }
+  80% {
+    border-bottom-color: rgba(var(--glow-border-color), 0);
+  }
+}
+
+@keyframes pulseGlowTop {
+  20% {
+    border-top-color: rgba(var(--glow-border-color), 0);
+  }
+  50% {
+    border-top-color: rgba(var(--glow-border-color), var(--glow-max-opacity));
+  }
+  80% {
+    border-top-color: rgba(var(--glow-border-color), 0);
+  }
+}
+
+.glowBottom {
+  border-bottom: 1px solid rgba(var(--glow-border-color), 0);
+  animation: pulseGlowBottom var(--glow-animation-time) infinite;
+  transition: border-bottom-color 0.2s ease-in-out;
+}
+
+.glowTop {
+  border-top: 1px solid rgba(var(--glow-border-color), 0);
+  animation: pulseGlowTop var(--glow-animation-time) infinite;
+  transition: border-top-color 0.2s ease-in-out;
+}

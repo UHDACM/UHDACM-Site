@@ -2,7 +2,7 @@ import { objectToUrlParams } from "./tools";
 
 export async function fetchAPI(path: string, params?: Record<string, any>) {
   const urlParams = params ? objectToUrlParams(params) : undefined;
-  const url = `${process.env.STRAPI_URL}/${path}${urlParams ? `?${urlParams}` : ''}`;
+  const url = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/${path}${urlParams ? `?${urlParams}` : ''}`;
   const res = await fetch(url, {
     method: 'GET',
     headers: {

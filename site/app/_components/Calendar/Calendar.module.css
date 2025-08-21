@@ -48,3 +48,14 @@
   pointer-events: none;
   cursor: default;
 }
+
+.eventDot {
+  position: absolute;
+  bottom: 0.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.4rem;
+  aspect-ratio: 1;
+  border-radius: 100rem;
+  background: rgba(var(--color-font-primary), 0.75);
+}

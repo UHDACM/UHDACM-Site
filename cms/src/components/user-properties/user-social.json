@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_user_properties_user_socials",
+  "info": {
+    "displayName": "user_social",
+    "icon": "twitter"
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "linkedin",
+        "x",
+        "facebook",
+        "instagram",
+        "personal_site",
+        "youtube",
+        "github"
+      ]
+    },
+    "url": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "leaderships",
+  "info": {
+    "singularName": "leadership",
+    "pluralName": "leaderships",
+    "displayName": "leadership"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "people": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::person.person"
+    }
+  }
+}

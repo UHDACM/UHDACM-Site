@@ -1,0 +1,89 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xContainer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2200;
+  cursor: pointer;
+}
+
+.itemContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 12rem;
+  min-width: 12rem;
+}
+
+.thumbnailsRow {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  z-index: 2100;
+}
+
+.thumbnail {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border 0.2s;
+  background: rgba(var(--color-font-default), 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.activeThumbnail {
+  border: 1px solid rgba(var(--color-accent-400), 0.8);
+}
+
+.chevronLeft, .chevronRight {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(var(--color-background-primary), 0.7);
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2100;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.chevronLeft {
+  left: 15vw;
+}
+
+.chevronRight {
+  right: 15vw;
+}
+
+.chevronLeft:hover, .chevronRight:hover {
+  background: rgba(var(--color-accent-400), 0.15);
+}

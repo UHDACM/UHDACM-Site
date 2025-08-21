@@ -4,7 +4,7 @@ import { DefaultChevronLeft, DefaultChevronRight } from "@/app/_icons/Icons";
 import React from "react";
 import Select from "../Select/Select";
 import { Month, Months } from "@/app/_utils/types";
-import { toTitleCase } from "@/app/_utils/tools";
+import { monthToInt, toTitleCase } from "@/app/_utils/tools";
 import styles from "./Calendar.module.css";
 
 const startingYear = new Date().getFullYear() + 1;
@@ -17,6 +17,7 @@ type CalendarProps = {
   setMonth: React.Dispatch<React.SetStateAction<string>>;
   year: string;
   setYear: React.Dispatch<React.SetStateAction<string>>;
+  dotsOnDates?: Date[];
 };
 
 export default function Calendar({
@@ -26,9 +27,9 @@ export default function Calendar({
   setMonth,
   year,
   setYear,
+  dotsOnDates,
 }: CalendarProps) {
-
-
+  console.log("cald", dotsOnDates);
   const CalendarDate = new Date(
     parseInt(year),
     Months.indexOf(month.toLowerCase() as Month),
@@ -59,7 +60,11 @@ export default function Calendar({
       }
       finalDay = new Date(finalYear, finalMonthIndex + 1, 0).getDate();
     } else {
-      const daysInCurrentMonth = new Date(newYear, newMonthIndex + 1, 0).getDate();
+      const daysInCurrentMonth = new Date(
+        newYear,
+        newMonthIndex + 1,
+        0
+      ).getDate();
       if (newDay > daysInCurrentMonth) {
         // Go to next month
         finalMonthIndex += 1;
@@ -75,6 +80,15 @@ export default function Calendar({
     setMonth(toTitleCase(Months[finalMonthIndex]));
     setDay(finalDay);
   }
+
+  const dotsOnDatesYMD = dotsOnDates
+    ? dotsOnDates.map(
+        (date) =>
+          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+      )
+    : [];
+
+  console.log("dotsOnDatesYMD:", dotsOnDatesYMD);
 
   return (
     <div
@@ -108,8 +122,8 @@ export default function Calendar({
           className="H5"
         >
           {/* Left controls */}
-          <div style={{ display: "flex", gap: "0.5rem", marginRight: '1rem' }}>
-            <div style={{ width: '9rem' }}>
+          <div style={{ display: "flex", gap: "0.5rem", marginRight: "1rem" }}>
+            <div style={{ width: "9rem" }}>
               <Select
                 options={Months}
                 selected={month}
@@ -117,7 +131,7 @@ export default function Calendar({
                 placeholder="Month"
               />
             </div>
-            <div style={{ width: '6rem' }}>
+            <div style={{ width: "6rem" }}>
               <Select
                 options={Years}
                 selected={year}
@@ -153,24 +167,29 @@ export default function Calendar({
         }}
         className={`BodyLarge`}
       >
-        {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d, i) => (
-          <div
-            key={d}
-            className={"H5"}
-            style={{
-              background: "transparent",
-              width: "100%",
-              padding: "0.5rem 0rem",
-              display: "flex",
-              justifyContent: "center",
-              userSelect: "none",
-              color:
-                i == 0 || i == 6 ? "rgb(var(--color-font-accent))" : "inherit",
-            }}
-          >
-            {d}
-          </div>
-        ))}
+        {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d, i) => {
+          return (
+            <div
+              key={d}
+              className={"H5"}
+              style={{
+                background: "transparent",
+                width: "100%",
+                padding: "0.5rem 0rem",
+                display: "flex",
+                justifyContent: "center",
+                userSelect: "none",
+                position: "relative",
+                color:
+                  i == 0 || i == 6
+                    ? "rgb(var(--color-font-accent))"
+                    : "inherit",
+              }}
+            >
+              {d}
+            </div>
+          );
+        })}
         {/* Puts buffer before first day of the month */}
         {Array.from({ length: firstDayOfWeek }).map((_, i) => {
           return (
@@ -180,24 +199,29 @@ export default function Calendar({
             />
           );
         })}
-        {Array.from({ length: daysInMonth }).map((_, i) => (
-          <div
-            key={`${month}${i}`} // makes component update if month changes too (fixes increment changes)
-            className={`${styles["CalendarDay"]} ${
-              i + 1 == day ? styles["active"] : ""
-            }`}
-            onClick={() => setDay(i + 1)}
-            style={{
-              color:
-                i + 1 === new Date().getDate() &&
-                Months.indexOf(month.toLowerCase() as Month) === new Date().getMonth()
-                  ? "rgb(var(--color-font-secondary))"
-                  : undefined,
-            }}
-          >
-            {i + 1}
-          </div>
-        ))}
+        {Array.from({ length: daysInMonth }).map((_, i) => {
+          const EventOnToday = dotsOnDatesYMD.includes(`${year}-${monthToInt(month as Month) + 1}-${i + 1}`);
+          return (
+            <div
+              key={`${month}${i}`} // makes component update if month changes too (fixes increment changes)
+              className={`${styles["CalendarDay"]} ${
+                i + 1 == day ? styles["active"] : ""
+              }`}
+              onClick={() => setDay(i + 1)}
+              style={{
+                color:
+                  i + 1 === new Date().getDate() &&
+                  Months.indexOf(month.toLowerCase() as Month) ===
+                    new Date().getMonth()
+                    ? "rgb(var(--color-font-secondary))"
+                    : undefined,
+              }}
+            >
+              {i + 1}
+              {EventOnToday && <div className={`${styles["eventDot"]}`} />}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
