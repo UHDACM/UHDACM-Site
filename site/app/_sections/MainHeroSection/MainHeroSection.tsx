@@ -28,19 +28,28 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
   rightContent,
 }) => {
   return (
-    <div style={{width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+    <div
+      style={{
+        width: "100%",
+        height: "90vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        ...topLevelStyle,
+      }}
+    >
       <div
         style={{
           width: "95vw",
-          maxWidth: 'var(--page-max-width)',
-          height: '100%',
+          maxWidth: "var(--page-max-width)",
+          height: "100%",
           display: "flex",
           padding: "0rem 1rem",
           boxSizing: "border-box",
           flexDirection: reverseOrder ? "row-reverse" : "row",
           alignItems: "center",
           justifyContent: "center",
-          ...topLevelStyle,
         }}
       >
         <div
@@ -78,7 +87,7 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
               {subtitle}
             </div>
           )}
-          {bottomContent && <>{bottomContent}</>}
+          {bottomContent && <div style={{marginTop: '0.5rem'}}>{bottomContent}</div>}
         </div>
         <div style={{ ...rightStyle }}>{rightContent}</div>
       </div>

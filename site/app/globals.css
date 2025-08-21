@@ -54,3 +54,13 @@ no-scrollbar::-webkit-scrollbar { /* Chrome, Safari, Opera */
 body { 
   margin: 0;
 }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dimOnHover:hover {
+  filter: brightness(0.8);
+  transition: filter 0.1s;
+}

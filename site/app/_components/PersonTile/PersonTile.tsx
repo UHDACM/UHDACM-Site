@@ -303,6 +303,7 @@ function PersonTileExpanded({
                   cursor: "pointer",
                   color: "rgb(var(--color-font-default))",
                 }}
+                size={'1.5rem'}
                 onClick={() => {
                   setOpen(false);
                   onClose && onClose();

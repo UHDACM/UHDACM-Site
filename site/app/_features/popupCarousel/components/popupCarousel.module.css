@@ -63,7 +63,7 @@
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(var(--color-background-primary), 0.7);
+  background-color: rgba(var(--color-font-default), 0.25);
   border-radius: 50%;
   width: 4rem;
   height: 4rem;
@@ -72,7 +72,6 @@
   justify-content: center;
   cursor: pointer;
   z-index: 2100;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
   transition: background-color 0.2s, opacity 0.2s;
 }
 

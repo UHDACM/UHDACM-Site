@@ -93,7 +93,7 @@ export default function Select({
             width: 'auto',
             left: 0,
             right: 0,
-            top: '2.3rem',
+            marginTop: '1.75%',
             background: "rgb(var(--color-neutral-900))",
             outline: "1px solid rgb(var(--color-neutral-800))",
             borderTop: "none",

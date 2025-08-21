@@ -29,7 +29,6 @@ export default function Calendar({
   setYear,
   dotsOnDates,
 }: CalendarProps) {
-  console.log("cald", dotsOnDates);
   const CalendarDate = new Date(
     parseInt(year),
     Months.indexOf(month.toLowerCase() as Month),
@@ -87,9 +86,6 @@ export default function Calendar({
           `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
       )
     : [];
-
-  console.log("dotsOnDatesYMD:", dotsOnDatesYMD);
-
   return (
     <div
       style={{
@@ -200,7 +196,9 @@ export default function Calendar({
           );
         })}
         {Array.from({ length: daysInMonth }).map((_, i) => {
-          const EventOnToday = dotsOnDatesYMD.includes(`${year}-${monthToInt(month as Month) + 1}-${i + 1}`);
+          const EventOnToday = dotsOnDatesYMD.includes(
+            `${year}-${monthToInt(month as Month) + 1}-${i + 1}`
+          );
           return (
             <div
               key={`${month}${i}`} // makes component update if month changes too (fixes increment changes)

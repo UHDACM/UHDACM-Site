@@ -10,14 +10,18 @@ import { SiteEvent } from "../_utils/types";
 import { isValidEvent } from "../_utils/validation";
 
 export default async function Page() {
-  const res = await fetchAPI("events", { populate: 'PreviewImage' });
+  const res = await fetchAPI("events", {
+    "populate[0]": "PreviewImage",
+    "populate[1]": "Gallery",
+  });
   const eventsRaw = res.data;
-  const validEvents: SiteEvent[] = []
+  const validEvents: SiteEvent[] = [];
   for (const event of eventsRaw) {
-    if (isValidEvent(event)) {
+    if (isValidEvent(event) && event.Gallery) {
       validEvents.push(event);
     }
   }
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <MainHeroSection
@@ -28,15 +32,48 @@ export default async function Page() {
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       {/* <FeaturedEventSection /> */}
-      <div style={{display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-        <div style={{width: '100%', maxWidth: '80rem' , padding: '6rem 0rem' }}>
-          <EntrySearchTool events={validEvents} entryName="Galleries" />
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            width: "95vw",
+            maxWidth: "var(--page-max-width)",
+            padding: "6rem 1rem",
+            boxSizing: "border-box",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+          }}
+        >
+          <h1
+            className="H1"
+            style={{
+              marginBottom: "0.5rem",
+              display: "flex",
+              boxSizing: "border-box",
+              width: "100%",
+            }}
+          >
+            Search Galleries
+          </h1>
+          <EntrySearchTool
+            events={validEvents}
+            entryTypePlural="Galleries"
+            entryTypeSingular="Gallery"
+            defaultListingMode="before"
+            defaultSortingMode="descending"
+          />
         </div>
       </div>
       <CallToActionSection
         title={`Want to collaborate\nwith UHDACM?`}
         subtitle="We'd love to hear from u or sumn"
-        
         actionComponent={
           <Button>
             <div
@@ -60,5 +97,3 @@ export default async function Page() {
     </div>
   );
 }
-
-

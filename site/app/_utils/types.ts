@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { BlocksContent } from '@strapi/blocks-react-renderer'
 
 export type FunctionUnknown = (...args: unknown[]) => unknown;
 export type CardinalDirection = 'down' | 'left' | 'up' | 'right';
@@ -28,15 +29,21 @@ export type NavigationEntryObj = {
   children?: NavigationEntryObj[];
 };
 
+// export type Gallery = {
+
+// }
+
 export type SiteEvent = {
+  id: number;
   UrlSlug: string;
   Name: string;
   PreviewImage: StrapiPicture | undefined;
   DateStart: string;
   DateEnd: string;
   DescriptionShort: string;
-  DescriptionFull: ObjectAny[];
+  DescriptionFull: BlocksContent;
   Location: string;
+  Gallery?: ObjectAny;
   Organizations?: Organization[];
 };
 
@@ -104,3 +111,6 @@ export type Organization = {
 };
 
 
+
+export type ListingMode = "on" | "after" | "before";
+export const ListingModes: ListingMode[] = ["on", "after", "before"];
