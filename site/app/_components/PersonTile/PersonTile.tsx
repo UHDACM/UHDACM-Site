@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { HTMLAttributeAnchorTarget, useEffect, useState } from "react";
 import "./PersonTile.css";
@@ -11,12 +11,15 @@ import {
   DefaultInstagram,
   DefaultTwitter,
   DefaultYoutube,
-  DefaultClose
+  DefaultClose,
 } from "@/app/_icons/Icons";
-import { FunctionUnknown, CardinalDirection, SocialSite } from "@/app/_utils/types";
+import {
+  FunctionUnknown,
+  CardinalDirection,
+  SocialSite,
+} from "@/app/_utils/types";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 import IndicateScrollableDiv from "../IndicateScrollableDiv/IndicateScrollableDiv";
-
 
 type PersonTileSocial = {
   icon: SocialSite;
@@ -74,27 +77,19 @@ export default function PersonTile({
           setOpen(!open);
           onClickTile && onClickTile();
         }}
-        style={{
-          cursor: "pointer",
-          position: "relative",
-          width: 160,
-          height: 200,
-          borderRadius: 10,
-          overflow: "hidden",
-          border: "1px solid rgb(var(--color-stroke-normal))",
-          ...tileStyle,
-        }}
+        style={tileStyle}
+        className="ImgContainer"
       >
         <div
           style={{
             position: "absolute",
             bottom: 0,
             left: 0,
-            margin: '0.5rem',
+            margin: "0.5rem",
             zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.5rem'
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
           }}
         >
           <p
@@ -104,7 +99,7 @@ export default function PersonTile({
               fontSize: "1.25rem",
               ...previewTitleStyle,
             }}
-            className={'BodyLargeHeavy'}
+            className={"BodyLargeHeavy"}
           >
             {previewTitle || "Title"}
           </p>
@@ -115,13 +110,20 @@ export default function PersonTile({
               fontSize: "0.75rem",
               ...previewSubTitleStyle,
             }}
-            className={'BodySmall'}
+            className={"BodySmall"}
           >
             {previewSubTitle || "Subtitle"}
           </p>
         </div>
         <div className="previewImageOverlayGradient" />
-        <img style={{ height: "100%", width: '100%', objectFit: imgCoverOrContain }} src={img} />
+        <img
+          style={{
+            height: "100%",
+            width: "100%",
+            objectFit: imgCoverOrContain,
+          }}
+          src={img}
+        />
       </div>
       <PersonTileExpanded
         t={fullTitle}
@@ -144,7 +146,7 @@ const SocialIconStyle: React.CSSProperties = {
   padding: 3,
   borderRadius: 10,
   cursor: "pointer",
-  color: 'rgb(var(--color-font-default))'
+  color: "rgb(var(--color-font-default))",
 };
 
 function PersonTileExpanded({
@@ -157,7 +159,7 @@ function PersonTileExpanded({
   socials,
   img,
   onClose,
-  imgCoverOrContain
+  imgCoverOrContain,
 }: {
   open: boolean;
   setOpen: (v: boolean) => void;
@@ -223,7 +225,7 @@ function PersonTileExpanded({
               <img
                 style={{
                   height: "100%",
-                  width: '100%',
+                  width: "100%",
                   objectFit: imgCoverOrContain,
                   position: "relative",
                 }}
@@ -242,68 +244,80 @@ function PersonTileExpanded({
             easing="inOutQuart"
           >
             <div className={"expandedDescriptionCard"}>
-              <div style={{ margin: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <p
+              <div className={"expandedDescription"}>
+                <div
                   style={{
-                    color: "rgb(var(--color-font-default))",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.1rem",
                   }}
-                  className={"expandedCardText H4"}
                 >
-                  {t || "Title"}
-                </p>
-                <p
-                  style={{
-                    color: "rgb(var(--color-font-default))",
-                    fontWeight: 500,
-                  }}
-                  className={"expandedCardText BodyLargeHeavy"}
+                  <p
+                    style={{
+                      color: "rgb(var(--color-font-default))",
+                    }}
+                    className={"expandedCardText H3"}
+                  >
+                    {t || "Title"}
+                  </p>
+                  <p
+                    style={{
+                      color: "rgb(var(--color-font-default))",
+                      fontWeight: 500,
+                    }}
+                    className={"expandedCardText H5"}
+                  >
+                    {sT || "Subtitle"}
+                  </p>
+                </div>
+                <IndicateScrollableDiv
+                  className={
+                    "expandedCardText expandedCardFullDescription BodyLarge"
+                  }
                 >
-                  {sT || "Subtitle"}
-                </p>
-                <IndicateScrollableDiv className={"expandedCardText expandedCardFullDescription BodyRegular"}>
                   {desc || "Description"}
                 </IndicateScrollableDiv>
               </div>
               <div className="expandedCardIconContainer">
                 {socials?.map(
                   ({ icon, style, href, href_target, onClick }, index) => {
-                  const key = `Social_Icon_${index}`;
-                  const onClickFunc = () => {
-                    HandleClickSocialIcon(href, href_target);
-                    onClick && onClick();
-                  };
-                  const combinedStyles = { ...SocialIconStyle, ...style };
-                  const iconMap = {
-                    personal_site: DefaultGlobe,
-                    facebook: DefaultFacebook,
-                    instagram: DefaultInstagram,
-                    linkedin: DefaultLinkedin,
-                    x: DefaultTwitter,
-                    github: DefaultGithub,
-                    youtube: DefaultYoutube,
-                  } as const;
-                  const IconComponent = iconMap[icon];
-                  if (!IconComponent) return null;
-                  return (
-                    <IconComponent
-                    size={40}
-                    style={combinedStyles}
-                    onClick={onClickFunc}
-                    key={key}
-                    />
-                  );
+                    const key = `Social_Icon_${index}`;
+                    const onClickFunc = () => {
+                      HandleClickSocialIcon(href, href_target);
+                      onClick && onClick();
+                    };
+                    const combinedStyles = { ...SocialIconStyle, ...style };
+                    const iconMap = {
+                      personal_site: DefaultGlobe,
+                      facebook: DefaultFacebook,
+                      instagram: DefaultInstagram,
+                      linkedin: DefaultLinkedin,
+                      x: DefaultTwitter,
+                      github: DefaultGithub,
+                      youtube: DefaultYoutube,
+                    } as const;
+                    const IconComponent = iconMap[icon];
+                    if (!IconComponent) return null;
+                    return (
+                      <IconComponent
+                        size={40}
+                        style={combinedStyles}
+                        onClick={onClickFunc}
+                        key={key}
+                      />
+                    );
                   }
                 )}
               </div>
               <DefaultClose
                 style={{
                   position: "absolute",
-                  top: '0.5rem',
-                  right: '0.5rem',
+                  top: "0.5rem",
+                  right: "0.5rem",
                   cursor: "pointer",
                   color: "rgb(var(--color-font-default))",
                 }}
-                size={'1.5rem'}
+                size={"1.5rem"}
                 onClick={() => {
                   setOpen(false);
                   onClose && onClose();

@@ -3,10 +3,9 @@ import { SearchBar } from "@/app/_components/SearchBar/SearchBar";
 import Calendar from "@/app/_components/Calendar/Calendar";
 import { EntrySortMode, EventListing } from "./EntryListing";
 import { useEffect, useState } from "react";
-import { intToMonth, toTitleCase } from "@/app/_utils/tools";
+import { getTodayYMD, intToMonth, toTitleCase } from "@/app/_utils/tools";
 import { ListingMode, SiteEvent } from "@/app/_utils/types";
 import { DefaultClose } from "@/app/_icons/Icons";
-import { useDispatch } from "react-redux";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 
 export default function EntrySearchTool({
@@ -23,17 +22,17 @@ export default function EntrySearchTool({
   defaultSortingMode?: EntrySortMode;
 }) {
   const { disableOverflowY, enableOverflowY } = useBodyOverflowY();
-  const now = new Date();
-  const [day, setDay] = useState(now.getDate());
+  const [nowYear, nowMonth, nowDay] = getTodayYMD();
+  const [day, setDay] = useState(nowDay);
   const [month, setMonth] = useState<string>(
-    toTitleCase(intToMonth(now.getMonth()) || "january")
+    toTitleCase(intToMonth(nowMonth) || "january")
   );
-  const [year, setYear] = useState<string>(`${now.getFullYear()}`);
+  const [year, setYear] = useState<string>(`${nowYear}`);
   const [search, setSearch] = useState("");
   const [calendarActive, setCalendarActive] = useState(false);
 
   const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 992 : false
+    typeof window !== "undefined" ? window.innerWidth < 992 : true
   );
 
   const handleSetCalendarActive = (state: boolean) => {
@@ -55,6 +54,7 @@ export default function EntrySearchTool({
       }
     }
     window.addEventListener("resize", handleResize);
+    handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -85,7 +85,7 @@ export default function EntrySearchTool({
       search={search}
       defaultListingMode={defaultListingMode}
       defaultSortingMode={defaultSortingMode}
-      onDatePress={() => setCalendarActive(true)}
+      onDatePress={isMobile ? () => handleSetCalendarActive(true) : undefined}
     />
   );
 
@@ -136,7 +136,7 @@ export default function EntrySearchTool({
               style={{ position: "absolute", top: "1rem", right: "1rem" }}
               color={"rgb(var(--color-font-default))"}
               size={"2.5rem"}
-              onClick={() => setCalendarActive(false)}
+              onClick={() => handleSetCalendarActive(false)}
             />
           </div>
         )}
@@ -152,7 +152,7 @@ export default function EntrySearchTool({
           alignItems: "flex-start",
           justifyContent: "center",
           gap: "1rem",
-          boxSizing: "border-box",
+          boxSizing: "border-box"
         }}
       >
         <div

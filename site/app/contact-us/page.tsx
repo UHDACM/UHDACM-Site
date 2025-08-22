@@ -1,7 +1,8 @@
 import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
+import styles from './contact.module.css'
 
 export default async function Page() {
-  // const data = await fetchAPI("sisters", { populate: "*" });
+  // const data = await fetchCMS("sisters", { populate: "*" });
   // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -10,12 +11,12 @@ export default async function Page() {
         title={`Reach Out!`}
         subtitle={`We’re just a couple clicks away!\nQuestions, Suggestions, Collaboration, Sponsors, etc.\n\nJust enter your email, leave a message, and we’ll reply to you in 24-48 hours.`}
         leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
-        topLevelStyle={{
-          paddingTop: '2.5rem'
-        }}
+        rightStyle={{ flex: 1, width: '90%' }}
+        dontReverseOnMobile={true}
+        topLevelClassName={styles.contactHero}
+        addNavbarPadding={true}
         rightContent={
-          <div style={{ width: "100%", height: "80vh" }}>
+          <div className={`${styles.form}`}>
             <iframe
               src="https://forms.fillout.com/t/k8YWLofVmaus"
               width="100%"

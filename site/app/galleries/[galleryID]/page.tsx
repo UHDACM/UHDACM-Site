@@ -47,7 +47,7 @@ function ShareButton() {
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import GalleryGrid from "./_components/GalleryGrid";
-import { fetchAPI } from "@/app/_utils/cms";
+import { fetchCMS } from "@/app/_utils/cms";
 import { isStrapiPicture, isValidEvent } from "@/app/_utils/validation";
 import { StrapiPicture } from "@/app/_utils/types";
 
@@ -61,7 +61,7 @@ export default async function EventPage({
   params: EventPageParams;
 }) {
   const { galleryID } = await params;
-  const res = await fetchAPI("events", {
+  const res = await fetchCMS("events", {
     "populate[0]": "PreviewImage",
     "populate[1]": "Gallery.media",
     "filters[UrlSlug][$eq]": galleryID,
@@ -106,9 +106,7 @@ export default async function EventPage({
         title={`${event.Name}`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        topLevelStyle={{
-          paddingTop: '2.5rem',
-        }}
+        addNavbarPadding={true}
         rightContent={
           <CoolImage
             src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${event.PreviewImage?.url}`}

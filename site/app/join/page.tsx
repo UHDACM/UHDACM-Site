@@ -5,7 +5,7 @@ import CallToActionSection from "../_sections/CallToActionSection/CallToActionSe
 import Button from "../_components/Button/Button";
 
 export default async function Page() {
-  // const data = await fetchAPI("sisters", { populate: "*" });
+  // const data = await fetchCMS("sisters", { populate: "*" });
   // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>

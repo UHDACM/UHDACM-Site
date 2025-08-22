@@ -4,7 +4,9 @@ import styles from "./MainHeroSection.module.css";
 
 interface MainHeroSectionProps {
   reverseOrder?: boolean;
+  dontReverseOnMobile?: boolean;
   topLevelStyle?: React.CSSProperties;
+  topLevelClassName?: string;
   leftStyle?: React.CSSProperties;
   rightContent?: React.ReactNode;
   rightStyle?: React.CSSProperties;
@@ -13,11 +15,13 @@ interface MainHeroSectionProps {
   titleClassName?: string;
   subtitle?: string;
   bottomContent?: React.ReactNode;
+  addNavbarPadding?: boolean;
 }
 
 const MainHeroSection: React.FC<MainHeroSectionProps> = ({
   reverseOrder = false,
   topLevelStyle = {},
+  topLevelClassName,
   leftStyle = {},
   rightStyle = {},
   spanText,
@@ -26,55 +30,21 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
   subtitle,
   bottomContent,
   rightContent,
+  dontReverseOnMobile,
+  addNavbarPadding
 }) => {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "90vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        ...topLevelStyle,
-      }}
-    >
-      <div
-        style={{
-          width: "95vw",
-          maxWidth: "var(--page-max-width)",
-          height: "100%",
-          display: "flex",
-          padding: "0rem 1rem",
-          boxSizing: "border-box",
-          flexDirection: reverseOrder ? "row-reverse" : "row",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.5rem",
-            alignItems: "start",
-            padding: "0rem 1rem",
-            boxSizing: "border-box",
-            ...leftStyle,
-          }}
-        >
+    <div className={`${styles.heroSection} ${topLevelClassName} ${addNavbarPadding && styles.addNavbarPadding}`} style={topLevelStyle}>
+      <div className={`${reverseOrder && styles.heroRowReverse} ${styles.heroRow} ${dontReverseOnMobile && styles.dontReverseOnMobile}`}>
+        <div className={styles.heroLeft} style={leftStyle}>
           {(spanText || title) && (
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "0rem" }}
-            >
+            <div className={styles.heroHeader}>
               {spanText && (
                 <span className={`BodySmall ${styles.span}`}>{spanText}</span>
               )}
               {title && (
                 <div
-                  className={`${
-                    titleClassName ? ` ${titleClassName}` : "Title"
-                  }`}
+                  className={titleClassName ? ` ${titleClassName}` : "Title"}
                   style={{ whiteSpace: "pre-line" }}
                 >
                   {title}
@@ -87,9 +57,13 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
               {subtitle}
             </div>
           )}
-          {bottomContent && <div style={{marginTop: '0.5rem'}}>{bottomContent}</div>}
+          {bottomContent && (
+            <div className={styles.heroBottom}>{bottomContent}</div>
+          )}
         </div>
-        <div style={{ ...rightStyle }}>{rightContent}</div>
+        <div style={rightStyle} className={styles.heroRight}>
+          {rightContent}
+        </div>
       </div>
     </div>
   );

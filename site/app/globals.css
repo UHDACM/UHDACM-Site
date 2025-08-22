@@ -1,3 +1,8 @@
+/* Global Variables */
+:root {
+  --page-max-width: 70rem;
+}
+
 input {
   width: 100%;
   background: rgb(var(--color-neutral-800));
@@ -25,7 +30,8 @@ input:focus,
 /* Custom scrollbar for all scrollable elements */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgb(var(--color-font-primary)) rgba(var(--color-neutral-800), 0);
+  scrollbar-color: rgb(var(--color-font-primary))
+    rgba(var(--color-neutral-800), 0);
 }
 
 *::-webkit-scrollbar {
@@ -43,15 +49,16 @@ input:focus,
 }
 
 .no-scrollbar {
-  scrollbar-width: none;     /* Firefox */
-  -ms-overflow-style: none;  /* IE and old Edge */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and old Edge */
 }
 
-no-scrollbar::-webkit-scrollbar { /* Chrome, Safari, Opera */
+no-scrollbar::-webkit-scrollbar {
+  /* Chrome, Safari, Opera */
   display: none;
 }
 
-body { 
+body {
   margin: 0;
 }
 
@@ -63,4 +70,38 @@ a {
 .dimOnHover:hover {
   filter: brightness(0.8);
   transition: filter 0.1s;
+}
+
+
+.SectionRoot {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+.SectionInner {
+	width: 95vw;
+	max-width: var(--page-max-width);
+	padding: 0rem 1rem;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+
+@media (max-width: 1200px) {
+  :root {
+    --page-max-width: 50rem;
+  }
+}
+
+@media (max-width: 992px) {
+  :root {
+    --page-max-width: 50rem;
+  }
+  .SectionInner {
+    padding: 0rem 1rem;
+  }
 }

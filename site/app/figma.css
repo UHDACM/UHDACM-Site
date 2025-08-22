@@ -60,10 +60,6 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, span, a {
   --color-stroke-normal: var(--color-neutral-1000);
 }
 
-/* Global Variables */
-:root {
-  --page-max-width: 70rem;
-}
 
 body {
   background-color: rgb(var(--color-background-primary));
