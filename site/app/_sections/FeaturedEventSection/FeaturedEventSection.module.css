@@ -1,0 +1,32 @@
+
+.SectionRoot {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.SectionInner {
+	width: 95vw;
+	max-width: var(--page-max-width);
+	height: 80vh;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0rem 1rem;
+	box-sizing: border-box;
+}
+
+.featuredEventWrapper {
+	width: 100%;
+	height: 25rem;
+}
+
+@media (max-width: 768px) {
+  .SectionInner {
+    padding: 1rem 0.5rem;
+  }
+}

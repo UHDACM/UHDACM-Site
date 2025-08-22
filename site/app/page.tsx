@@ -2,14 +2,11 @@ import MainHeroSection from "./_sections/MainHeroSection/MainHeroSection";
 import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "./_components/CoolImage/CoolImage";
 import CallToActionSection from "./_sections/CallToActionSection/CallToActionSection";
-import FeaturedEventSection from "./_sections/FeaturedEventSection/FeaturedEvent";
+import FeaturedEventSection from "./_sections/FeaturedEventSection/FeaturedEventSection";
 import Button from "./_components/Button/Button";
-import { fetchAPI } from "./_utils/cms";
 import HomeHeroSection from "./_sections/HomeHeroSection/HomeHeroSection";
 
 export default async function Page() {
-  // const data = await fetchAPI("brothers", { populate: "*" });
-  // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <HomeHeroSection
@@ -36,7 +33,6 @@ export default async function Page() {
             </div>
           </Button>
         }
-        leftStyle={{ flex: 1 }}
       />
       <MainHeroSection
         title={`Meet Our People,\nLearn Our Purpose.`}
@@ -62,8 +58,6 @@ export default async function Page() {
             </div>
           </Button>
         }
-        leftStyle={{ flex: 4 }}
-        rightStyle={{ flex: 5 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection
@@ -90,8 +84,6 @@ export default async function Page() {
             </div>
           </Button>
         }
-        leftStyle={{ flex: 4 }}
-        rightStyle={{ flex: 5 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <FeaturedEventSection />

@@ -3,9 +3,10 @@ import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
 import Button from "../_components/Button/Button";
 import FloatingImages from "../_components/FloatingImages/FloatingImages";
+import styles from './media.module.css'
 
 export default async function Page() {
-  // const data = await fetchAPI("sisters", { populate: "*" });
+  // const data = await fetchCMS("sisters", { populate: "*" });
   // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -14,9 +15,7 @@ export default async function Page() {
         title={`Something about\nmedia here`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        topLevelStyle={{
-          paddingTop: '2.5rem'
-        }}
+        addNavbarPadding={true}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection
@@ -25,9 +24,9 @@ export default async function Page() {
         subtitle={`Something about our gallery and stuff like that.`}
         reverseOrder={true}
         leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
+        rightStyle={{ flex: 1, width: '100%' }}
         rightContent={
-          <div style={{ width: "100%", height: "60vh" }}>
+          <div className={`${styles.floatingImagesWrapper}`}>
             <FloatingImages
               imgs={[
                 "/discord3d.webp",
@@ -43,7 +42,7 @@ export default async function Page() {
                 "Arbaz.jpeg",
                 "/sjd.JPG",
                 "/discord3d.webp",
-                        "Arbaz.jpeg",
+                "Arbaz.jpeg",
                 "/sjd.JPG",
               ]}
             />

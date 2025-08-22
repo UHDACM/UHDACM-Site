@@ -1,13 +1,19 @@
 import { DefaultEllipsis } from "@/app/_icons/Icons";
 import FeaturedEvent from "@/app/_components/FeaturedEvent/FeaturedEvent";
-import { fetchAPI } from "@/app/_utils/cms";
+import { fetchCMS } from "@/app/_utils/cms";
 import { isStrapiPicture, isValidEvent } from "@/app/_utils/validation";
 
+import styles from "./FeaturedEventSection.module.css";
+
 export default async function FeaturedEventSection() {
-  const res = await fetchAPI("featured-event", {
+  const res = await fetchCMS("featured-event", {
     "populate[event][populate]": "*",
     populate: "PreviewImageHD",
   });
+
+  if (!res) {
+    return;
+  }
 
   const { event, PreviewImageHD } = res.data;
 
@@ -59,31 +65,10 @@ export default async function FeaturedEventSection() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-      }}
-    >
-      <div
-        style={{
-          width: "90vw",
-          maxWidth: "var(--page-max-width)",
-          height: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "start",
-          justifyContent: "center",
-          gap: "0.5rem",
-          padding: "0rem 1rem",
-          boxSizing: "border-box",
-        }}
-      >
+    <div className={styles.SectionRoot}>
+      <div className={styles.SectionInner}>
         <h1 className="H1">Featured Event</h1>
-        <div style={{ width: "100%", height: "25rem" }}>
+        <div className={styles.featuredEventWrapper}>
           <FeaturedEvent
             title={event.Name}
             largeHeavy={subheader}

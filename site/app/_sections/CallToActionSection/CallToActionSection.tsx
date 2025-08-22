@@ -20,18 +20,31 @@ export default function CallToActionSection({
         alignItems: "center",
         justifyContent: "center",
         boxSizing: "border-box",
-        flexDirection: "column",
-        gap: "0.8rem",
       }}
     >
-      <h1
-        className="Title"
-        style={{ whiteSpace: "pre-wrap", textAlign: "center" }}
+      <div
+        style={{
+          maxWidth: "var(--page-max-width)",
+          width: "95vw",
+          padding: "2rem 1rem",
+          boxSizing: "border-box",
+          flexDirection: "column",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0.8rem",
+          textAlign: "center",
+        }}
       >
-        {title}
-      </h1>
-      <span className="SubtitleRegular">{subtitle}</span>
-      {actionComponent}
+        <h1
+          className="Title"
+          style={{ whiteSpace: "pre-wrap", textAlign: "center" }}
+        >
+          {title}
+        </h1>
+        <span className="SubtitleRegular">{subtitle}</span>
+        {actionComponent}
+      </div>
     </div>
   );
 }

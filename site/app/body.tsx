@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Navbar from "./_components/Navbar/Navbar";
 import { RootState } from "./_features/store";
 import PopupCarousel from "./_features/popupCarousel/components/popupCarousel";
+import Footer from "./_components/Footer/Footer";
 
 export default function Body({ children, className }: { children: React.ReactNode, className?: string }) {
   const { overflowY } = useSelector((store: RootState) => store.body);
@@ -12,6 +13,7 @@ export default function Body({ children, className }: { children: React.ReactNod
         <Navbar />
         <PopupCarousel />
         {children}
+        <Footer />
       </body>
   );
 }

@@ -4,23 +4,11 @@ import CoolImage from "../_components/CoolImage/CoolImage";
 import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
 import PersonTile from "../_components/PersonTile/PersonTile";
 import Button from "../_components/Button/Button";
-import { fetchAPI } from "../_utils/cms";
+import { fetchCMS } from "../_utils/cms";
 import { isPerson } from "../_utils/validation";
 import { Person, SocialObj } from "../_utils/types";
 
 export default async function Page() {
-  const res = await fetchAPI("leadership", {
-    "populate[people][populate]": "*",
-  });
-  const { people } = res.data;
-
-  const validPeople: Person[] = people.filter((person: any) => {
-    if (!isPerson(person)) {
-      return false;
-    }
-    return true;
-  });
-
   return (
     <div
       style={{
@@ -35,9 +23,7 @@ export default async function Page() {
         title={`UHD's home for all things computing`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        topLevelStyle={{
-          paddingTop: '2.5rem'
-        }}
+        addNavbarPadding={true}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <MainHeroSection
@@ -49,50 +35,7 @@ export default async function Page() {
         rightStyle={{ flex: 1 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
-      <div
-        style={{
-          width: "95vw",
-          maxWidth: "var(--page-max-width)",
-          height: "80vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "6vw",
-          boxSizing: "border-box",
-          gap: "1rem",
-          flexDirection: "column",
-        }}
-      >
-        <h1 className={`H1`} style={{ whiteSpace: "pre-line" }}>
-          Meet our Leadership
-        </h1>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "0.5rem",
-          }}
-        >
-          {validPeople.map((person, idx) => (
-            <PersonTile
-              key={idx}
-              imgCoverOrContain="cover"
-              img={`${process.env.NEXT_PUBLIC_STRAPI_URL}${person.Picture?.url}`}
-              previewTitle={person.NameShort}
-              fullTitle={person.Name}
-              previewSubTitle={person.RoleShort}
-              fullSubtitle={person.Role}
-              fullDescription={person.Description}
-              socials={person.Socials.map((social: SocialObj) => ({
-                icon: social.type,
-                href: social.url,
-              }))}
-            />
-          ))}
-        </div>
-      </div>
+      <Leadership />
       <CallToActionSection
         title={`Want to be\nan officer?`}
         subtitle="Your leadership journey starts here"
@@ -116,6 +59,71 @@ export default async function Page() {
           </Button>
         }
       />
+    </div>
+  );
+}
+
+export async function Leadership() {
+  const res = await fetchCMS("leadership", {
+    "populate[people][populate]": "*",
+  });
+
+  if (!res) {
+    return undefined;
+  }
+  const people = res?.data.people || [];
+
+  const validPeople: Person[] = people.filter((person: any) => {
+    if (!isPerson(person)) {
+      return false;
+    }
+    return true;
+  });
+
+  return (
+    <div
+      style={{
+        width: "95vw",
+        maxWidth: "var(--page-max-width)",
+        height: "80vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6vw",
+        boxSizing: "border-box",
+        gap: "1rem",
+        flexDirection: "column",
+      }}
+    >
+      <h1 className={`H1`} style={{ whiteSpace: "pre-line" }}>
+        Meet our Leadership
+      </h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "0.5rem",
+        }}
+      >
+        {validPeople.map((person, idx) => (
+          <PersonTile
+            key={idx}
+            imgCoverOrContain="cover"
+            img={`${process.env.NEXT_PUBLIC_STRAPI_URL}${person.Picture?.url}`}
+            previewTitle={person.NameShort}
+            fullTitle={person.Name}
+            previewSubTitle={person.RoleShort}
+            fullSubtitle={person.Role}
+            fullDescription={person.Description}
+            socials={person.Socials.map((social: SocialObj) => ({
+              icon: social.type,
+              href: social.url,
+            }))}
+          />
+        ))}
+      </div>
     </div>
   );
 }

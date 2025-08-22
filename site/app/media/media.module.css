@@ -1,0 +1,10 @@
+.floatingImagesWrapper {
+  width: 100%;
+  height: 60vh;
+}
+
+@media (max-width: 768px) {
+  .floatingImagesWrapper {
+    height: 30vh;
+  }
+}

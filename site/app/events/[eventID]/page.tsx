@@ -1,3 +1,4 @@
+import styles from "./event.module.css";
 import Button from "@/app/_components/Button/Button";
 import CoolImage from "@/app/_components/CoolImage/CoolImage";
 import StrapiRichTextRenderer from "@/app/_components/StrapiRichTextRenderer/StrapiRichTextRenderer";
@@ -45,8 +46,9 @@ function ShareButton() {
 }
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
-import { fetchAPI } from "@/app/_utils/cms";
+import { fetchCMS } from "@/app/_utils/cms";
 import { isValidEvent } from "@/app/_utils/validation";
+import Page404 from "@/app/not-found";
 import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 
 type EventPageParams = Promise<{
@@ -59,7 +61,7 @@ export default async function EventPage({
   params: EventPageParams;
 }) {
   const { eventID } = await params;
-  const res = await fetchAPI("events", {
+  const res = await fetchCMS("events", {
     populate: "*",
     "filters[UrlSlug][$eq]": eventID,
   });
@@ -68,17 +70,22 @@ export default async function EventPage({
 
   if (!event || !isValidEvent(event)) {
     return (
-      <div
-        style={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <h1 className="H1">Event not found</h1>
-      </div>
+      <Page404
+        customMessage={
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              textAlign: "center",
+              gap: '0.5rem'
+            }}
+          >
+            <h1 className="H4">Event not found</h1>
+            <Button href="/events">Back to Events</Button>
+          </div>
+        }
+      />
     );
   }
 
@@ -128,7 +135,8 @@ export default async function EventPage({
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "start",
+        alignItems: "center",
+        justifyContent: "center",
         position: "relative",
       }}
     >
@@ -137,9 +145,7 @@ export default async function EventPage({
         title={event.Name}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        topLevelStyle={{
-          paddingTop: '2.5rem',
-        }}
+        addNavbarPadding={true}
         rightContent={
           <CoolImage
             style={{ height: "24rem", overflow: "hidden" }}
@@ -159,11 +165,14 @@ export default async function EventPage({
       <div
         style={{
           display: "flex",
-          width: "100%",
+          width: "95vw",
+          maxWidth: "var(--page-max-width)",
+          flexWrap: "wrap",
           justifyContent: "center",
           alignItems: "start",
-          gap: "2rem",
+          gap: "1rem",
           margin: "2rem 0rem",
+          boxSizing: "border-box",
         }}
       >
         <EventDetails
@@ -198,18 +207,9 @@ export default async function EventPage({
           justifyContent: "center",
         }}
       >
-        <div
-          style={{
-            maxWidth: "40rem",
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            gap: "0.5rem",
-          }}
-        >
+        <div className={styles.eventDescription}>
           <h1 className="H1">Event Description</h1>
-          <div style={{display: 'flex', flexDirection: 'column'}}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
             {event.DescriptionFull && (
               <StrapiRichTextRenderer content={event.DescriptionFull} />
             )}
@@ -276,7 +276,14 @@ function EventDetails({ icon, header, body, bodyColor }: EventDetailsProps) {
         width: "12rem",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: 'center', gap: "0.5rem" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0.5rem",
+        }}
+      >
         <IconComponent
           size={"2rem"}
           color={"rgb(var(--color-font-default))"}

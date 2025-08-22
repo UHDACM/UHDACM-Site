@@ -5,12 +5,13 @@ import CallToActionSection from "../_sections/CallToActionSection/CallToActionSe
 // import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEvent";
 import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
-import { fetchAPI } from "../_utils/cms";
+import { fetchCMS } from "../_utils/cms";
 import { SiteEvent } from "../_utils/types";
 import { isValidEvent } from "../_utils/validation";
+import { Suspense } from "react";
 
 export default async function Page() {
-  const res = await fetchAPI("events", {
+  const res = await fetchCMS("events", {
     "populate[0]": "PreviewImage",
     "populate[1]": "Gallery",
   });
@@ -29,6 +30,7 @@ export default async function Page() {
         title={`Something Catchy\nN'Stuff Here`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
+        addNavbarPadding={true}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       {/* <FeaturedEventSection /> */}
@@ -62,13 +64,15 @@ export default async function Page() {
           >
             Search Galleries
           </h1>
-          <EntrySearchTool
-            events={validEvents}
-            entryTypePlural="Galleries"
-            entryTypeSingular="Gallery"
-            defaultListingMode="before"
-            defaultSortingMode="descending"
-          />
+          <Suspense>
+            <EntrySearchTool
+              events={validEvents}
+              entryTypePlural="Galleries"
+              entryTypeSingular="Gallery"
+              defaultListingMode="before"
+              defaultSortingMode="descending"
+            />
+          </Suspense>
         </div>
       </div>
       <CallToActionSection

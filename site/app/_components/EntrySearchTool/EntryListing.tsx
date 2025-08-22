@@ -8,7 +8,7 @@ import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
 import { ListingMode, ListingModes, SiteEvent } from "@/app/_utils/types";
 import { toTitleCase } from "@/app/_utils/tools";
 
-import styles from './EntryListing.module.css'
+import styles from "./EntryListing.module.css";
 
 export type EntrySortMode = "ascending" | "descending";
 export const EntrySortModes: EntrySortMode[] = ["ascending", "descending"];
@@ -24,7 +24,7 @@ interface EventListingProps {
   search?: string;
   defaultListingMode?: ListingMode;
   defaultSortingMode?: EntrySortMode;
-  onDatePress: () => void;
+  onDatePress?: () => void;
 }
 
 export function EventListing({
@@ -37,21 +37,21 @@ export function EventListing({
   search,
   defaultListingMode,
   defaultSortingMode,
-  onDatePress
+  onDatePress,
 }: EventListingProps) {
-  const [listingMode, setListingMode] =
-    useState<ListingMode>(defaultListingMode||'after');
+  const [listingMode, setListingMode] = useState<ListingMode>(
+    defaultListingMode || "after"
+  );
   const [sortingMode, setSortingMode] = useState<EntrySortMode>(
     defaultSortingMode || "ascending"
   );
-
 
   const remainingEventSet = new Set<number>();
   events.forEach((event) => {
     if (!event.Name.toLowerCase().includes(search?.toLowerCase() || "")) {
       return;
     }
-    const eventID = event.id.toString();
+    // const eventID = event.id.toString();
     const eventDate = new Date(event.DateStart);
     const selectedDate = new Date(`${year}-${month}-${day}`);
 
@@ -59,11 +59,13 @@ export function EventListing({
     eventDate.setHours(0, 0, 0, 0);
     selectedDate.setHours(0, 0, 0, 0);
     if (listingMode.toLowerCase() === "on") {
-      if (!(
-        eventDate.getFullYear() === selectedDate.getFullYear() &&
-        eventDate.getMonth() === selectedDate.getMonth() &&
-        eventDate.getDate() === selectedDate.getDate()
-      )) {
+      if (
+        !(
+          eventDate.getFullYear() === selectedDate.getFullYear() &&
+          eventDate.getMonth() === selectedDate.getMonth() &&
+          eventDate.getDate() === selectedDate.getDate()
+        )
+      ) {
         return;
       }
     } else if (listingMode.toLowerCase() === "before") {
@@ -89,53 +91,64 @@ export function EventListing({
         height: "100%",
       }}
     >
-      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-        <h3 className={`H5`} style={{ margin: 0, userSelect: "none" }}>
-          {entryTypePlural}
-        </h3>
-        <div style={{ width: `7.5rem` }} className="BodyLargeHeavy">
-          <Select
-            inputStyling={{
-              backgroundColor: "rgba(var(--color-neutral-1000), 0.5)",
-            }}
-            selected={toTitleCase(listingMode)}
-            onSelect={(v) => setListingMode(v as ListingMode)}
-            options={ListingModes}
-          />
-        </div>
-        <h3
-          className={`H5 ${styles.underlineOnMobile}`}
-          style={{
-            margin: 0,
-            color: "rgb(var(--color-font-secondary))",
-            userSelect: "none",
-          }}
-          onClick={onDatePress}
-        >
-          {`${month} ${day}, ${year}`}
-        </h3>
-      </div>
-      <div style={{ width: "100%", display: "flex", justifyContent: "end" }}>
-        <div style={{display: 'flex', flexDirection: 'row', gap: '0.5rem', alignItems: 'center'}}>
-          <span className="BodyRegular">{entryTypeSingular} Order</span>
-          <div
-            className="BodyLarge"
-            style={{
-              width: "8.5rem",
-              display: "flex",
-              alignItems: "end",
-              flexDirection: "column",
-              gap: "0.25rem",
-            }}
-          >
+      <div style={{display: 'flex', flexWrap: 'wrap'}}>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <h3 className={`H5`} style={{ margin: 0, userSelect: "none" }}>
+            {entryTypePlural}
+          </h3>
+          <div className={`BodyLargeHeavy ${styles.selectWrapper}`}>
             <Select
-              onSelect={(v) => setSortingMode((v).toLowerCase() as EntrySortMode)}
-              selected={toTitleCase(sortingMode)}
-              options={EntrySortModes}
               inputStyling={{
                 backgroundColor: "rgba(var(--color-neutral-1000), 0.5)",
               }}
+              selected={toTitleCase(listingMode)}
+              onSelect={(v) => setListingMode(v as ListingMode)}
+              options={ListingModes}
             />
+          </div>
+          <h3
+            className={`H5 ${styles.underlineOnMobile}`}
+            style={{
+              margin: 0,
+              color: "rgb(var(--color-font-secondary))",
+              userSelect: "none",
+            }}
+            onClick={onDatePress}
+          >
+            {`${month} ${day}, ${year}`}
+          </h3>
+        </div>
+        <div style={{ marginLeft: 'auto', display: "flex", justifyContent: "end" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "0.5rem",
+              alignItems: "center",
+            }}
+          >
+            <span className="BodyRegular">{entryTypeSingular} Order</span>
+            <div
+              className="BodyLarge"
+              style={{
+                width: "8.5rem",
+                display: "flex",
+                alignItems: "end",
+                flexDirection: "column",
+                gap: "0.25rem",
+              }}
+            >
+              <Select
+                onSelect={(v) =>
+                  setSortingMode(v.toLowerCase() as EntrySortMode)
+                }
+                selected={toTitleCase(sortingMode)}
+                options={EntrySortModes}
+                inputStyling={{
+                  backgroundColor: "rgba(var(--color-neutral-1000), 0.5)",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -143,7 +156,9 @@ export function EventListing({
         <h5 className="H5" style={{ opacity: "0.75" }}>
           {remainingEventSet.size === 0
             ? `No ${entryTypePlural.toLowerCase()} found`
-            : `${remainingEventSet.size} ${entryTypePlural.toLowerCase()} found`}
+            : `${
+                remainingEventSet.size
+              } ${entryTypePlural.toLowerCase()} found`}
         </h5>
       </div>
       <div
@@ -156,16 +171,15 @@ export function EventListing({
         }}
       >
         {events
-          .sort(
-            (a, b) => {
-              const diff = new Date(a.DateStart).getTime() - new Date(b.DateStart).getTime();
-              if (sortingMode == 'ascending') {
-                return diff;
-              } else {
-                return -diff;
-              }
+          .sort((a, b) => {
+            const diff =
+              new Date(a.DateStart).getTime() - new Date(b.DateStart).getTime();
+            if (sortingMode == "ascending") {
+              return diff;
+            } else {
+              return -diff;
             }
-          )
+          })
           .map((event, idx) => {
             const dateStart = new Date(event.DateStart);
             const dateEnd = new Date(event.DateEnd);
@@ -208,7 +222,9 @@ export function EventListing({
             return (
               <div
                 key={event.id}
-                className={`${styles['CardContainer']} ${!remainingEventSet.has(event.id) ? styles['hide'] : ''}`}
+                className={`${styles["CardContainer"]} ${
+                  !remainingEventSet.has(event.id) ? styles["hide"] : ""
+                }`}
               >
                 <EntryTile
                   imageSrc={`${process.env.NEXT_PUBLIC_STRAPI_URL}${event.PreviewImage?.url}`}

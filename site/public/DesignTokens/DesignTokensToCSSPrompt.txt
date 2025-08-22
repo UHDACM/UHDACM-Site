@@ -27,8 +27,5 @@ adjust rem size with the following min-width breakpoints:
 - 992: 17px
 - 1200: 18px
 
-6. in root, add global variables:
-- "--page-max-width: 70rem"
-
 DO NOT CONVERT UNLESS A PREVIOUS CSS FILE IS ATTACHED TO THE PROMPT.
 Reference the previous css file to maintain naming conventions.
