@@ -6,6 +6,7 @@ import FloatingImages from "../_components/FloatingImages/FloatingImages";
 import styles from "./media.module.css";
 import { fetchCMS } from "../_utils/cms";
 import { isValidQnA } from "../_utils/validation";
+import { ProduceCMSResourceURL } from "../_utils/tools";
 
 export default async function Page() {
   return (
@@ -152,7 +153,7 @@ async function MostRecentQnAHero() {
     reverseOrder={false}
     leftStyle={{ flex: 1 }}
     rightStyle={{ flex: 1 }}
-    rightContent={<CoolImage src={`${process.env.NEXT_PUBLIC_CMS_URL}${qna.Thumbnail?.url}`} />}
+    rightContent={<CoolImage src={`${ProduceCMSResourceURL(qna.Thumbnail?.url)}`} />}
     bottomContent={
       <div
         style={{

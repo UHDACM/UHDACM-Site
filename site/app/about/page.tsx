@@ -7,6 +7,7 @@ import Button from "../_components/Button/Button";
 import { fetchCMS } from "../_utils/cms";
 import { isPerson } from "../_utils/validation";
 import { Person, SocialObj } from "../_utils/types";
+import { ProduceCMSResourceURL } from "../_utils/tools";
 
 export default async function Page() {
   return (
@@ -112,7 +113,7 @@ async function Leadership() {
           <PersonTile
             key={idx}
             imgCoverOrContain="cover"
-            img={`${process.env.NEXT_PUBLIC_CMS_URL}${person.Picture?.url}`}
+            img={`${ProduceCMSResourceURL(person.Picture?.url)}`}
             previewTitle={person.NameShort}
             fullTitle={person.Name}
             previewSubTitle={person.RoleShort}

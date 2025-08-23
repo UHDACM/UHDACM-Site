@@ -7,6 +7,7 @@ import styles from "./FeaturedEventSection.module.css";
 import Button from "@/app/_components/Button/Button";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
+import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 
 export default async function FeaturedEventSection() {
   const res = await fetchCMS("featured-event", {
@@ -25,7 +26,7 @@ export default async function FeaturedEventSection() {
   }
 
   const imgUrl = isStrapiPicture(PreviewImageHD)
-    ? `${process.env.NEXT_PUBLIC_CMS_URL}${PreviewImageHD.url}`
+    ? `${ProduceCMSResourceURL(PreviewImageHD.url)}`
     : undefined;
 
   const dateStart = new Date(event.DateStart);

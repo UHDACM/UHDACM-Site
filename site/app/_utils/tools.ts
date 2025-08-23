@@ -107,4 +107,18 @@ export function CalendarLinkOutlook({
   return outlookUrl;
 }
 
-
+/**
+ * When fetching from the local CMS, the url is relative, so the CMS URL must be attached.
+ * When fetching from the remote CMS, the url is absolute, so it can be used as is.
+ * @param path 
+ * @returns 
+ */
+export function ProduceCMSResourceURL(path?: string) {
+  if (!path) {
+    return undefined;
+  }
+  if (path.at(0) == '/') {
+    return `${process.env.NEXT_PUBLIC_CMS_URL}${path}`;
+  }
+  return path;
+}

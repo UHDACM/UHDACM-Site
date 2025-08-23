@@ -9,7 +9,7 @@ import { isValidQnA } from "../_utils/validation";
 import { Suspense } from "react";
 import styles from "./eventsPage.module.css";
 import { EntryTileProps } from "../_components/EntryTile/EntryTile";
-import { intToMonth, toTitleCase } from "../_utils/tools";
+import { intToMonth, ProduceCMSResourceURL, toTitleCase } from "../_utils/tools";
 
 export default async function Page() {
   return (
@@ -67,7 +67,7 @@ async function SearchQnAs() {
           description: QnA.DescriptionShort,
           header: QnA.VideoName,
           imageSrc: QnA.Thumbnail
-            ? `${process.env.NEXT_PUBLIC_CMS_URL}${QnA.Thumbnail.url}`
+            ? `${ProduceCMSResourceURL(QnA.Thumbnail.url)}`
             : undefined,
           imageAlt: QnA.Thumbnail?.alternativeText,
           style: undefined,

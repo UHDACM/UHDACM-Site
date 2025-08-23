@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { CarouselFullScreenImage } from "./CarouselFullScreenImage";
 import { CarouselThumbnail } from "./CarouselThumbnail";
 import { StrapiPicture } from "@/app/_utils/types";
+import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 
 
 export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
@@ -20,7 +21,7 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
         items: mediaArray.map((img, i) => (
           <CarouselFullScreenImage
             key={img.id || i}
-            src={`${process.env.NEXT_PUBLIC_CMS_URL}${img.url}`}
+            src={`${ProduceCMSResourceURL(img.url)}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             caption={img.caption}
           />
@@ -28,7 +29,7 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
         thumbnails: mediaArray.map((img, i) => (
           <CarouselThumbnail
             key={img.id || i}
-            src={`${process.env.NEXT_PUBLIC_CMS_URL}${img.url}`}
+            src={`${ProduceCMSResourceURL(img.url)}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
           />
         )),
@@ -63,7 +64,7 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
         {mediaArray.map((img, i) => (
           <img
             key={img.id || i}
-            src={`${process.env.NEXT_PUBLIC_CMS_URL}${img.url}`}
+            src={`${ProduceCMSResourceURL(img.url)}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             style={{
               width: "100%",

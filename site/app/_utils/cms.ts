@@ -71,4 +71,3 @@ export const cmsSingleTypes: cmsSingleType[] = ['featured-event', 'leadership'];
 export function isCMSSingleType(value: any): value is cmsSingleType {
   return cmsSingleTypes.includes(value);
 }
-
