@@ -29,6 +29,7 @@ import { fetchCMS } from "@/app/_utils/cms";
 import { isStrapiPicture, isValidEvent } from "@/app/_utils/validation";
 import { StrapiPicture } from "@/app/_utils/types";
 import Page404 from "@/app/not-found";
+import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 
 type EventPageParams = Promise<{
   galleryID: string;
@@ -87,7 +88,7 @@ export default async function EventPage({
         addNavbarPadding={true}
         rightContent={
           <CoolImage
-            src={`${process.env.NEXT_PUBLIC_CMS_URL}${event.PreviewImage?.url}`}
+            src={`${ProduceCMSResourceURL(event.PreviewImage?.url)}`}
           />
         }
         bottomContent={

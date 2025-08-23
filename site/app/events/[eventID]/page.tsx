@@ -37,6 +37,7 @@ import { isValidEvent } from "@/app/_utils/validation";
 import Page404 from "@/app/not-found";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 import { SiteEvent } from "@/app/_utils/types";
+import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -122,7 +123,7 @@ export default async function EventPage({
           <CoolImage
             style={{ height: "24rem", overflow: "hidden" }}
             src={
-              `${process.env.NEXT_PUBLIC_CMS_URL}${event.PreviewImage?.url}` ||
+              `${ProduceCMSResourceURL(event.PreviewImage?.url)}` ||
               "/sjd.JPG"
             }
           />
