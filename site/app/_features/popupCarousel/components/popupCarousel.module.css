@@ -32,23 +32,25 @@
 .thumbnailsRow {
   position: fixed;
   left: 50%;
-  bottom: 1rem;
+  bottom: 1.5rem;
   transform: translateX(-50%);
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   z-index: 2100;
+  max-width: 75vw;
+  overflow-x: auto;
 }
 
 .thumbnail {
+  flex-shrink: 0;
   width: 3rem;
   height: 3rem;
   border-radius: 0.5rem;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   transition: border 0.2s;
-  background: rgba(var(--color-font-default), 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,7 +58,7 @@
 }
 
 .activeThumbnail {
-  border: 1px solid rgba(var(--color-accent-400), 0.8);
+  border: 2px solid rgba(var(--color-accent-400), 0.8);
 }
 
 .chevronLeft, .chevronRight {
@@ -85,4 +87,44 @@
 
 .chevronLeft:hover, .chevronRight:hover {
   background: rgba(var(--color-accent-400), 0.15);
+}
+
+@media (max-width: 992px) {
+  .thumbnailsRow {
+    max-width: 80vw;
+  }
+  .thumbnail {
+    width: 4rem;
+    height: 4rem;
+  }
+  .chevronLeft {
+    left: 5vw;
+  }
+  .chevronRight {
+    right: 5vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .chevronLeft {
+    left: 2.5vw;
+  }
+  .chevronRight {
+    right: 2.5vw;
+  }
+}
+
+@media (max-width: 576px) {
+  .chevronLeft, .chevronRight {
+    top: unset;
+    bottom: 10%;
+    width: 5rem;
+    height: 5rem;
+  }
+  .chevronLeft {
+    left: 5vw;
+  }
+  .chevronRight {
+    right: 5vw;
+  }
 }

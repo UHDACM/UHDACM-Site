@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './CarouselThumbnail.module.css'
 
 type ImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
 
@@ -6,11 +7,7 @@ export function CarouselThumbnail(props: ImageProps) {
   return (
     <img
       {...props}
-      style={{
-        width: "5rem",
-        height: '5rem',
-        objectFit: 'contain'
-      }}
+      className={styles.carouselThumbnail}
     />
   );
 }

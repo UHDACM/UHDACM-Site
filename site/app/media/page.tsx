@@ -1,13 +1,13 @@
 import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
-import { DefaultChevronRight } from "@/app/_icons/Icons";
+import { DefaultChevronRight, DefaultSearch } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
 import Button from "../_components/Button/Button";
 import FloatingImages from "../_components/FloatingImages/FloatingImages";
-import styles from './media.module.css'
+import styles from "./media.module.css";
+import { fetchCMS } from "../_utils/cms";
+import { isValidQnA } from "../_utils/validation";
 
 export default async function Page() {
-  // const data = await fetchCMS("sisters", { populate: "*" });
-  // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <MainHeroSection
@@ -24,7 +24,7 @@ export default async function Page() {
         subtitle={`Something about our gallery and stuff like that.`}
         reverseOrder={true}
         leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1, width: '100%' }}
+        rightStyle={{ flex: 1, width: "100%" }}
         rightContent={
           <div className={`${styles.floatingImagesWrapper}`}>
             <FloatingImages
@@ -49,10 +49,7 @@ export default async function Page() {
           </div>
         }
         bottomContent={
-          <Button
-            style={{ marginTop: "0.5rem" }}
-            href="/galleries"
-          >
+          <Button style={{ marginTop: "0.5rem" }} href="/galleries">
             <div
               style={{
                 display: "flex",
@@ -71,38 +68,7 @@ export default async function Page() {
           </Button>
         }
       />
-      <MainHeroSection
-        title={`Watch our QnA\nwith Andy Berrios`}
-        titleClassName="H1"
-        subtitle={`We asked: \nHow do you get better DS? Should I learn React.js? Do you think AI is a threat?\n\nAnd much more!`}
-        reverseOrder={false}
-        leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
-        rightContent={<CoolImage src="/sjd.JPG" />}
-        bottomContent={
-          <Button
-            style={{ marginTop: "0.5rem" }}
-            href="https://uhd.campusgroups.com/ACM/club_signup"
-            target="_blank"
-          >
-            <div
-              style={{
-                display: "flex",
-                gap: "0.25rem",
-                alignItems: "center",
-                fontWeight: 800,
-              }}
-            >
-              <span style={{ fontWeight: 500 }}>Join Campus Groups</span>
-              <DefaultChevronRight
-                fontSize={"inherit"}
-                style={{ marginRight: "-0.25rem" }}
-                strokeWidth={"0.20rem"}
-              />
-            </div>
-          </Button>
-        }
-      />
+      <MostRecentQnAHero />
       <MainHeroSection
         title={`Something about Newsletters`}
         titleClassName="H1"
@@ -160,4 +126,77 @@ export default async function Page() {
       /> */}
     </div>
   );
+}
+
+async function MostRecentQnAHero() {
+  const res = await fetchCMS("qnas", {
+    sort: "UploadDate:desc",
+    "pagination[limit]": 1,
+    'populate[0]': 'Thumbnail'
+  });
+
+  if (!res || !res.data || res.data.length === 0) {
+    return null;
+  }
+
+  const qna = res?.data[0];
+
+  if (!qna || !isValidQnA(qna)) {
+    return null;
+  }
+
+  return <MainHeroSection
+    title={`Watch our QnA\nwith ${qna.FeaturedGuests}`}
+    titleClassName="H1"
+    subtitle={`${qna.DescriptionShort}`}
+    reverseOrder={false}
+    leftStyle={{ flex: 1 }}
+    rightStyle={{ flex: 1 }}
+    rightContent={<CoolImage src={`${process.env.NEXT_PUBLIC_CMS_URL}${qna.Thumbnail?.url}`} />}
+    bottomContent={
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: "0.5rem",
+          marginTop: "0.5rem",
+        }}
+      >
+        <Button href="/qnas">
+          <div
+            style={{
+              display: "flex",
+              gap: "0.5rem",
+              alignItems: "center",
+              fontWeight: 800,
+            }}
+          >
+            <DefaultSearch fontSize={"inherit"} strokeWidth={"0.20rem"} />
+            <span style={{ fontWeight: 500 }}>View all QnAs</span>
+          </div>
+        </Button>
+        <Button
+          href={qna.VideoLink}
+          target="_blank"
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: "0.25rem",
+              alignItems: "center",
+              fontWeight: 800,
+            }}
+          >
+            <span style={{ fontWeight: 500 }}>Watch Recent QnA</span>
+            <DefaultChevronRight
+              fontSize={"inherit"}
+              style={{ marginRight: "-0.25rem" }}
+              strokeWidth={"0.20rem"}
+            />
+          </div>
+        </Button>
+      </div>
+    }
+  />;
 }

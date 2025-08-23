@@ -7,20 +7,19 @@ interface FeaturedEventProps {
   largeHeavy: string;
   smallHeavy: string;
   caption: string;
-  leftButtonProps: React.ComponentProps<typeof Button>;
-  rightButtonProps: React.ComponentProps<typeof Button>;
+  BottomComponent?: React.ReactNode;
   containerStyle?: React.CSSProperties;
   contentStyle?: React.CSSProperties;
   img?: string;
 }
+
 
 const FeaturedEvent: React.FC<FeaturedEventProps> = async ({
   title,
   largeHeavy,
   smallHeavy,
   caption,
-  leftButtonProps,
-  rightButtonProps,
+  BottomComponent,
   containerStyle = {},
   contentStyle = {},
   img
@@ -32,12 +31,11 @@ const FeaturedEvent: React.FC<FeaturedEventProps> = async ({
         <div className="BodyLargeHeavy">{largeHeavy}</div>
         <div className="BodyLargeHeavy">{smallHeavy}</div>
         <div className="BodyRegular">{caption}</div>
-        <div className={styles.buttonRow}>
-          <Button {...leftButtonProps}>{leftButtonProps.children}</Button>
-          <Button {...rightButtonProps}>{rightButtonProps.children}</Button>
-        </div>
+        {BottomComponent && (
+          <div className={styles.buttonRow}>{BottomComponent}</div>
+        )}
       </div>
-      <img style={{width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, zIndex: -1 }} src={img||'/sjd.JPG'} />
+      <img style={{width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, zIndex: -1, borderRadius: '0.5rem' }} src={img||'/sjd.JPG'} />
     </div>
   );
 };

@@ -1,25 +1,42 @@
 import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
-import { DefaultChevronRight } from "@/app/_icons/Icons";
+import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
 import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
 // import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEvent";
 import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
 import { fetchCMS } from "../_utils/cms";
-import { SiteEvent } from "../_utils/types";
 import { isValidEvent } from "../_utils/validation";
 import { Suspense } from "react";
+import { EntryTileProps } from "../_components/EntryTile/EntryTile";
+import { EventToEntry } from "../_utils/tsxTools";
 
 export default async function Page() {
   const res = await fetchCMS("events", {
     "populate[0]": "PreviewImage",
     "populate[1]": "Gallery",
   });
-  const eventsRaw = res.data;
-  const validEvents: SiteEvent[] = [];
+  const eventsRaw = res ? res.data : [];
+  const validEntries: EntryTileProps[] = [];
   for (const event of eventsRaw) {
     if (isValidEvent(event) && event.Gallery) {
-      validEvents.push(event);
+      const entry = EventToEntry(event);
+      entry.CallToAction = (
+        <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
+          <Button>
+            <DefaultEllipsis />
+          </Button>
+          <Button href={`/galleries/${event.UrlSlug}`}>
+            <span style={{ fontWeight: 500 }}>View Gallery</span>
+            <DefaultChevronRight
+              fontSize={"inherit"}
+              style={{ marginRight: "-0.25rem" }}
+              strokeWidth={"0.20rem"}
+            />
+          </Button>
+        </div>
+      );
+      validEntries.push(entry);
     }
   }
 
@@ -66,7 +83,7 @@ export default async function Page() {
           </h1>
           <Suspense>
             <EntrySearchTool
-              events={validEvents}
+              entries={validEntries}
               entryTypePlural="Galleries"
               entryTypeSingular="Gallery"
               defaultListingMode="before"

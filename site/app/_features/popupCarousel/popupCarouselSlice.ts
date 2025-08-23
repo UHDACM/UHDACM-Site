@@ -39,7 +39,6 @@ const popupCarouselSlice = createSlice({
 });
 
 export const setPopupCarousel = (payload: Omit<PopupCarouselState, "isActive">) => (dispatch: any) => {
-  console.log('trying');
   dispatch(setOverflowY('hidden'));
 
   // Then dispatch the actual action

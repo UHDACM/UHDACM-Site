@@ -1,4 +1,3 @@
-
 import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
 import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
@@ -8,9 +7,10 @@ import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
 import { fetchCMS } from "../_utils/cms";
 import { isValidEvent } from "../_utils/validation";
-import { SiteEvent } from "../_utils/types";
 import { Suspense } from "react";
 import styles from "./eventsPage.module.css";
+import { EntryTileProps } from "../_components/EntryTile/EntryTile";
+import { EventToEntry } from "../_utils/tsxTools";
 
 export default async function Page() {
   return (
@@ -31,7 +31,9 @@ export default async function Page() {
         actionComponent={
           <Button>
             <div className={styles.collabButtonContent}>
-              <span className={styles.collabButtonText}>Collab with UHD ACM</span>
+              <span className={styles.collabButtonText}>
+                Collab with UHD ACM
+              </span>
               <DefaultChevronRight
                 fontSize={"inherit"}
                 style={{ marginRight: "-0.25rem" }}
@@ -48,12 +50,12 @@ export default async function Page() {
 async function SearchEvents() {
   const res = await fetchCMS("events", { populate: "PreviewImage" });
 
-  const validEvents: SiteEvent[] = [];
+  const validEntries: EntryTileProps[] = [];
   if (res) {
     const eventsRaw = res.data;
     for (const event of eventsRaw) {
       if (isValidEvent(event)) {
-        validEvents.push(event);
+        validEntries.push(EventToEntry(event));
       }
     }
   }
@@ -61,11 +63,9 @@ async function SearchEvents() {
     <Suspense>
       <div className={styles.searchEventsRoot}>
         <div className={styles.searchEventsInner}>
-          <h1 className={`H1 ${styles.searchEventsTitle}`}>
-            Search Events
-          </h1>
+          <h1 className={`H1 ${styles.searchEventsTitle}`}>Search Events</h1>
           <EntrySearchTool
-            events={validEvents}
+            entries={validEntries}
             entryTypePlural="Events"
             entryTypeSingular="Event"
             defaultListingMode="after"
@@ -76,3 +76,5 @@ async function SearchEvents() {
     </Suspense>
   );
 }
+
+

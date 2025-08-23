@@ -387,16 +387,16 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    DateEnd: Schema.Attribute.DateTime;
-    DateStart: Schema.Attribute.DateTime;
-    DescriptionFull: Schema.Attribute.Blocks;
-    DescriptionShort: Schema.Attribute.String;
+    DateEnd: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    DateStart: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    DescriptionFull: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    DescriptionShort: Schema.Attribute.String & Schema.Attribute.Required;
     Gallery: Schema.Attribute.Relation<'oneToOne', 'api::gallery.gallery'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
-    Location: Schema.Attribute.String;
-    Name: Schema.Attribute.String;
+    Location: Schema.Attribute.String & Schema.Attribute.Required;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
     Organizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::organization.organization'
@@ -408,7 +408,9 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    UrlSlug: Schema.Attribute.String & Schema.Attribute.Unique;
+    UrlSlug: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
   };
 }
 
@@ -467,7 +469,8 @@ export interface ApiGalleryGallery extends Struct.CollectionTypeSchema {
     media: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
-    >;
+    > &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -518,7 +521,7 @@ export interface ApiOrganizationOrganization
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Description: Schema.Attribute.String;
+    Description: Schema.Attribute.String & Schema.Attribute.Required;
     Event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -526,8 +529,9 @@ export interface ApiOrganizationOrganization
       'api::organization.organization'
     > &
       Schema.Attribute.Private;
-    Logo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    Name: Schema.Attribute.String;
+    Logo: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -550,6 +554,7 @@ export interface ApiPersonPerson extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Description: Schema.Attribute.Text &
+      Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
       }>;
@@ -559,16 +564,50 @@ export interface ApiPersonPerson extends Struct.CollectionTypeSchema {
       'api::person.person'
     > &
       Schema.Attribute.Private;
-    Name: Schema.Attribute.String;
-    NameShort: Schema.Attribute.String;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
+    NameShort: Schema.Attribute.String & Schema.Attribute.Required;
     Picture: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
-    Role: Schema.Attribute.String;
-    RoleShort: Schema.Attribute.String;
+    Role: Schema.Attribute.String & Schema.Attribute.Required;
+    RoleShort: Schema.Attribute.String & Schema.Attribute.Required;
     Socials: Schema.Attribute.Component<'user-properties.user-social', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiQnaQna extends Struct.CollectionTypeSchema {
+  collectionName: 'qnas';
+  info: {
+    displayName: 'qna';
+    pluralName: 'qnas';
+    singularName: 'qna';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    DescriptionShort: Schema.Attribute.String & Schema.Attribute.Required;
+    FeaturedGuests: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::qna.qna'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Thumbnail: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    UploadDate: Schema.Attribute.Date & Schema.Attribute.Required;
+    VideoLink: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    VideoName: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
   };
 }
 
@@ -1087,6 +1126,7 @@ declare module '@strapi/strapi' {
       'api::leadership.leadership': ApiLeadershipLeadership;
       'api::organization.organization': ApiOrganizationOrganization;
       'api::person.person': ApiPersonPerson;
+      'api::qna.qna': ApiQnaQna;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

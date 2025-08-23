@@ -4,10 +4,12 @@
  */
 
 import { FiChevronRight, FiChevronLeft, FiSearch, FiShare2, FiCalendar, FiClock, FiUsers, FiMenu } from "react-icons/fi";
-import { FaFacebook, FaGithub, FaGlobe, FaLinkedin, FaInstagram, FaTwitter, FaYoutube, FaTimes, FaDiscord } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaGlobe, FaLinkedin, FaInstagram, FaTwitter, FaYoutube, FaDiscord } from "react-icons/fa";
 import { FaEllipsis } from "react-icons/fa6";
 import { CiLocationOn } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
+import { SiGooglecalendar } from "react-icons/si";
+import { PiMicrosoftOutlookLogo } from "react-icons/pi";
 
 export const DefaultEllipsis = FaEllipsis;
 
@@ -26,6 +28,9 @@ export const DefaultChevronLeft = FiChevronLeft;
 
 export const DefaultShareOutline = FiShare2;
 export const DefaultCalendar = FiCalendar;
+
+export const DefaultGoogleCalendar = SiGooglecalendar;
+export const DefaultOutlook = PiMicrosoftOutlookLogo;
 
 export const DefaultClock = FiClock;
 export const DefaultLocation = CiLocationOn;

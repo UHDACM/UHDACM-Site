@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FunctionUnknown } from "@/app/_utils/types";
 import styles from "./Button.module.css";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onClick?: FunctionUnknown;
   href?: string;
   target?: React.HTMLAttributeAnchorTarget;
@@ -19,7 +19,7 @@ const defaultProps = {
   tabIndex: 0,
 };
 
-const Button: React.FC<ButtonProps> = ({ onClick, href, target, children, style, className }) => {
+const Button: React.FC<ButtonProps> = ({ onClick, href, target, children, style, className, ...props }) => {
   const classes = [defaultProps.className, styles[className||'']].filter(Boolean).join(' ');
   if (href) {
     return (
@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({ onClick, href, target, children, style,
   }
 
   return (
-    <button {...defaultProps} onClick={onClick} style={style} className={classes}>
+    <button {...defaultProps} onClick={onClick} style={style} className={classes} {...props}>
       {children}
     </button>
   );

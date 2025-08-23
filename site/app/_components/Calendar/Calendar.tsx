@@ -44,8 +44,8 @@ export default function Calendar({
   ).getDate();
 
   function handleSetDay(newDay: number) {
-    let newMonthIndex = Months.indexOf(month.toLowerCase() as Month);
-    let newYear = parseInt(year);
+    const newMonthIndex = Months.indexOf(month.toLowerCase() as Month);
+    const newYear = parseInt(year);
     let finalDay = newDay;
     let finalMonthIndex = newMonthIndex;
     let finalYear = newYear;

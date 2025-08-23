@@ -1,12 +1,9 @@
 import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
 import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
-import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
 import Button from "../_components/Button/Button";
 
 export default async function Page() {
-  // const data = await fetchCMS("sisters", { populate: "*" });
-  // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <MainHeroSection
@@ -88,6 +85,30 @@ export default async function Page() {
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         rightContent={<CoolImage src="/sjd.JPG" />}
+        bottomContent={
+          <Button
+            style={{ marginTop: "0.5rem" }}
+            href="https://docs.google.com/forms/d/e/1FAIpQLSc4LZptuavNKUMvvBAkG-TsGqHmeP_JXiaEOMw5YZFD_CmkjA/viewform"
+            target="_blank"
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "0.25rem",
+                alignItems: "center",
+                fontWeight: 800,
+              }}
+            >
+              <span style={{ fontWeight: 500 }}>Apply Now!</span>
+              <DefaultChevronRight
+                fontSize={"inherit"}
+                style={{ marginRight: "-0.25rem" }}
+                strokeWidth={"0.20rem"}
+              />
+            </div>
+          </Button>
+        }
+        id={'become-an-officer'}
       />
       {/* <CallToActionSection
         title={`Want to be\nan officer?`}

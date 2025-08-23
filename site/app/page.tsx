@@ -15,7 +15,7 @@ export default async function Page() {
         subtitle={`Together, we push past doubts and distractions\namplifying each other’s strengths every step of the way.`}
         // reverseOrder={true}
         bottomContent={
-          <Button style={{ marginTop: "0.5rem" }}>
+          <Button href='/join' style={{ marginTop: "0.5rem" }}>
             <div
               style={{
                 display: "flex",
@@ -40,7 +40,7 @@ export default async function Page() {
         subtitle="Find out who we are, and what it means to be part of UHD ACM."
         reverseOrder={true}
         bottomContent={
-          <Button style={{ marginTop: "0.5rem" }}>
+          <Button href='/about' style={{ marginTop: "0.5rem" }}>
             <div
               style={{
                 display: "flex",
@@ -66,7 +66,7 @@ export default async function Page() {
         subtitle="View our calendar and find what stuff we have planned soon."
         // reverseOrder={true}
         bottomContent={
-          <Button style={{ marginTop: "0.5rem" }}>
+          <Button href='/events' style={{ marginTop: "0.5rem" }}>
             <div
               style={{
                 display: "flex",
@@ -91,7 +91,7 @@ export default async function Page() {
         title={`UHD ACM\nJoin Today!`}
         subtitle="We await your arrival or something"
         actionComponent={
-          <Button>
+          <Button href='/join'>
             <div
               style={{
                 display: "flex",

@@ -40,7 +40,7 @@ export default async function Page() {
         title={`Want to be\nan officer?`}
         subtitle="Your leadership journey starts here"
         actionComponent={
-          <Button>
+          <Button href='/join#become-an-officer'>
             <div
               style={{
                 display: "flex",
@@ -63,7 +63,7 @@ export default async function Page() {
   );
 }
 
-export async function Leadership() {
+async function Leadership() {
   const res = await fetchCMS("leadership", {
     "populate[people][populate]": "*",
   });
@@ -94,6 +94,7 @@ export async function Leadership() {
         gap: "1rem",
         flexDirection: "column",
       }}
+      id={'leadership'}
     >
       <h1 className={`H1`} style={{ whiteSpace: "pre-line" }}>
         Meet our Leadership
@@ -111,7 +112,7 @@ export async function Leadership() {
           <PersonTile
             key={idx}
             imgCoverOrContain="cover"
-            img={`${process.env.NEXT_PUBLIC_STRAPI_URL}${person.Picture?.url}`}
+            img={`${process.env.NEXT_PUBLIC_CMS_URL}${person.Picture?.url}`}
             previewTitle={person.NameShort}
             fullTitle={person.Name}
             previewSubTitle={person.RoleShort}

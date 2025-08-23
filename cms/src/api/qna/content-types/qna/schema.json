@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "qnas",
+  "info": {
+    "singularName": "qna",
+    "pluralName": "qnas",
+    "displayName": "qna"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "VideoName": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "FeaturedGuests": {
+      "type": "string"
+    },
+    "Thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "VideoLink": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "UploadDate": {
+      "type": "date",
+      "required": true
+    },
+    "DescriptionShort": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

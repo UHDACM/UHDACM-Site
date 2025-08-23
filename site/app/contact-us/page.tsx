@@ -2,8 +2,6 @@ import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
 import styles from './contact.module.css'
 
 export default async function Page() {
-  // const data = await fetchCMS("sisters", { populate: "*" });
-  // console.log(data);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <MainHeroSection

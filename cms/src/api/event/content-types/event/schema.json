@@ -13,6 +13,7 @@
   "attributes": {
     "UrlSlug": {
       "type": "string",
+      "required": true,
       "unique": true
     },
     "PreviewImage": {
@@ -26,22 +27,28 @@
       ]
     },
     "Name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "DateStart": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": true
     },
     "DateEnd": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": true
     },
     "DescriptionShort": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "DescriptionFull": {
-      "type": "blocks"
+      "type": "blocks",
+      "required": true
     },
     "Location": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Organizations": {
       "type": "relation",

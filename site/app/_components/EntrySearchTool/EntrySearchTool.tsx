@@ -1,23 +1,24 @@
 "use client";
 import { SearchBar } from "@/app/_components/SearchBar/SearchBar";
 import Calendar from "@/app/_components/Calendar/Calendar";
-import { EntrySortMode, EventListing } from "./EntryListing";
+import { EntrySortMode, EntryListing } from "./EntryListing";
 import { useEffect, useState } from "react";
 import { getTodayYMD, intToMonth, toTitleCase } from "@/app/_utils/tools";
 import { ListingMode, SiteEvent } from "@/app/_utils/types";
 import { DefaultClose } from "@/app/_icons/Icons";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
+import { EntryTileProps } from "../EntryTile/EntryTile";
 
 export default function EntrySearchTool({
   entryTypePlural,
   entryTypeSingular,
-  events,
+  entries,
   defaultListingMode,
   defaultSortingMode,
 }: {
   entryTypePlural: string;
   entryTypeSingular: string;
-  events: SiteEvent[];
+  entries: EntryTileProps[];
   defaultListingMode: ListingMode;
   defaultSortingMode?: EntrySortMode;
 }) {
@@ -70,13 +71,13 @@ export default function EntrySearchTool({
       setDay={setDay}
       setMonth={setMonth}
       setYear={setYear}
-      dotsOnDates={events.map((e) => new Date(e.DateStart))}
+      dotsOnDates={entries.filter((e) => e.date).map((e) => new Date(e.date!))}
     />
   );
 
-  const EventListingComp = (
-    <EventListing
-      events={events}
+  const EntryListingComp = (
+    <EntryListing
+      entries={entries}
       day={day}
       month={month}
       year={year}
@@ -92,6 +93,7 @@ export default function EntrySearchTool({
   if (isMobile) {
     return (
       <div
+        id="search"
         style={{
           width: "100%",
           height: "auto",
@@ -102,7 +104,7 @@ export default function EntrySearchTool({
           boxSizing: "border-box",
         }}
       >
-        {EventListingComp}
+        {EntryListingComp}
         {calendarActive && (
           <div
             style={{
@@ -145,6 +147,7 @@ export default function EntrySearchTool({
   } else {
     return (
       <div
+        id="search"
         style={{
           width: "100%",
           height: "auto",
@@ -188,7 +191,7 @@ export default function EntrySearchTool({
             boxSizing: "border-box",
           }}
         >
-          {EventListingComp}
+          {EntryListingComp}
         </div>
       </div>
     );

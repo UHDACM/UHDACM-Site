@@ -1,55 +1,42 @@
+import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import styles from "./event.module.css";
 import Button from "@/app/_components/Button/Button";
 import CoolImage from "@/app/_components/CoolImage/CoolImage";
 import StrapiRichTextRenderer from "@/app/_components/StrapiRichTextRenderer/StrapiRichTextRenderer";
 import {
-  DefaultCalendar,
   DefaultClock,
   DefaultLocation,
   DefaultPeople,
-  DefaultShareOutline,
 } from "@/app/_icons/Icons";
-function AddToCalendarButton() {
+
+function ShareEventButton({ urlSlug }: { urlSlug: string }) {
   return (
-    <Button>
-      <div
-        style={{
-          display: "flex",
-          gap: "0.25rem",
-          alignItems: "center",
-          fontWeight: 800,
-        }}
-      >
-        <span style={{ fontWeight: 500 }}>Add to Calendar</span>
-        <DefaultCalendar fontSize={"inherit"} strokeWidth={"0.15rem"} />
-      </div>
-    </Button>
+    <ShareButton
+      copyText={process.env.NEXT_PUBLIC_SELF_URL + "/events/" + urlSlug}
+      replaceTextOnCopyString={"Copied URL"}
+    />
   );
 }
 
-function ShareButton() {
+function CalendarButton({ event }: { event: SiteEvent }) {
   return (
-    <Button>
-      <div
-        style={{
-          display: "flex",
-          gap: "0.25rem",
-          alignItems: "center",
-          fontWeight: 800,
-        }}
-      >
-        <span style={{ fontWeight: 500 }}>Share</span>
-        <DefaultShareOutline fontSize={"inherit"} strokeWidth={"0.15rem"} />
-      </div>
-    </Button>
+    <AddToCalendarButton
+      title={event.Name}
+      details={event.DescriptionShort}
+      location={event.Location}
+      start={event.DateStart}
+      end={event.DateEnd}
+    />
   );
 }
+
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import { fetchCMS } from "@/app/_utils/cms";
 import { isValidEvent } from "@/app/_utils/validation";
 import Page404 from "@/app/not-found";
-import { BlocksRenderer } from "@strapi/blocks-react-renderer";
+import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
+import { SiteEvent } from "@/app/_utils/types";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -66,27 +53,14 @@ export default async function EventPage({
     "filters[UrlSlug][$eq]": eventID,
   });
 
+  if (!res) {
+    return <EventPage404 />;
+  }
+
   const event = res.data[0]; // Assuming the API returns an array of events
 
   if (!event || !isValidEvent(event)) {
-    return (
-      <Page404
-        customMessage={
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              textAlign: "center",
-              gap: '0.5rem'
-            }}
-          >
-            <h1 className="H4">Event not found</h1>
-            <Button href="/events">Back to Events</Button>
-          </div>
-        }
-      />
-    );
+    return <EventPage404 />;
   }
 
   const dateStart = new Date(event.DateStart);
@@ -128,8 +102,6 @@ export default async function EventPage({
     subheader = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
   }
 
-  console.log(event);
-
   return (
     <div
       style={{
@@ -150,15 +122,15 @@ export default async function EventPage({
           <CoolImage
             style={{ height: "24rem", overflow: "hidden" }}
             src={
-              `${process.env.NEXT_PUBLIC_STRAPI_URL}${event.PreviewImage?.url}` ||
+              `${process.env.NEXT_PUBLIC_CMS_URL}${event.PreviewImage?.url}` ||
               "/sjd.JPG"
             }
           />
         }
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
-            <AddToCalendarButton />
-            <ShareButton />
+            <CalendarButton event={event} />
+            <ShareEventButton urlSlug={event.UrlSlug} />
           </div>
         }
       />
@@ -229,8 +201,8 @@ export default async function EventPage({
               justifyContent: "center",
             }}
           >
-            <AddToCalendarButton />
-            <ShareButton />
+            <CalendarButton event={event} />
+            <ShareEventButton urlSlug={event.UrlSlug} />
           </div>
         }
       />
@@ -302,5 +274,26 @@ function EventDetails({ icon, header, body, bodyColor }: EventDetailsProps) {
         {body}
       </span>
     </div>
+  );
+}
+
+function EventPage404() {
+  return (
+    <Page404
+      customMessage={
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            textAlign: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <h1 className="H4">Event not found</h1>
+          <Button href="/events#search">Back to Events</Button>
+        </div>
+      }
+    />
   );
 }

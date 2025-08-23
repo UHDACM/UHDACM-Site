@@ -16,6 +16,7 @@ interface MainHeroSectionProps {
   subtitle?: string;
   bottomContent?: React.ReactNode;
   addNavbarPadding?: boolean;
+  id?: string;
 }
 
 const MainHeroSection: React.FC<MainHeroSectionProps> = ({
@@ -31,10 +32,11 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
   bottomContent,
   rightContent,
   dontReverseOnMobile,
-  addNavbarPadding
+  addNavbarPadding,
+  id
 }) => {
   return (
-    <div className={`${styles.heroSection} ${topLevelClassName} ${addNavbarPadding && styles.addNavbarPadding}`} style={topLevelStyle}>
+    <div className={`${styles.heroSection} ${topLevelClassName} ${addNavbarPadding && styles.addNavbarPadding}`} style={topLevelStyle} id={id}>
       <div className={`${reverseOrder && styles.heroRowReverse} ${styles.heroRow} ${dontReverseOnMobile && styles.dontReverseOnMobile}`}>
         <div className={styles.heroLeft} style={leftStyle}>
           {(spanText || title) && (
