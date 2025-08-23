@@ -12,14 +12,17 @@
   "pluginOptions": {},
   "attributes": {
     "Name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "NameShort": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Picture": {
       "type": "media",
       "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
@@ -28,19 +31,23 @@
       ]
     },
     "Role": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "RoleShort": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Description": {
       "type": "text",
-      "maxLength": 200
+      "maxLength": 200,
+      "required": true
     },
     "Socials": {
       "type": "component",
       "component": "user-properties.user-social",
-      "repeatable": true
+      "repeatable": true,
+      "required": false
     }
   }
 }

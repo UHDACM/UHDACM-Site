@@ -76,7 +76,7 @@ export default function PopupCarousel() {
           onClick={() => canGoLeft && setIndex((i) => Math.max(0, i - 1))}
         >
           <DefaultChevronLeft
-            size={36}
+            size={'3rem'}
             color={"rgb(var(--color-font-default))"}
           />
         </div>
@@ -90,7 +90,7 @@ export default function PopupCarousel() {
           onClick={() => canGoRight && setIndex((i) => Math.min(items.length - 1, i + 1))}
         >
           <DefaultChevronRight
-            size={36}
+            size={'3rem'}
             color={"rgb(var(--color-font-default))"}
           />
         </div>

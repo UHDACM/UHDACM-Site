@@ -111,6 +111,16 @@ export type Organization = {
 };
 
 
-
 export type ListingMode = "on" | "after" | "before";
 export const ListingModes: ListingMode[] = ["on", "after", "before"];
+
+
+export type QnA = {
+  VideoName: string,
+  FeaturedGuests?: string,
+  Thumbnail?: StrapiPicture,
+  VideoLink: string,
+  UploadDate: string,
+  DescriptionShort: string
+};
+

@@ -5,7 +5,7 @@
   align-items: flex-end;
   justify-content: flex-start;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   border-radius: 0.5rem;
   border: 1px solid rgb(var(--color-stroke-normal));
 }
@@ -29,4 +29,5 @@
   flex-direction: row;
   gap: 0.5rem;
   margin-top: 0.5rem;
+  flex-wrap: wrap;
 }

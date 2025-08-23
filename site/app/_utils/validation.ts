@@ -1,4 +1,4 @@
-import { Organization, Person, SiteEvent, SocialObj, SocialSite, SocialSites, StrapiPicture, StrapiPictureFormat } from "./types";
+import { Organization, Person, QnA, SiteEvent, SocialObj, SocialSite, SocialSites, StrapiPicture, StrapiPictureFormat } from "./types";
 
 export function isValidEvent(event: any): event is SiteEvent {
   const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
@@ -87,4 +87,17 @@ export function isOrganization(obj: any): obj is Organization {
     typeof obj.Description === "string" &&
     (obj.Logo === undefined || isStrapiPicture(obj.Logo))
   );
+}
+
+export function isValidQnA(obj: any): obj is QnA {
+  if (typeof obj !== 'object' || obj === null) return false;
+  if (typeof obj.VideoName !== 'string') return false;
+  if ('FeaturedGuests' in obj && typeof obj.FeaturedGuests !== 'string') return false;
+  if ('Thumbnail' in obj && obj.Thumbnail !== undefined && typeof obj.Thumbnail !== 'object') return false;
+  if (typeof obj.VideoLink !== 'string') return false;
+  if (typeof obj.UploadDate !== 'string') return false;
+  if (typeof obj.DescriptionShort !== 'string') return false;
+  const date = new Date(obj.UploadDate);
+  if (isNaN(date.getTime())) return false;
+  return true;
 }

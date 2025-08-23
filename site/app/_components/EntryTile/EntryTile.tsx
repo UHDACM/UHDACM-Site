@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./EntryTile.module.css";
 
-interface EntryTileProps {
+export interface EntryTileProps {
   imageSrc?: string;
   header?: string;
   subheader?: string;
@@ -10,6 +10,8 @@ interface EntryTileProps {
   CallToAction?: React.ReactNode;
   style?: React.CSSProperties;
   imageAlt?: string;
+  date: string;
+  dateEnd?: string; // used by events
 }
 
 const maxDescriptionLength = 200;

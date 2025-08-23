@@ -49,4 +49,12 @@
   gap: 0.5rem;
 }
 
+@media (max-width: 576px) {
+  .imageContainer {
+    display: none;
+  }
 
+  .EntryTile {
+    padding: 1rem;
+  }
+}

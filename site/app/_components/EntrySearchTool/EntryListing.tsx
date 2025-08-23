@@ -2,7 +2,7 @@
 
 import Select from "@/app/_components/Select/Select";
 import { useState } from "react";
-import EntryTile from "../EntryTile/EntryTile";
+import EntryTile, { EntryTileProps } from "../EntryTile/EntryTile";
 import Button from "../Button/Button";
 import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
 import { ListingMode, ListingModes, SiteEvent } from "@/app/_utils/types";
@@ -20,19 +20,19 @@ interface EventListingProps {
   year: string;
   entryTypePlural: string;
   entryTypeSingular: string;
-  events: SiteEvent[];
+  entries: EntryTileProps[];
   search?: string;
   defaultListingMode?: ListingMode;
   defaultSortingMode?: EntrySortMode;
   onDatePress?: () => void;
 }
 
-export function EventListing({
+export function EntryListing({
   day,
   month,
   year,
   entryTypePlural,
-  events,
+  entries,
   entryTypeSingular,
   search,
   defaultListingMode,
@@ -46,13 +46,16 @@ export function EventListing({
     defaultSortingMode || "ascending"
   );
 
-  const remainingEventSet = new Set<number>();
-  events.forEach((event) => {
-    if (!event.Name.toLowerCase().includes(search?.toLowerCase() || "")) {
-      return;
+  const remainingEntrySet = new Set<number>();
+  entries.forEach((entry, entryIndex) => {
+    if (entry.header) {
+      if (!entry.header.toLowerCase().includes(search?.toLowerCase() || "")) {
+        return;
+      }
     }
-    // const eventID = event.id.toString();
-    const eventDate = new Date(event.DateStart);
+
+    // const eventID = entries.id.toString();
+    const eventDate = new Date(entry.date);
     const selectedDate = new Date(`${year}-${month}-${day}`);
 
     // Zero out the time for both dates to compare only year, month, day
@@ -78,7 +81,7 @@ export function EventListing({
         return;
       }
     }
-    remainingEventSet.add(event.id);
+    remainingEntrySet.add(entryIndex);
   });
 
   return (
@@ -91,7 +94,7 @@ export function EventListing({
         height: "100%",
       }}
     >
-      <div style={{display: 'flex', flexWrap: 'wrap'}}>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
           <h3 className={`H5`} style={{ margin: 0, userSelect: "none" }}>
             {entryTypePlural}
@@ -118,7 +121,9 @@ export function EventListing({
             {`${month} ${day}, ${year}`}
           </h3>
         </div>
-        <div style={{ marginLeft: 'auto', display: "flex", justifyContent: "end" }}>
+        <div
+          style={{ marginLeft: "auto", display: "flex", justifyContent: "end" }}
+        >
           <div
             style={{
               display: "flex",
@@ -154,11 +159,14 @@ export function EventListing({
       </div>
       <div>
         <h5 className="H5" style={{ opacity: "0.75" }}>
-          {remainingEventSet.size === 0
-            ? `No ${entryTypePlural.toLowerCase()} found`
-            : `${
-                remainingEventSet.size
-              } ${entryTypePlural.toLowerCase()} found`}
+          {remainingEntrySet.size === 0 &&
+            `No ${entryTypePlural.toLowerCase()} found`}
+          {remainingEntrySet.size != 0 &&
+            `${remainingEntrySet.size} ${
+              remainingEntrySet.size == 1
+                ? `${entryTypeSingular.toLowerCase()} found`
+                : `${entryTypePlural.toLowerCase()} found`
+            }`}
         </h5>
       </div>
       <div
@@ -167,98 +175,34 @@ export function EventListing({
           flexDirection: "column",
           gap: "0.5rem",
           maxHeight: "80vh",
-          overflowY: remainingEventSet.size != 0 ? "auto" : "hidden",
+          overflowY: remainingEntrySet.size != 0 ? "auto" : "hidden",
         }}
       >
-        {events
+        {entries
           .sort((a, b) => {
             const diff =
-              new Date(a.DateStart).getTime() - new Date(b.DateStart).getTime();
+              new Date(a.date).getTime() - new Date(b.date).getTime();
             if (sortingMode == "ascending") {
               return diff;
             } else {
               return -diff;
             }
           })
-          .map((event, idx) => {
-            const dateStart = new Date(event.DateStart);
-            const dateEnd = new Date(event.DateEnd);
-            // Format date as "MMM D, YYYY"
-            const formatDate = (date: Date) =>
-              date.toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              });
+          .map((entry, i) => {
 
-            // Format time as "h:mm AM/PM"
-            const formatTime = (date: Date) =>
-              date.toLocaleTimeString(undefined, {
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-              });
-
-            const sameDay =
-              dateStart.getFullYear() === dateEnd.getFullYear() &&
-              dateStart.getMonth() === dateEnd.getMonth() &&
-              dateStart.getDate() === dateEnd.getDate();
-
-            const sameTime =
-              dateStart.getHours() === dateEnd.getHours() &&
-              dateStart.getMinutes() === dateEnd.getMinutes();
-
-            let subheader = "";
-            if (!sameDay) {
-              subheader = `${formatDate(dateStart)} - ${formatDate(dateEnd)}`;
-            } else if (!sameTime) {
-              subheader = `${formatDate(dateStart)}, ${formatTime(
-                dateStart
-              )} - ${formatTime(dateEnd)}`;
-            } else {
-              subheader = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
-            }
+            // if (!remainingEntrySet.has(i)) {
+            //   return undefined;
+            // }
 
             return (
               <div
-                key={event.id}
+                key={i}
                 className={`${styles["CardContainer"]} ${
-                  !remainingEventSet.has(event.id) ? styles["hide"] : ""
+                  !remainingEntrySet.has(i) ? styles["hide"] : ""
                 }`}
               >
                 <EntryTile
-                  imageSrc={`${process.env.NEXT_PUBLIC_STRAPI_URL}${event.PreviewImage?.url}`}
-                  header={event.Name}
-                  subheader={subheader}
-                  subheaderTwo={event.Location}
-                  description={event.DescriptionShort}
-                  CallToAction={
-                    <div
-                      className="BodyLarge"
-                      style={{ display: "flex", gap: "0.5rem" }}
-                    >
-                      <Button>
-                        <DefaultEllipsis />
-                      </Button>
-                      <Button
-                        href={
-                          "./" +
-                          entryTypePlural.toLowerCase() +
-                          "/" +
-                          event.UrlSlug
-                        }
-                      >
-                        <span style={{ fontWeight: 500 }}>
-                          View {entryTypeSingular}
-                        </span>
-                        <DefaultChevronRight
-                          fontSize={"inherit"}
-                          style={{ marginRight: "-0.25rem" }}
-                          strokeWidth={"0.20rem"}
-                        />
-                      </Button>
-                    </div>
-                  }
+                  {...entry}
                 />
               </div>
             );

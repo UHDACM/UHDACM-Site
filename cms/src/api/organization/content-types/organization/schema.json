@@ -12,20 +12,21 @@
   "pluginOptions": {},
   "attributes": {
     "Name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Logo": {
       "type": "media",
       "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
-        "files",
-        "videos",
-        "audios"
+        "files"
       ]
     },
     "Description": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Event": {
       "type": "relation",

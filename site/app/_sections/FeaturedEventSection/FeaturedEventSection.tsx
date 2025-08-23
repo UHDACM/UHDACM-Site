@@ -1,9 +1,12 @@
-import { DefaultEllipsis } from "@/app/_icons/Icons";
+import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
 import FeaturedEvent from "@/app/_components/FeaturedEvent/FeaturedEvent";
 import { fetchCMS } from "@/app/_utils/cms";
 import { isStrapiPicture, isValidEvent } from "@/app/_utils/validation";
 
 import styles from "./FeaturedEventSection.module.css";
+import Button from "@/app/_components/Button/Button";
+import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
+import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 
 export default async function FeaturedEventSection() {
   const res = await fetchCMS("featured-event", {
@@ -22,7 +25,7 @@ export default async function FeaturedEventSection() {
   }
 
   const imgUrl = isStrapiPicture(PreviewImageHD)
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${PreviewImageHD.url}`
+    ? `${process.env.NEXT_PUBLIC_CMS_URL}${PreviewImageHD.url}`
     : undefined;
 
   const dateStart = new Date(event.DateStart);
@@ -74,15 +77,48 @@ export default async function FeaturedEventSection() {
             largeHeavy={subheader}
             smallHeavy={event.Location}
             caption={event.DescriptionShort}
-            leftButtonProps={{
-              children: <DefaultEllipsis />,
-              href: "/left",
-            }}
-            rightButtonProps={{
-              children: "View Event",
-              href: `/events/${event.UrlSlug}`,
-              // onClick: () => alert("Right button clicked!"),
-            }}
+            BottomComponent={
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  flexWrap: 'wrap'
+                }}
+              >
+                <ShareButton
+                  copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/events/${event.UrlSlug}`}
+                  replaceTextOnCopyString="Link Copied"
+                />
+                <AddToCalendarButton
+                  title={event.Name}
+                  details={event.DescriptionShort}
+                  location={event.Location}
+                  start={event.DateStart}
+                  end={event.DateEnd}
+                />
+                <Button
+                  href={`/events/${event.UrlSlug}`}
+                  // onClick: () => alert("Right button clicked!"),
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <span className="BodyLargeHeavy">View Event</span>
+                    <DefaultChevronRight
+                      fontSize={"inherit"}
+                      style={{ marginRight: "-0.25rem" }}
+                      strokeWidth={"0.20rem"}
+                    />
+                  </div>
+                </Button>
+              </div>
+            }
             img={`${imgUrl}`}
           />
         </div>

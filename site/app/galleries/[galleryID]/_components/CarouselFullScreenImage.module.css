@@ -1,0 +1,36 @@
+.carouselFullScreenRoot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.carouselFullScreenImg {
+  width: 75vw;
+  max-width: 40rem;
+  max-height: 60vh;
+  border-radius: 0.5rem;
+  object-fit: contain;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+
+.carouselFullScreenCaption {
+  max-width: 90vw;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  background-color: rgb(var(--color-background-primary));
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 576px) {
+  .carouselFullScreenImg {
+    width: 95vw;
+    max-height: 80vh;
+  }
+}

@@ -1,8 +1,8 @@
 "use client";
 
 import { setPopupCarousel } from "@/app/_features/popupCarousel/popupCarouselSlice";
-import { AppDispatch, RootState } from "@/app/_features/store";
-import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/app/_features/store";
+import { useDispatch } from "react-redux";
 import { CarouselFullScreenImage } from "./CarouselFullScreenImage";
 import { CarouselThumbnail } from "./CarouselThumbnail";
 import { StrapiPicture } from "@/app/_utils/types";
@@ -10,22 +10,25 @@ import { StrapiPicture } from "@/app/_utils/types";
 
 export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
   const dispatch = useDispatch<AppDispatch>();
+  
+  const mediaArray = media;
+
 
   const onImageClick = (index: number) => {
     dispatch(
       setPopupCarousel({
-        items: media.map((img, i) => (
+        items: mediaArray.map((img, i) => (
           <CarouselFullScreenImage
             key={img.id || i}
-            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${img.url}`}
+            src={`${process.env.NEXT_PUBLIC_CMS_URL}${img.url}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             caption={img.caption}
           />
         )),
-        thumbnails: media.map((img, i) => (
+        thumbnails: mediaArray.map((img, i) => (
           <CarouselThumbnail
             key={img.id || i}
-            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${img.url}`}
+            src={`${process.env.NEXT_PUBLIC_CMS_URL}${img.url}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
           />
         )),
@@ -57,10 +60,10 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
           boxSizing: "border-box",
         }}
       >
-        {media.map((img, i) => (
+        {mediaArray.map((img, i) => (
           <img
             key={img.id || i}
-            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${img.url}`}
+            src={`${process.env.NEXT_PUBLIC_CMS_URL}${img.url}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             style={{
               width: "100%",

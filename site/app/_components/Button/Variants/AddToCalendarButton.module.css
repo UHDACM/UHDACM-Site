@@ -1,0 +1,14 @@
+.CalendarOption {
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background-color: rgba(var(--color-neutral-1000), 0.85);
+  transition: background-color 0.1s ease;
+}
+
+.CalendarOption:hover {
+  background-color: rgba(var(--color-neutral-800), 0.85);
+}

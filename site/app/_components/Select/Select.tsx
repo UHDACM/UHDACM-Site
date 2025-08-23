@@ -51,6 +51,15 @@ export default function Select({
     setHighlighted(0);
   };
 
+  const handleClick = () => {
+    if (open) {
+      setOpen(false);
+      inputRef.current?.blur();
+      setSearch("");
+    } else {
+      setOpen(true);
+    }
+  };
   return (
     <div
       style={{ position: "relative", boxSizing: "border-box" }}
@@ -61,7 +70,8 @@ export default function Select({
           value={search}
           placeholder={selected||placeholder}
           onChange={(e) => handleSearch(e.target.value)}
-          onFocus={() => setOpen(true)}
+          // onFocus={() => setOpen(true)}
+          onClick={handleClick}
           onBlur={() => setTimeout(() => setOpen(false), 100)}
           style={inputStyling}
           className={`${styles["select"]} ${styles["bright_placeholder"]}`}

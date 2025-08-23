@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./figma.css";
 import "./globals.css";
-import Navbar from "./_components/Navbar/Navbar";
 import ReduxProvider from "./_features/ReduxProvider";
 import Body from "./body";
 
