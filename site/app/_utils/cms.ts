@@ -1,17 +1,19 @@
 import { objectToUrlParams } from "./tools";
 
 export async function fetchCMS(path: cmsCollectionPlural | cmsSingleType, params?: Record<string, any>) {
-  let collectionTag: string = '';
+  let collectionTag: cmsCollectionSingular | cmsSingleType | undefined = undefined;
   if (isCMSCollectionPlural(path)) {
     const res = cmsCollectionPluralToSingular(path);
-    if (!res) {
-      // if is single type, it should ALWAYS have a plural type.
-      return undefined;
+    if (res) {
+      collectionTag = res;
     }
   } else if (isCMSSingleType(path)) {
     // its a single type, use path as is
     collectionTag = path;
-  } else {
+  } 
+
+  if (!collectionTag) {
+    console.log('failed to find collection tag', path);
     // this should never happen
     return undefined;
   }
@@ -31,7 +33,7 @@ export async function fetchCMS(path: cmsCollectionPlural | cmsSingleType, params
       }
     });
     if (!res.ok) {
-      console.error(res);
+      console.error('!!!!!!!!!!error!!!!!!!!!!\n', res);
       throw new Error(`Failed to fetch API: ${path}`);
     }
     const data = await res.json();
