@@ -11,15 +11,15 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "VideoName": {
+    "videoName": {
       "type": "string",
       "required": true,
       "unique": true
     },
-    "FeaturedGuests": {
+    "featuredGuests": {
       "type": "string"
     },
-    "Thumbnail": {
+    "thumbnail": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -29,16 +29,16 @@
         "audios"
       ]
     },
-    "VideoLink": {
+    "videoLink": {
       "type": "string",
       "required": true,
       "unique": true
     },
-    "UploadDate": {
+    "uploadDate": {
       "type": "date",
       "required": true
     },
-    "DescriptionShort": {
+    "descriptionShort": {
       "type": "string",
       "required": true
     }

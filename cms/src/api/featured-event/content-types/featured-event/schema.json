@@ -16,7 +16,7 @@
       "relation": "oneToOne",
       "target": "api::event.event"
     },
-    "PreviewImageHD": {
+    "previewImageHD": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [

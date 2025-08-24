@@ -6,7 +6,7 @@ import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEven
 import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
 import { fetchCMS } from "../_utils/cms";
-import { isValidEvent } from "../_utils/validation";
+import { isValidSiteEvent } from "../_utils/validation";
 import { Suspense } from "react";
 import styles from "./eventsPage.module.css";
 import { EntryTileProps } from "../_components/EntryTile/EntryTile";
@@ -54,7 +54,7 @@ async function SearchEvents() {
   if (res) {
     const eventsRaw = res.data;
     for (const event of eventsRaw) {
-      if (isValidEvent(event)) {
+      if (isValidSiteEvent(event)) {
         validEntries.push(EventToEntry(event));
       }
     }

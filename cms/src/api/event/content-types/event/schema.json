@@ -11,12 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "UrlSlug": {
+    "urlSlug": {
       "type": "string",
       "required": true,
       "unique": true
     },
-    "PreviewImage": {
+    "previewImage": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -26,37 +26,37 @@
         "audios"
       ]
     },
-    "Name": {
+    "name": {
       "type": "string",
       "required": true
     },
-    "DateStart": {
+    "dateStart": {
       "type": "datetime",
       "required": true
     },
-    "DateEnd": {
+    "dateEnd": {
       "type": "datetime",
       "required": true
     },
-    "DescriptionShort": {
+    "descriptionShort": {
       "type": "string",
       "required": true
     },
-    "DescriptionFull": {
+    "descriptionFull": {
       "type": "blocks",
       "required": true
     },
-    "Location": {
+    "location": {
       "type": "string",
       "required": true
     },
-    "Organizations": {
+    "organizations": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::organization.organization",
-      "mappedBy": "Event"
+      "mappedBy": "event"
     },
-    "Gallery": {
+    "gallery": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::gallery.gallery",

@@ -1,13 +1,14 @@
 {
-  "collectionName": "components_user_properties_user_socials",
+  "collectionName": "components_types_social_links",
   "info": {
-    "displayName": "user_social",
-    "icon": "twitter"
+    "displayName": "Social-Link",
+    "icon": "manyWays"
   },
   "options": {},
   "attributes": {
     "type": {
       "type": "enumeration",
+      "required": true,
       "enum": [
         "linkedin",
         "x",
@@ -15,11 +16,14 @@
         "instagram",
         "personal_site",
         "youtube",
-        "github"
+        "github",
+        "discord"
       ]
     },
     "url": {
-      "type": "string"
+      "type": "string",
+      "default": "link",
+      "required": true
     }
   },
   "config": {}

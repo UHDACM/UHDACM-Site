@@ -1,31 +1,56 @@
-import { Organization, Person, QnA, SiteEvent, SocialObj, SocialSite, SocialSites, StrapiPicture, StrapiPictureFormat } from "./types";
+import {
+  Organization,
+  Person,
+  QnA,
+  SiteEvent,
+  SocialObj,
+  SocialSite,
+  SocialSites,
+  StrapiPicture,
+  StrapiPictureFormat,
+} from "./types";
 
-export function isValidEvent(event: any): event is SiteEvent {
+export function isValidSiteEvent(event: any): event is SiteEvent {
   const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
   const isValidISODate = (dateStr: string) =>
     isoDateRegex.test(dateStr) && !isNaN(Date.parse(dateStr));
 
-  if (typeof event !== 'object') return false;
-  if (typeof event.id != 'number') return false;
-  if (typeof event.UrlSlug !== 'string') return false;
-  if (typeof event.Name !== 'string') return false;
-  if (typeof event.PreviewImage !== 'undefined' && !isStrapiPicture(event.PreviewImage)) return false;
-  if (typeof event.DateStart !== 'string') return false;
-  if (typeof event.DateEnd !== 'string') return false;
-  if (typeof event.DescriptionShort !== 'string') return false;
-  if (!Array.isArray(event.DescriptionFull)) return false;
-  if (typeof event.Location !== 'string') return false;
+  const {
+    id,
+    urlSlug,
+    name,
+    previewImage,
+    dateStart,
+    dateEnd,
+    descriptionShort,
+    descriptionFull,
+    location,
+    organizations,
+    gallery,
+  } = event as SiteEvent;
+
+  if (typeof event !== "object") return false;
+  if (typeof id != "number") return false;
+  if (typeof urlSlug !== "string") return false;
+  if (typeof name !== "string") return false;
+  if (typeof previewImage !== "undefined" && !isStrapiPicture(previewImage))
+    return false;
+  if (typeof dateStart !== "string") return false;
+  if (typeof dateEnd !== "string") return false;
+  if (typeof descriptionShort !== "string") return false;
+  if (!Array.isArray(descriptionFull)) return false;
+  if (typeof location !== "string") return false;
   if (
-    typeof event.Organizations !== 'undefined' &&
-    (!Array.isArray(event.Organizations) || !event.Organizations.every(isOrganization))
-  ) return false;
-  if (event.Gallery != undefined && typeof(event.Gallery) != 'object') return false;
-  if (!isValidISODate(event.DateStart)) return false;
-  if (!isValidISODate(event.DateEnd)) return false;
+    typeof organizations !== "undefined" &&
+    (!Array.isArray(organizations) || !organizations.every(isOrganization))
+  )
+    return false;
+  if (gallery != undefined && typeof gallery != "object") return false;
+  if (!isValidISODate(dateStart)) return false;
+  if (!isValidISODate(dateEnd)) return false;
   return true;
 }
-
 
 export function isSocialSite(value: any): value is SocialSite {
   return SocialSites.includes(value);
@@ -39,15 +64,17 @@ export function isSocialObj(obj: any): obj is SocialObj {
 }
 
 export function isPerson(obj: any): obj is Person {
+  const { name, nameShort, picture, role, roleShort, description, socials } =
+    obj as Person;
   if (!obj || typeof obj !== "object") return false;
-  if (typeof obj.Name !== "string") return false;
-  if (typeof obj.NameShort !== "string") return false;
-  if (!isStrapiPicture(obj.Picture)) return false;
-  if (typeof obj.Role !== "string") return false;
-  if (typeof obj.RoleShort !== "string") return false;
-  if (typeof obj.Description !== "string") return false;
-  if (!Array.isArray(obj.Socials)) return false;
-  if (!obj.Socials.every(isSocialObj)) return false;
+  if (typeof name !== "string") return false;
+  if (typeof nameShort !== "string") return false;
+  if (!isStrapiPicture(picture)) return false;
+  if (typeof role !== "string") return false;
+  if (typeof roleShort !== "string") return false;
+  if (typeof description !== "string") return false;
+  if (!Array.isArray(socials)) return false;
+  if (!socials.every(isSocialObj)) return false;
   return true;
 }
 
@@ -70,34 +97,54 @@ export function isStrapiPicture(obj: any): obj is StrapiPicture {
   if (typeof obj.height !== "number") return false;
   if (typeof obj.name !== "string") return false;
   if (!obj.formats || typeof obj.formats !== "object") return false;
-  if (obj.formats.thumbnail && !isStrapiPictureFormat(obj.formats.thumbnail)) return false;
-  if (obj.formats.small && !isStrapiPictureFormat(obj.formats.small)) return false;
-  if (obj.formats.medium && !isStrapiPictureFormat(obj.formats.medium)) return false;
-  if (obj.formats.large && !isStrapiPictureFormat(obj.formats.large)) return false;
+  if (obj.formats.thumbnail && !isStrapiPictureFormat(obj.formats.thumbnail))
+    return false;
+  if (obj.formats.small && !isStrapiPictureFormat(obj.formats.small))
+    return false;
+  if (obj.formats.medium && !isStrapiPictureFormat(obj.formats.medium))
+    return false;
+  if (obj.formats.large && !isStrapiPictureFormat(obj.formats.large))
+    return false;
   return true;
 }
 
-
 // Validation function for Organization
 export function isOrganization(obj: any): obj is Organization {
-  return (
-    obj &&
-    typeof obj === "object" &&
-    typeof obj.Name === "string" &&
-    typeof obj.Description === "string" &&
-    (obj.Logo === undefined || isStrapiPicture(obj.Logo))
-  );
+  if (!obj || typeof obj != "object") {
+    return false;
+  }
+
+  const { name, description, logo } = obj as Organization;
+
+  if (typeof name != "string") {
+    return false;
+  } else if (typeof description != "string") {
+    return false;
+  }
+  if (logo != undefined && !isStrapiPicture(logo)) {
+    return false;
+  }
+  return true;
 }
 
 export function isValidQnA(obj: any): obj is QnA {
-  if (typeof obj !== 'object' || obj === null) return false;
-  if (typeof obj.VideoName !== 'string') return false;
-  if ('FeaturedGuests' in obj && typeof obj.FeaturedGuests !== 'string') return false;
-  if ('Thumbnail' in obj && obj.Thumbnail !== undefined && typeof obj.Thumbnail !== 'object') return false;
-  if (typeof obj.VideoLink !== 'string') return false;
-  if (typeof obj.UploadDate !== 'string') return false;
-  if (typeof obj.DescriptionShort !== 'string') return false;
-  const date = new Date(obj.UploadDate);
+  const {
+    videoName,
+    featuredGuests,
+    thumbnail,
+    videoLink,
+    uploadDate,
+    descriptionShort,
+  } = obj as QnA;
+  if (typeof obj !== "object" || obj === null) return false;
+  if (typeof videoName !== "string") return false;
+  if (featuredGuests != undefined && typeof featuredGuests !== "string")
+    return false;
+  if (thumbnail !== undefined && typeof thumbnail !== "object") return false;
+  if (typeof videoLink !== "string") return false;
+  if (typeof uploadDate !== "string") return false;
+  if (typeof descriptionShort !== "string") return false;
+  const date = new Date(uploadDate);
   if (isNaN(date.getTime())) return false;
   return true;
 }

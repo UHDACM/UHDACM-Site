@@ -11,15 +11,15 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Name": {
+    "name": {
       "type": "string",
       "required": true
     },
-    "NameShort": {
+    "nameShort": {
       "type": "string",
       "required": true
     },
-    "Picture": {
+    "picture": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -30,24 +30,23 @@
         "audios"
       ]
     },
-    "Role": {
+    "role": {
       "type": "string",
       "required": true
     },
-    "RoleShort": {
+    "roleShort": {
       "type": "string",
       "required": true
     },
-    "Description": {
+    "description": {
       "type": "text",
       "maxLength": 200,
       "required": true
     },
-    "Socials": {
+    "socials": {
       "type": "component",
-      "component": "user-properties.user-social",
-      "repeatable": true,
-      "required": false
+      "component": "types.social-link",
+      "repeatable": true
     }
   }
 }

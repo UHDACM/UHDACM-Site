@@ -29,22 +29,18 @@ export type NavigationEntryObj = {
   children?: NavigationEntryObj[];
 };
 
-// export type Gallery = {
-
-// }
-
 export type SiteEvent = {
   id: number;
-  UrlSlug: string;
-  Name: string;
-  PreviewImage: StrapiPicture | undefined;
-  DateStart: string;
-  DateEnd: string;
-  DescriptionShort: string;
-  DescriptionFull: BlocksContent;
-  Location: string;
-  Gallery?: ObjectAny;
-  Organizations?: Organization[];
+  urlSlug: string;
+  name: string;
+  previewImage: StrapiPicture | undefined;
+  dateStart: string;
+  dateEnd: string;
+  descriptionShort: string;
+  descriptionFull: BlocksContent;
+  location: string;
+  gallery?: ObjectAny;
+  organizations?: Organization[];
 };
 
 export type SocialSite =
@@ -54,7 +50,8 @@ export type SocialSite =
   | "instagram"
   | "personal_site"
   | "github"
-  | "youtube";
+  | "youtube"
+  | "discord";
 
 export const SocialSites: SocialSite[] = [
   "linkedin",
@@ -63,7 +60,8 @@ export const SocialSites: SocialSite[] = [
   "instagram",
   "personal_site",
   "github",
-  "youtube"
+  "youtube",
+  "discord"
 ];
 
 export type SocialObj = {
@@ -72,13 +70,13 @@ export type SocialObj = {
 }
 
 export type Person = {
-  Name: string;
-  NameShort: string;
-  Picture: StrapiPicture | undefined;
-  Role: string;
-  RoleShort: string;
-  Description: string;
-  Socials: SocialObj[];
+  name: string;
+  nameShort: string;
+  picture: StrapiPicture | undefined;
+  role: string;
+  roleShort: string;
+  description: string;
+  socials: SocialObj[];
 }
 
 export type StrapiPictureFormat = {
@@ -105,9 +103,9 @@ export type StrapiPicture = {
 };
 
 export type Organization = {
-  Name: string,
-  Description: string,
-  Logo: StrapiPicture | undefined,
+  name: string,
+  description: string,
+  logo: StrapiPicture | undefined,
 };
 
 
@@ -116,11 +114,11 @@ export const ListingModes: ListingMode[] = ["on", "after", "before"];
 
 
 export type QnA = {
-  VideoName: string,
-  FeaturedGuests?: string,
-  Thumbnail?: StrapiPicture,
-  VideoLink: string,
-  UploadDate: string,
-  DescriptionShort: string
+  videoName: string,
+  featuredGuests?: string,
+  thumbnail?: StrapiPicture,
+  videoLink: string,
+  uploadDate: string,
+  descriptionShort: string
 };
 

@@ -1,0 +1,46 @@
+{
+  "collectionName": "components_site_components_buttons",
+  "info": {
+    "displayName": "button",
+    "icon": "server"
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "string",
+      "required": true
+    },
+    "Icon": {
+      "type": "enumeration",
+      "default": "chevron-right",
+      "enum": [
+        "chevron-left",
+        "chevron-right",
+        "share",
+        "calendar",
+        "search"
+      ]
+    },
+    "IsIconOnRightSide": {
+      "type": "boolean",
+      "conditions": {
+        "visible": {
+          "!=": [
+            {
+              "var": "Icon"
+            },
+            ""
+          ]
+        }
+      },
+      "required": true,
+      "default": true
+    },
+    "Href": {
+      "type": "string",
+      "required": true,
+      "regex": "^/"
+    }
+  },
+  "config": {}
+}

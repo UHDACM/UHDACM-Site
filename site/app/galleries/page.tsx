@@ -6,7 +6,7 @@ import CallToActionSection from "../_sections/CallToActionSection/CallToActionSe
 import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
 import { fetchCMS } from "../_utils/cms";
-import { isValidEvent } from "../_utils/validation";
+import { isValidSiteEvent } from "../_utils/validation";
 import { Suspense } from "react";
 import { EntryTileProps } from "../_components/EntryTile/EntryTile";
 import { EventToEntry } from "../_utils/tsxTools";
@@ -19,14 +19,14 @@ export default async function Page() {
   const eventsRaw = res ? res.data : [];
   const validEntries: EntryTileProps[] = [];
   for (const event of eventsRaw) {
-    if (isValidEvent(event) && event.Gallery) {
+    if (isValidSiteEvent(event) && event.gallery) {
       const entry = EventToEntry(event);
       entry.CallToAction = (
         <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
           <Button>
             <DefaultEllipsis />
           </Button>
-          <Button href={`/galleries/${event.UrlSlug}`}>
+          <Button href={`/galleries/${event.urlSlug}`}>
             <span style={{ fontWeight: 500 }}>View Gallery</span>
             <DefaultChevronRight
               fontSize={"inherit"}

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_site_sections_search_sections",
+  "info": {
+    "displayName": "search-section",
+    "icon": "search"
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "events",
+        "galleries",
+        "qnas"
+      ]
+    },
+    "header": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

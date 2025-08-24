@@ -147,13 +147,13 @@ async function MostRecentQnAHero() {
   }
 
   return <MainHeroSection
-    title={`Watch our QnA\nwith ${qna.FeaturedGuests}`}
+    title={`Watch our QnA\nwith ${qna.featuredGuests}`}
     titleClassName="H1"
-    subtitle={`${qna.DescriptionShort}`}
+    subtitle={`${qna.descriptionShort}`}
     reverseOrder={false}
     leftStyle={{ flex: 1 }}
     rightStyle={{ flex: 1 }}
-    rightContent={<CoolImage src={`${ProduceCMSResourceURL(qna.Thumbnail?.url)}`} />}
+    rightContent={<CoolImage src={`${ProduceCMSResourceURL(qna.thumbnail?.url)}`} />}
     bottomContent={
       <div
         style={{
@@ -178,7 +178,7 @@ async function MostRecentQnAHero() {
           </div>
         </Button>
         <Button
-          href={qna.VideoLink}
+          href={qna.videoLink}
           target="_blank"
         >
           <div

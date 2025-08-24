@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_contacts",
+  "info": {
+    "singularName": "page-contact",
+    "pluralName": "page-contacts",
+    "displayName": "page-contact"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Section1": {
+      "type": "dynamiczone",
+      "components": [
+        "site-sections.split-hero-section",
+        "site-sections.latest-qna",
+        "site-sections.featured-event",
+        "site-sections.search-section"
+      ],
+      "required": true
+    }
+  }
+}

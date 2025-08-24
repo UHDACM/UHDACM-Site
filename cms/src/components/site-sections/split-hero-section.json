@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_site_sections_split_hero_sections",
+  "info": {
+    "displayName": "split-hero-section",
+    "icon": "layout"
+  },
+  "options": {},
+  "attributes": {
+    "LeftComponent": {
+      "type": "component",
+      "component": "site-components.split-hero-column",
+      "repeatable": false
+    },
+    "RightComponent": {
+      "type": "component",
+      "component": "site-components.split-hero-column",
+      "repeatable": false,
+      "required": false
+    },
+    "CenterIfPossible": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "config": {}
+}

@@ -3,6 +3,7 @@
   --page-max-width: 70rem;
 }
 
+
 input {
   width: 100%;
   background: rgb(var(--color-neutral-800));

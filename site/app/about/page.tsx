@@ -8,6 +8,7 @@ import { fetchCMS } from "../_utils/cms";
 import { isPerson } from "../_utils/validation";
 import { Person, SocialObj } from "../_utils/types";
 import { ProduceCMSResourceURL } from "../_utils/tools";
+import { isValidLeadership } from "../_utils/types/cms/cmsTypes";
 
 export default async function Page() {
   return (
@@ -70,9 +71,16 @@ async function Leadership() {
   });
 
   if (!res) {
-    return undefined;
+    return;
   }
-  const people = res?.data.people || [];
+
+  const leadership = res.data;
+
+  if (!isValidLeadership(leadership)) {
+    return;
+  }
+
+  const people = leadership.people;
 
   const validPeople: Person[] = people.filter((person: any) => {
     if (!isPerson(person)) {
@@ -113,13 +121,13 @@ async function Leadership() {
           <PersonTile
             key={idx}
             imgCoverOrContain="cover"
-            img={`${ProduceCMSResourceURL(person.Picture?.url)}`}
-            previewTitle={person.NameShort}
-            fullTitle={person.Name}
-            previewSubTitle={person.RoleShort}
-            fullSubtitle={person.Role}
-            fullDescription={person.Description}
-            socials={person.Socials.map((social: SocialObj) => ({
+            img={`${ProduceCMSResourceURL(person.picture?.url)}`}
+            previewTitle={person.nameShort}
+            fullTitle={person.name}
+            previewSubTitle={person.roleShort}
+            fullSubtitle={person.role}
+            fullDescription={person.description}
+            socials={person.socials.map((social: SocialObj) => ({
               icon: social.type,
               href: social.url,
             }))}

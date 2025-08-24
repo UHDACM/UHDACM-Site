@@ -1,36 +1,42 @@
 import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
 import FeaturedEvent from "@/app/_components/FeaturedEvent/FeaturedEvent";
 import { fetchCMS } from "@/app/_utils/cms";
-import { isStrapiPicture, isValidEvent } from "@/app/_utils/validation";
+import { isStrapiPicture, isValidSiteEvent } from "@/app/_utils/validation";
 
 import styles from "./FeaturedEventSection.module.css";
 import Button from "@/app/_components/Button/Button";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 import { ProduceCMSResourceURL } from "@/app/_utils/tools";
+import { isValidFeaturedEvent } from "@/app/_utils/types/cms/cmsTypes";
 
 export default async function FeaturedEventSection() {
   const res = await fetchCMS("featured-event", {
     "populate[event][populate]": "*",
-    populate: "PreviewImageHD",
+    populate: "previewImageHD",
   });
 
   if (!res) {
     return;
   }
 
-  const { event, PreviewImageHD } = res.data;
+  const featuredEvent = res.data;
+  if (!isValidFeaturedEvent(featuredEvent)) {
+    return;
+  }
 
-  if (!event || !isValidEvent(event)) {
+  const { event, previewImageHD } = featuredEvent;
+
+  if (!event || !isValidSiteEvent(event)) {
     return undefined;
   }
 
-  const imgUrl = isStrapiPicture(PreviewImageHD)
-    ? `${ProduceCMSResourceURL(PreviewImageHD.url)}`
+  const imgUrl = isStrapiPicture(previewImageHD)
+    ? `${ProduceCMSResourceURL(previewImageHD.url)}`
     : undefined;
 
-  const dateStart = new Date(event.DateStart);
-  const dateEnd = new Date(event.DateEnd);
+  const dateStart = new Date(event.dateStart);
+  const dateEnd = new Date(event.dateEnd);
 
   // Format date as "MMM D, YYYY"
   const formatDate = (date: Date) =>
@@ -74,10 +80,10 @@ export default async function FeaturedEventSection() {
         <h1 className="H1">Featured Event</h1>
         <div className={styles.featuredEventWrapper}>
           <FeaturedEvent
-            title={event.Name}
+            title={event.name}
             largeHeavy={subheader}
-            smallHeavy={event.Location}
-            caption={event.DescriptionShort}
+            smallHeavy={event.location}
+            caption={event.descriptionShort}
             BottomComponent={
               <div
                 style={{
@@ -89,18 +95,18 @@ export default async function FeaturedEventSection() {
                 }}
               >
                 <ShareButton
-                  copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/events/${event.UrlSlug}`}
+                  copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/events/${event.urlSlug}`}
                   replaceTextOnCopyString="Link Copied"
                 />
                 <AddToCalendarButton
-                  title={event.Name}
-                  details={event.DescriptionShort}
-                  location={event.Location}
-                  start={event.DateStart}
-                  end={event.DateEnd}
+                  title={event.name}
+                  details={event.descriptionShort}
+                  location={event.location}
+                  start={event.dateStart}
+                  end={event.dateEnd}
                 />
                 <Button
-                  href={`/events/${event.UrlSlug}`}
+                  href={`/events/${event.urlSlug}`}
                   // onClick: () => alert("Right button clicked!"),
                 >
                   <div

@@ -12,6 +12,7 @@ import {
   DefaultTwitter,
   DefaultYoutube,
   DefaultClose,
+  DefaultDiscord,
 } from "@/app/_icons/Icons";
 import {
   FunctionUnknown,
@@ -30,6 +31,16 @@ type PersonTileSocial = {
 };
 type CoverOrContain = "cover" | "contain";
 
+const iconMap = {
+  personal_site: DefaultGlobe,
+  facebook: DefaultFacebook,
+  instagram: DefaultInstagram,
+  linkedin: DefaultLinkedin,
+  x: DefaultTwitter,
+  github: DefaultGithub,
+  youtube: DefaultYoutube,
+  discord: DefaultDiscord,
+};
 export default function PersonTile({
   tileStyle,
   previewTitleStyle,
@@ -287,15 +298,6 @@ function PersonTileExpanded({
                       onClick && onClick();
                     };
                     const combinedStyles = { ...SocialIconStyle, ...style };
-                    const iconMap = {
-                      personal_site: DefaultGlobe,
-                      facebook: DefaultFacebook,
-                      instagram: DefaultInstagram,
-                      linkedin: DefaultLinkedin,
-                      x: DefaultTwitter,
-                      github: DefaultGithub,
-                      youtube: DefaultYoutube,
-                    } as const;
                     const IconComponent = iconMap[icon];
                     if (!IconComponent) return null;
                     return (

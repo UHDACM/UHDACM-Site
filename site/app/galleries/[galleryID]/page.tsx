@@ -26,7 +26,7 @@ import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActio
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import GalleryGrid from "./_components/GalleryGrid";
 import { fetchCMS } from "@/app/_utils/cms";
-import { isStrapiPicture, isValidEvent } from "@/app/_utils/validation";
+import { isStrapiPicture, isValidSiteEvent } from "@/app/_utils/validation";
 import { StrapiPicture } from "@/app/_utils/types";
 import Page404 from "@/app/not-found";
 import { ProduceCMSResourceURL } from "@/app/_utils/tools";
@@ -42,9 +42,9 @@ export default async function EventPage({
 }) {
   const { galleryID } = await params;
   const res = await fetchCMS("events", {
-    "populate[0]": "PreviewImage",
-    "populate[1]": "Gallery.media",
-    "filters[UrlSlug][$eq]": galleryID,
+    "populate[0]": "previewImage",
+    "populate[1]": "gallery.media",
+    "filters[urlSlug][$eq]": galleryID,
   });
 
   if (!res) {
@@ -52,11 +52,11 @@ export default async function EventPage({
   }
 
   const event = res.data[0];
-  if (!isValidEvent(event) || !event.Gallery) {
+  if (!isValidSiteEvent(event) || !event.gallery) {
     return <Galleries404 />;
   }
 
-  const media = event.Gallery.media || [];
+  const media = event.gallery.media || [];
 
   const validMedia: StrapiPicture[] = [];
   for (const pic of media) {
@@ -82,13 +82,13 @@ export default async function EventPage({
       </Button> */}
       <MainHeroSection
         spanText="GALLERY"
-        title={`${event.Name}`}
+        title={`${event.name}`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         addNavbarPadding={true}
         rightContent={
           <CoolImage
-            src={`${ProduceCMSResourceURL(event.PreviewImage?.url)}`}
+            src={`${ProduceCMSResourceURL(event.previewImage?.url)}`}
           />
         }
         bottomContent={

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_site_sections_featured_events",
+  "info": {
+    "displayName": "featured-event",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {
+    "Header": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

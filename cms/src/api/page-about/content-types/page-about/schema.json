@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_abouts",
+  "info": {
+    "singularName": "page-about",
+    "pluralName": "page-abouts",
+    "displayName": "page-about"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "site-sections.split-hero-section",
+        "site-sections.latest-qna",
+        "site-sections.featured-event",
+        "site-sections.search-section"
+      ],
+      "required": true
+    }
+  }
+}
