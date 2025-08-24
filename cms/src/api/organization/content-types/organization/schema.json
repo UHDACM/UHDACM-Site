@@ -11,11 +11,11 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Name": {
+    "name": {
       "type": "string",
       "required": true
     },
-    "Logo": {
+    "logo": {
       "type": "media",
       "multiple": false,
       "required": true,
@@ -24,15 +24,15 @@
         "files"
       ]
     },
-    "Description": {
+    "description": {
       "type": "string",
       "required": true
     },
-    "Event": {
+    "event": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::event.event",
-      "inversedBy": "Organizations"
+      "inversedBy": "organizations"
     }
   }
 }

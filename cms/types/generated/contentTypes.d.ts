@@ -387,28 +387,28 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    DateEnd: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    DateStart: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    DescriptionFull: Schema.Attribute.Blocks & Schema.Attribute.Required;
-    DescriptionShort: Schema.Attribute.String & Schema.Attribute.Required;
-    Gallery: Schema.Attribute.Relation<'oneToOne', 'api::gallery.gallery'>;
+    dateEnd: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    dateStart: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    descriptionFull: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    descriptionShort: Schema.Attribute.String & Schema.Attribute.Required;
+    gallery: Schema.Attribute.Relation<'oneToOne', 'api::gallery.gallery'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
-    Location: Schema.Attribute.String & Schema.Attribute.Required;
-    Name: Schema.Attribute.String & Schema.Attribute.Required;
-    Organizations: Schema.Attribute.Relation<
+    location: Schema.Attribute.String & Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    organizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::organization.organization'
     >;
-    PreviewImage: Schema.Attribute.Media<
+    previewImage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    UrlSlug: Schema.Attribute.String &
+    urlSlug: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
   };
@@ -435,7 +435,7 @@ export interface ApiFeaturedEventFeaturedEvent extends Struct.SingleTypeSchema {
       'api::featured-event.featured-event'
     > &
       Schema.Attribute.Private;
-    PreviewImageHD: Schema.Attribute.Media<
+    previewImageHD: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
     publishedAt: Schema.Attribute.DateTime;
@@ -521,18 +521,233 @@ export interface ApiOrganizationOrganization
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Description: Schema.Attribute.String & Schema.Attribute.Required;
-    Event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
+    description: Schema.Attribute.String & Schema.Attribute.Required;
+    event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::organization.organization'
     > &
       Schema.Attribute.Private;
-    Logo: Schema.Attribute.Media<'images' | 'files'> &
+    logo: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.Required;
-    Name: Schema.Attribute.String & Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageAboutPageAbout extends Struct.SingleTypeSchema {
+  collectionName: 'page_abouts';
+  info: {
+    displayName: 'page-about';
+    pluralName: 'page-abouts';
+    singularName: 'page-about';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-about.page-about'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
+        'site-sections.search-section',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageContactPageContact extends Struct.SingleTypeSchema {
+  collectionName: 'page_contacts';
+  info: {
+    displayName: 'page-contact';
+    pluralName: 'page-contacts';
+    singularName: 'page-contact';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-contact.page-contact'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Section1: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
+        'site-sections.search-section',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageEventsPageEvents extends Struct.SingleTypeSchema {
+  collectionName: 'page_events_plural';
+  info: {
+    displayName: 'page-events';
+    pluralName: 'page-events-plural';
+    singularName: 'page-events';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-events.page-events'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Section1: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
+        'site-sections.search-section',
+      ]
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageHomePageHome extends Struct.SingleTypeSchema {
+  collectionName: 'page_homes';
+  info: {
+    displayName: 'page-home';
+    pluralName: 'page-homes';
+    singularName: 'page-home';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-home.page-home'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Section1: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
+        'site-sections.search-section',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageJoinPageJoin extends Struct.SingleTypeSchema {
+  collectionName: 'page_joins';
+  info: {
+    displayName: 'page-join';
+    pluralName: 'page-joins';
+    singularName: 'page-join';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-join.page-join'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Section1: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
+        'site-sections.search-section',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageMediaPageMedia extends Struct.SingleTypeSchema {
+  collectionName: 'page_medias';
+  info: {
+    displayName: 'page-media';
+    pluralName: 'page-medias';
+    singularName: 'page-media';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-media.page-media'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Section1: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
+        'site-sections.search-section',
+      ]
+    > &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -553,7 +768,7 @@ export interface ApiPersonPerson extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Description: Schema.Attribute.Text &
+    description: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
@@ -564,13 +779,13 @@ export interface ApiPersonPerson extends Struct.CollectionTypeSchema {
       'api::person.person'
     > &
       Schema.Attribute.Private;
-    Name: Schema.Attribute.String & Schema.Attribute.Required;
-    NameShort: Schema.Attribute.String & Schema.Attribute.Required;
-    Picture: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    nameShort: Schema.Attribute.String & Schema.Attribute.Required;
+    picture: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
-    Role: Schema.Attribute.String & Schema.Attribute.Required;
-    RoleShort: Schema.Attribute.String & Schema.Attribute.Required;
-    Socials: Schema.Attribute.Component<'user-properties.user-social', true>;
+    role: Schema.Attribute.String & Schema.Attribute.Required;
+    roleShort: Schema.Attribute.String & Schema.Attribute.Required;
+    socials: Schema.Attribute.Component<'types.social-link', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -591,23 +806,80 @@ export interface ApiQnaQna extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    DescriptionShort: Schema.Attribute.String & Schema.Attribute.Required;
-    FeaturedGuests: Schema.Attribute.String;
+    descriptionShort: Schema.Attribute.String & Schema.Attribute.Required;
+    featuredGuests: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::qna.qna'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Thumbnail: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    thumbnail: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    UploadDate: Schema.Attribute.Date & Schema.Attribute.Required;
-    VideoLink: Schema.Attribute.String &
+    uploadDate: Schema.Attribute.Date & Schema.Attribute.Required;
+    videoLink: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    VideoName: Schema.Attribute.String &
+    videoName: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+  };
+}
+
+export interface ApiSiteLogoSiteLogo extends Struct.SingleTypeSchema {
+  collectionName: 'site_logos';
+  info: {
+    displayName: 'site-logo';
+    pluralName: 'site-logos';
+    singularName: 'site-logo';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    img: Schema.Attribute.Media<'files' | 'images'> & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::site-logo.site-logo'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSiteSocialLinksSiteSocialLinks
+  extends Struct.SingleTypeSchema {
+  collectionName: 'site_social_links_plural';
+  info: {
+    displayName: 'site-social-links';
+    pluralName: 'site-social-links-plural';
+    singularName: 'site-social-links';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::site-social-links.site-social-links'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    socials: Schema.Attribute.Component<'types.social-link', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1097,7 +1369,6 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    socials: Schema.Attribute.Component<'user-properties.user-social', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1125,8 +1396,16 @@ declare module '@strapi/strapi' {
       'api::gallery.gallery': ApiGalleryGallery;
       'api::leadership.leadership': ApiLeadershipLeadership;
       'api::organization.organization': ApiOrganizationOrganization;
+      'api::page-about.page-about': ApiPageAboutPageAbout;
+      'api::page-contact.page-contact': ApiPageContactPageContact;
+      'api::page-events.page-events': ApiPageEventsPageEvents;
+      'api::page-home.page-home': ApiPageHomePageHome;
+      'api::page-join.page-join': ApiPageJoinPageJoin;
+      'api::page-media.page-media': ApiPageMediaPageMedia;
       'api::person.person': ApiPersonPerson;
       'api::qna.qna': ApiQnaQna;
+      'api::site-logo.site-logo': ApiSiteLogoSiteLogo;
+      'api::site-social-links.site-social-links': ApiSiteSocialLinksSiteSocialLinks;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -15,7 +15,7 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::event.event",
-      "mappedBy": "Gallery"
+      "mappedBy": "gallery"
     },
     "media": {
       "type": "media",

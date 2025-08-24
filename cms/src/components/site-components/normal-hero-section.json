@@ -1,0 +1,67 @@
+{
+  "collectionName": "components_site_components_normal_hero_sections",
+  "info": {
+    "displayName": "hero-text-block",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "Preheader": {
+      "type": "string",
+      "maxLength": 24
+    },
+    "Header": {
+      "type": "string",
+      "maxLength": 32,
+      "required": true
+    },
+    "HeaderType": {
+      "type": "enumeration",
+      "required": true,
+      "default": "H1",
+      "enum": [
+        "Title",
+        "H1",
+        "H2",
+        "H3"
+      ]
+    },
+    "Subheader": {
+      "type": "string",
+      "maxLength": 64,
+      "required": false
+    },
+    "ButtonsVisible": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "Buttons": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "ButtonsVisible"
+            },
+            true
+          ]
+        }
+      },
+      "component": "site-components.button",
+      "repeatable": true,
+      "required": true
+    },
+    "Alignment": {
+      "type": "enumeration",
+      "required": true,
+      "default": "Left",
+      "enum": [
+        "Left",
+        "Center",
+        "Right"
+      ]
+    }
+  },
+  "config": {}
+}

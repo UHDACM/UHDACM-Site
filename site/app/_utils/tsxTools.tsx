@@ -8,12 +8,12 @@ import { SiteEvent } from "./types";
 import { isStrapiPicture } from "./validation";
 
 export function EventToEntry(event: SiteEvent): EntryTileProps {
-  const imgUrl = isStrapiPicture(event.PreviewImage)
-    ? `${ProduceCMSResourceURL(event.PreviewImage.url)}`
+  const imgUrl = isStrapiPicture(event.previewImage)
+    ? `${ProduceCMSResourceURL(event.previewImage.url)}`
     : undefined;
 
-  const dateStart = new Date(event.DateStart);
-  const dateEnd = new Date(event.DateEnd);
+  const dateStart = new Date(event.dateStart);
+  const dateEnd = new Date(event.dateEnd);
 
   // Format date as "MMM D, YYYY"
   const formatDate = (date: Date) =>
@@ -51,8 +51,8 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
     subheader = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
   }
   return {
-    date: event.DateStart,
-    dateEnd: event.DateEnd,
+    date: event.dateStart,
+    dateEnd: event.dateEnd,
     CallToAction: (
       <div
         className="BodyLarge"
@@ -64,18 +64,18 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
         }}
       >
         <AddToCalendarButton
-          title={event.Name}
-          details={event.DescriptionShort}
-          location={event.Location}
-          start={event.DateStart}
-          end={event.DateEnd}
+          title={event.name}
+          details={event.descriptionShort}
+          location={event.location}
+          start={event.dateStart}
+          end={event.dateEnd}
           // menuLeft={true}
         />
         <ShareButton
-          copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/events/${event.UrlSlug}`}
+          copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/events/${event.urlSlug}`}
           replaceTextOnCopyString="Link Copied"
         />
-        <Button href={`/events/${event.UrlSlug}`}>
+        <Button href={`/events/${event.urlSlug}`}>
           <span style={{ fontWeight: 500 }}>View</span>
           <DefaultChevronRight
             fontSize={"inherit"}
@@ -85,12 +85,12 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
         </Button>
       </div>
     ),
-    description: event.DescriptionShort,
-    header: event.Name,
+    description: event.descriptionShort,
+    header: event.name,
     imageSrc: imgUrl,
-    imageAlt: event.PreviewImage?.alternativeText,
+    imageAlt: event.previewImage?.alternativeText,
     style: undefined,
     subheader: subheader,
-    subheaderTwo: event.Location,
+    subheaderTwo: event.location,
   };
 }

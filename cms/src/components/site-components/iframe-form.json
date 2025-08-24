@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_site_components_iframe_forms",
+  "info": {
+    "displayName": "iframe-form",
+    "icon": "code"
+  },
+  "options": {},
+  "attributes": {
+    "IFrameFormUrl": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

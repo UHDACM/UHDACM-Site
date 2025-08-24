@@ -63,15 +63,15 @@ async function SearchQnAs() {
       })();
       if (isValidQnA(QnA)) {
         validEntries.push({
-          date: QnA.UploadDate,
-          description: QnA.DescriptionShort,
-          header: QnA.VideoName,
-          imageSrc: QnA.Thumbnail
-            ? `${ProduceCMSResourceURL(QnA.Thumbnail.url)}`
+          date: QnA.uploadDate,
+          description: QnA.descriptionShort,
+          header: QnA.videoName,
+          imageSrc: QnA.thumbnail
+            ? `${ProduceCMSResourceURL(QnA.thumbnail.url)}`
             : undefined,
-          imageAlt: QnA.Thumbnail?.alternativeText,
+          imageAlt: QnA.thumbnail?.alternativeText,
           style: undefined,
-          subheader: `Guest: ${QnA.FeaturedGuests}`,
+          subheader: `Guest: ${QnA.featuredGuests}`,
           subheaderTwo: UploadDateString,
           CallToAction: (
             <div
@@ -81,7 +81,7 @@ async function SearchQnAs() {
               <Button>
                 <DefaultEllipsis />
               </Button>
-              <Button href={`${QnA.VideoLink}`}>
+              <Button href={`${QnA.videoLink}`}>
                 <span style={{ fontWeight: 500 }}>View Event</span>
                 <DefaultChevronRight
                   fontSize={"inherit"}

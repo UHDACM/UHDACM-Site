@@ -21,11 +21,11 @@ function ShareEventButton({ urlSlug }: { urlSlug: string }) {
 function CalendarButton({ event }: { event: SiteEvent }) {
   return (
     <AddToCalendarButton
-      title={event.Name}
-      details={event.DescriptionShort}
-      location={event.Location}
-      start={event.DateStart}
-      end={event.DateEnd}
+      title={event.name}
+      details={event.descriptionShort}
+      location={event.location}
+      start={event.dateStart}
+      end={event.dateEnd}
     />
   );
 }
@@ -33,7 +33,7 @@ function CalendarButton({ event }: { event: SiteEvent }) {
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import { fetchCMS } from "@/app/_utils/cms";
-import { isValidEvent } from "@/app/_utils/validation";
+import { isValidSiteEvent } from "@/app/_utils/validation";
 import Page404 from "@/app/not-found";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 import { SiteEvent } from "@/app/_utils/types";
@@ -51,7 +51,7 @@ export default async function EventPage({
   const { eventID } = await params;
   const res = await fetchCMS("events", {
     populate: "*",
-    "filters[UrlSlug][$eq]": eventID,
+    "filters[urlSlug][$eq]": eventID,
   });
 
   if (!res) {
@@ -60,12 +60,12 @@ export default async function EventPage({
 
   const event = res.data[0]; // Assuming the API returns an array of events
 
-  if (!event || !isValidEvent(event)) {
+  if (!event || !isValidSiteEvent(event)) {
     return <EventPage404 />;
   }
 
-  const dateStart = new Date(event.DateStart);
-  const dateEnd = new Date(event.DateEnd);
+  const dateStart = new Date(event.dateStart);
+  const dateEnd = new Date(event.dateEnd);
 
   // Format date as "MMM D, YYYY"
   const formatDate = (date: Date) =>
@@ -115,7 +115,7 @@ export default async function EventPage({
     >
       <MainHeroSection
         spanText="EVENT"
-        title={event.Name}
+        title={event.name}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         addNavbarPadding={true}
@@ -123,7 +123,7 @@ export default async function EventPage({
           <CoolImage
             style={{ height: "24rem", overflow: "hidden" }}
             src={
-              `${ProduceCMSResourceURL(event.PreviewImage?.url)}` ||
+              `${ProduceCMSResourceURL(event.previewImage?.url)}` ||
               "/sjd.JPG"
             }
           />
@@ -131,7 +131,7 @@ export default async function EventPage({
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <CalendarButton event={event} />
-            <ShareEventButton urlSlug={event.UrlSlug} />
+            <ShareEventButton urlSlug={event.urlSlug} />
           </div>
         }
       />
@@ -157,14 +157,14 @@ export default async function EventPage({
         <EventDetails
           icon="location"
           header="Where"
-          body={event.Location || "Location not specified"}
+          body={event.location || "Location not specified"}
           bodyColor="rgb(var(--color-font-secondary))"
         />
         <EventDetails
           icon="people"
           header="Host"
           body={
-            event.Organizations?.map((org) => org.Name).join(", ") ||
+            event.organizations?.map((org) => org.name).join(", ") ||
             "No host specified"
           }
           bodyColor="rgb(var(--color-font-accent))"
@@ -183,8 +183,8 @@ export default async function EventPage({
         <div className={styles.eventDescription}>
           <h1 className="H1">Event Description</h1>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {event.DescriptionFull && (
-              <StrapiRichTextRenderer content={event.DescriptionFull} />
+            {event.descriptionFull && (
+              <StrapiRichTextRenderer content={event.descriptionFull} />
             )}
           </div>
         </div>
@@ -203,7 +203,7 @@ export default async function EventPage({
             }}
           >
             <CalendarButton event={event} />
-            <ShareEventButton urlSlug={event.UrlSlug} />
+            <ShareEventButton urlSlug={event.urlSlug} />
           </div>
         }
       />

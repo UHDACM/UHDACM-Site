@@ -1,0 +1,70 @@
+{
+  "collectionName": "components_site_components_split_hero_columns",
+  "info": {
+    "displayName": "split-hero-column",
+    "icon": "layout"
+  },
+  "options": {},
+  "attributes": {
+    "Type": {
+      "type": "enumeration",
+      "required": true,
+      "default": "TextBlock",
+      "enum": [
+        "None",
+        "ImageCollection",
+        "Form",
+        "TextBlock"
+      ]
+    },
+    "ImageCollection": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "ImageCollection"
+          ]
+        }
+      },
+      "component": "site-components.image-collection",
+      "repeatable": false,
+      "required": true
+    },
+    "TextBlock": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "TextBlock"
+          ]
+        }
+      },
+      "component": "site-components.normal-hero-section",
+      "repeatable": false,
+      "required": true
+    },
+    "Form": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Form"
+          ]
+        }
+      },
+      "component": "site-components.iframe-form",
+      "repeatable": false,
+      "required": true
+    }
+  },
+  "config": {}
+}

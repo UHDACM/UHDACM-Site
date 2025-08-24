@@ -8,36 +8,36 @@
 
 @keyframes pulseGlowBottom {
   20% {
-    border-bottom-color: rgba(var(var(--color-font-default)), 0);
+    border-bottom-color: rgba(var(--color-font-default), 0);
   }
   50% {
-    border-bottom-color: rgba(var(var(--color-font-default)), var(0.5));
+    border-bottom-color: rgba(var(--color-font-default), var(0.5));
   }
   80% {
-    border-bottom-color: rgba(var(var(--color-font-default)), 0);
+    border-bottom-color: rgba((--color-font-default), 0);
   }
 }
 
 @keyframes pulseGlowTop {
   20% {
-    border-top-color: rgba(var(var(--color-font-default)), 0);
+    border-top-color: rgba(var(--color-font-default), 0);
   }
   50% {
-    border-top-color: rgba(var(var(--color-font-default)), var(0.5));
+    border-top-color: rgba(var(--color-font-default), var(0.5));
   }
   80% {
-    border-top-color: rgba(var(var(--color-font-default)), 0);
+    border-top-color: rgba(var(--color-font-default), 0);
   }
 }
 
 .glowBottom {
-  border-bottom: 1px solid rgba(var(var(--color-font-default)), 0);
-  animation: pulseGlowBottom var(3s) infinite;
+  border-bottom: 1px solid rgba(var(--color-font-default), 0);
+  animation: pulseGlowBottom 3s infinite;
   transition: border-bottom-color 0.2s ease-in-out;
 }
 
 .glowTop {
-  border-top: 1px solid rgba(var(var(--color-font-default)), 0);
-  animation: pulseGlowTop var(3s) infinite;
+  border-top: 1px solid rgba(var(--color-font-default), 0);
+  animation: pulseGlowTop 3s infinite;
   transition: border-top-color 0.2s ease-in-out;
 }
