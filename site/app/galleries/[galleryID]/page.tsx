@@ -127,13 +127,6 @@ export default async function EventPage({
   );
 }
 
-type EventDetailsProps = {
-  icon: "clock" | "location" | "people";
-  header: string;
-  body: string;
-  bodyColor?: string;
-};
-
 function Galleries404() {
   return (
     <Page404

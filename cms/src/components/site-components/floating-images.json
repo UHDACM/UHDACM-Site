@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_site_components_floating_images",
+  "info": {
+    "displayName": "floating-images",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "files",
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}

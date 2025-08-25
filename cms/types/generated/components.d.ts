@@ -24,6 +24,18 @@ export interface SiteComponentsButton extends Struct.ComponentSchema {
   };
 }
 
+export interface SiteComponentsFloatingImages extends Struct.ComponentSchema {
+  collectionName: 'components_site_components_floating_images';
+  info: {
+    displayName: 'floating-images';
+    icon: 'apps';
+  };
+  attributes: {
+    images: Schema.Attribute.Media<'files' | 'images', true> &
+      Schema.Attribute.Required;
+  };
+}
+
 export interface SiteComponentsIframeForm extends Struct.ComponentSchema {
   collectionName: 'components_site_components_iframe_forms';
   info: {
@@ -82,6 +94,18 @@ export interface SiteComponentsNormalHeroSection
   };
 }
 
+export interface SiteComponentsSingleImage extends Struct.ComponentSchema {
+  collectionName: 'components_site_components_single_images';
+  info: {
+    displayName: 'single-image';
+    icon: 'file';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'files' | 'images'> &
+      Schema.Attribute.Required;
+  };
+}
+
 export interface SiteComponentsSplitHeroColumn extends Struct.ComponentSchema {
   collectionName: 'components_site_components_split_hero_columns';
   info: {
@@ -89,10 +113,20 @@ export interface SiteComponentsSplitHeroColumn extends Struct.ComponentSchema {
     icon: 'layout';
   };
   attributes: {
+    floatingImages: Schema.Attribute.Component<
+      'site-components.floating-images',
+      false
+    > &
+      Schema.Attribute.Required;
     form: Schema.Attribute.Component<'site-components.iframe-form', false> &
       Schema.Attribute.Required;
     imageCollection: Schema.Attribute.Component<
       'site-components.image-collection',
+      false
+    > &
+      Schema.Attribute.Required;
+    singleImage: Schema.Attribute.Component<
+      'site-components.single-image',
       false
     > &
       Schema.Attribute.Required;
@@ -102,7 +136,14 @@ export interface SiteComponentsSplitHeroColumn extends Struct.ComponentSchema {
     > &
       Schema.Attribute.Required;
     type: Schema.Attribute.Enumeration<
-      ['none', 'imageCollection', 'textBlock', 'form']
+      [
+        'none',
+        'imageCollection',
+        'singleImage',
+        'floatingImages',
+        'textBlock',
+        'form',
+      ]
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'none'>;
@@ -225,9 +266,11 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'site-components.button': SiteComponentsButton;
+      'site-components.floating-images': SiteComponentsFloatingImages;
       'site-components.iframe-form': SiteComponentsIframeForm;
       'site-components.image-collection': SiteComponentsImageCollection;
       'site-components.normal-hero-section': SiteComponentsNormalHeroSection;
+      'site-components.single-image': SiteComponentsSingleImage;
       'site-components.split-hero-column': SiteComponentsSplitHeroColumn;
       'site-sections.featured-event': SiteSectionsFeaturedEvent;
       'site-sections.latest-qna': SiteSectionsLatestQna;

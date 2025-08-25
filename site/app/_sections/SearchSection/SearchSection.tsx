@@ -11,6 +11,7 @@ import { EntrySortMode, ListingMode } from "@/app/_utils/types";
 import Button from "@/app/_components/Button/Button";
 import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
 import { intToMonth, ProduceCMSResourceURL, toTitleCase } from "@/app/_utils/tools";
+import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 export default async function SearchSection({
   header,
   type,
@@ -100,9 +101,7 @@ export async function GalleriesSearchTool({
       const entry = EventToEntry(event);
       entry.CallToAction = (
         <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
-          <Button>
-            <DefaultEllipsis />
-          </Button>
+          <ShareButton copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/galleries/${event.urlSlug}`} replaceTextOnCopyString="Copied!" />
           <Button href={`/galleries/${event.urlSlug}`}>
             <span style={{ fontWeight: 500 }}>View Gallery</span>
             <DefaultChevronRight

@@ -1,0 +1,25 @@
+.galleryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0rem 2rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .galleryGrid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .galleryGrid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .galleryGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
