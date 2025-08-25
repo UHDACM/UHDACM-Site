@@ -10,7 +10,6 @@ import LatestQnASection from "../LatestQnASection/LatestQnASection";
 import SearchSection from "../SearchSection/SearchSection";
 import { SiteSection } from "@/app/_utils/types/cms/cmsTypes";
 import SplitHeroSection from "../SplitHeroSection/SplitHeroSection";
-import styles from "./SectionsRenderer.module.css";
 
 export default function SectionsRenderer({
   sections,
@@ -19,7 +18,6 @@ export default function SectionsRenderer({
 }) {
   return (
     <>
-      <div className={styles.NavbarPadding} />
       {sections.map((section, i) => {
         let Comp: ReactNode = undefined;
         if (isValidSiteSectionFeaturedEvent(section)) {
