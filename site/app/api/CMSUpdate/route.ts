@@ -1,4 +1,5 @@
-import { isCMSCollectionSingular, isCMSSingleType } from "@/app/_utils/cms";
+
+import { isCMSCollectionSingular, isCMSSingleType, isCMSSingleTypePage } from "@/app/_utils/types/cms/cmsTypeValidation";
 import { revalidateTag } from "next/cache";
 
 export async function POST(req: Request) {
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify({ error: 'Missing model in request body' }), { status: 400 });
   }
 
-  if (!isCMSCollectionSingular(model) && ! isCMSSingleType(model)) {
+  if (!isCMSCollectionSingular(model) && ! isCMSSingleType(model) && !isCMSSingleTypePage(model)) {
     return new Response(JSON.stringify({ error: 'Invalid model in request body' }), { status: 400 });
   }
 

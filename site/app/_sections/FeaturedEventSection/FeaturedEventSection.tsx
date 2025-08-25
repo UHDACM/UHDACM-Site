@@ -1,4 +1,4 @@
-import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
+import { DefaultChevronRight } from "@/app/_icons/Icons";
 import FeaturedEvent from "@/app/_components/FeaturedEvent/FeaturedEvent";
 import { fetchCMS } from "@/app/_utils/cms";
 import { isStrapiPicture, isValidSiteEvent } from "@/app/_utils/validation";
@@ -8,7 +8,7 @@ import Button from "@/app/_components/Button/Button";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 import { ProduceCMSResourceURL } from "@/app/_utils/tools";
-import { isValidFeaturedEvent } from "@/app/_utils/types/cms/cmsTypes";
+import { isValidFeaturedEvent } from "@/app/_utils/types/cms/cmsTypeValidation";
 
 export default async function FeaturedEventSection() {
   const res = await fetchCMS("featured-event", {
@@ -95,7 +95,7 @@ export default async function FeaturedEventSection() {
                 }}
               >
                 <ShareButton
-                  copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/events/${event.urlSlug}`}
+                  copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/events/${event.urlSlug}`}
                   replaceTextOnCopyString="Link Copied"
                 />
                 <AddToCalendarButton

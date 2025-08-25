@@ -7,15 +7,20 @@ export interface SiteComponentsButton extends Struct.ComponentSchema {
     icon: 'server';
   };
   attributes: {
-    Href: Schema.Attribute.String & Schema.Attribute.Required;
-    Icon: Schema.Attribute.Enumeration<
+    href: Schema.Attribute.String & Schema.Attribute.Required;
+    icon: Schema.Attribute.Enumeration<
       ['chevron-left', 'chevron-right', 'share', 'calendar', 'search']
     > &
       Schema.Attribute.DefaultTo<'chevron-right'>;
-    IsIconOnRightSide: Schema.Attribute.Boolean &
+    isIconOnRightSide: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<true>;
-    Text: Schema.Attribute.String & Schema.Attribute.Required;
+    target: Schema.Attribute.Enumeration<
+      ['_self', '_blank', '_parent', '_top']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'_self'>;
+    text: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -26,7 +31,7 @@ export interface SiteComponentsIframeForm extends Struct.ComponentSchema {
     icon: 'code';
   };
   attributes: {
-    IFrameFormUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    iFrameFormUrl: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -37,7 +42,7 @@ export interface SiteComponentsImageCollection extends Struct.ComponentSchema {
     icon: 'landscape';
   };
   attributes: {
-    Images: Schema.Attribute.Media<'images' | 'files', true> &
+    images: Schema.Attribute.Media<'images' | 'files', true> &
       Schema.Attribute.Required;
   };
 }
@@ -50,29 +55,29 @@ export interface SiteComponentsNormalHeroSection
     icon: 'file';
   };
   attributes: {
-    Alignment: Schema.Attribute.Enumeration<['Left', 'Center', 'Right']> &
+    alignment: Schema.Attribute.Enumeration<['left', 'center', 'right']> &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Left'>;
-    Buttons: Schema.Attribute.Component<'site-components.button', true> &
+      Schema.Attribute.DefaultTo<'left'>;
+    buttons: Schema.Attribute.Component<'site-components.button', true> &
       Schema.Attribute.Required;
-    ButtonsVisible: Schema.Attribute.Boolean &
+    buttonsVisible: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<true>;
-    Header: Schema.Attribute.String &
+    header: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 32;
+        maxLength: 64;
       }>;
-    HeaderType: Schema.Attribute.Enumeration<['Title', 'H1', 'H2', 'H3']> &
+    headerType: Schema.Attribute.Enumeration<['Title', 'H1', 'H2', 'H3']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'H1'>;
-    Preheader: Schema.Attribute.String &
+    preheader: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 24;
       }>;
-    Subheader: Schema.Attribute.String &
+    subheader: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 64;
+        maxLength: 512;
       }>;
   };
 }
@@ -84,34 +89,38 @@ export interface SiteComponentsSplitHeroColumn extends Struct.ComponentSchema {
     icon: 'layout';
   };
   attributes: {
-    Form: Schema.Attribute.Component<'site-components.iframe-form', false> &
+    form: Schema.Attribute.Component<'site-components.iframe-form', false> &
       Schema.Attribute.Required;
-    ImageCollection: Schema.Attribute.Component<
+    imageCollection: Schema.Attribute.Component<
       'site-components.image-collection',
       false
     > &
       Schema.Attribute.Required;
-    TextBlock: Schema.Attribute.Component<
+    textBlock: Schema.Attribute.Component<
       'site-components.normal-hero-section',
       false
     > &
       Schema.Attribute.Required;
-    Type: Schema.Attribute.Enumeration<
-      ['None', 'ImageCollection', 'Form', 'TextBlock']
+    type: Schema.Attribute.Enumeration<
+      ['none', 'imageCollection', 'textBlock', 'form']
     > &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'TextBlock'>;
+      Schema.Attribute.DefaultTo<'none'>;
   };
 }
 
 export interface SiteSectionsFeaturedEvent extends Struct.ComponentSchema {
   collectionName: 'components_site_sections_featured_events';
   info: {
-    displayName: 'featured-event';
+    displayName: 'featured-event-section';
     icon: 'calendar';
   };
   attributes: {
-    Header: Schema.Attribute.String;
+    header: Schema.Attribute.String;
+    sectionID: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 32;
+      }>;
   };
 }
 
@@ -121,7 +130,15 @@ export interface SiteSectionsLatestQna extends Struct.ComponentSchema {
     displayName: 'latest-qna';
     icon: 'play';
   };
-  attributes: {};
+  attributes: {
+    reverseOnDesktop: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    sectionID: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 32;
+      }>;
+  };
 }
 
 export interface SiteSectionsSearchSection extends Struct.ComponentSchema {
@@ -131,7 +148,17 @@ export interface SiteSectionsSearchSection extends Struct.ComponentSchema {
     icon: 'search';
   };
   attributes: {
+    defaultSortingMode: Schema.Attribute.Enumeration<
+      ['ascending', 'descending']
+    > &
+      Schema.Attribute.Required;
     header: Schema.Attribute.String;
+    listingMode: Schema.Attribute.Enumeration<['on', 'after', 'before']> &
+      Schema.Attribute.Required;
+    sectionID: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 32;
+      }>;
     type: Schema.Attribute.Enumeration<['events', 'galleries', 'qnas']> &
       Schema.Attribute.Required;
   };
@@ -144,17 +171,27 @@ export interface SiteSectionsSplitHeroSection extends Struct.ComponentSchema {
     icon: 'layout';
   };
   attributes: {
-    CenterIfPossible: Schema.Attribute.Boolean &
+    centerIfPossible: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
-    LeftComponent: Schema.Attribute.Component<
+    leftComponent: Schema.Attribute.Component<
       'site-components.split-hero-column',
       false
     >;
-    RightComponent: Schema.Attribute.Component<
+    reverseOnDesktop: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    reverseOnMobile: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    rightComponent: Schema.Attribute.Component<
       'site-components.split-hero-column',
       false
     >;
+    sectionID: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 32;
+      }>;
   };
 }
 

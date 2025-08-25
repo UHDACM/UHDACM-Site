@@ -5,6 +5,16 @@
     "icon": "play"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "reverseOnDesktop": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "sectionID": {
+      "type": "string",
+      "maxLength": 32
+    }
+  },
   "config": {}
 }

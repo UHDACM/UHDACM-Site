@@ -3,15 +3,10 @@
 import Select from "@/app/_components/Select/Select";
 import { useState } from "react";
 import EntryTile, { EntryTileProps } from "../EntryTile/EntryTile";
-import Button from "../Button/Button";
-import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
-import { ListingMode, ListingModes, SiteEvent } from "@/app/_utils/types";
+import { EntrySortMode, EntrySortModes, ListingMode, ListingModes } from "@/app/_utils/types";
 import { toTitleCase } from "@/app/_utils/tools";
 
 import styles from "./EntryListing.module.css";
-
-export type EntrySortMode = "ascending" | "descending";
-export const EntrySortModes: EntrySortMode[] = ["ascending", "descending"];
 
 // TODO: Maybe migrate this to types?
 interface EventListingProps {
@@ -106,7 +101,7 @@ export function EntryListing({
               }}
               selected={toTitleCase(listingMode)}
               onSelect={(v) => setListingMode(v as ListingMode)}
-              options={ListingModes}
+              options={[...ListingModes]}
             />
           </div>
           <h3
@@ -148,7 +143,7 @@ export function EntryListing({
                   setSortingMode(v.toLowerCase() as EntrySortMode)
                 }
                 selected={toTitleCase(sortingMode)}
-                options={EntrySortModes}
+                options={[...EntrySortModes]}
                 inputStyling={{
                   backgroundColor: "rgba(var(--color-neutral-1000), 0.5)",
                 }}

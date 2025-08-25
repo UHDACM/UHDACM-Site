@@ -17,6 +17,27 @@
     },
     "header": {
       "type": "string"
+    },
+    "listingMode": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "on",
+        "after",
+        "before"
+      ]
+    },
+    "defaultSortingMode": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "ascending",
+        "descending"
+      ]
+    },
+    "sectionID": {
+      "type": "string",
+      "maxLength": 32
     }
   },
   "config": {}

@@ -10,35 +10,9 @@ import { isValidSiteEvent } from "../_utils/validation";
 import { Suspense } from "react";
 import { EntryTileProps } from "../_components/EntryTile/EntryTile";
 import { EventToEntry } from "../_utils/tsxTools";
+import SearchSection from "../_sections/SearchSection/SearchSection";
 
 export default async function Page() {
-  const res = await fetchCMS("events", {
-    "populate[0]": "PreviewImage",
-    "populate[1]": "Gallery",
-  });
-  const eventsRaw = res ? res.data : [];
-  const validEntries: EntryTileProps[] = [];
-  for (const event of eventsRaw) {
-    if (isValidSiteEvent(event) && event.gallery) {
-      const entry = EventToEntry(event);
-      entry.CallToAction = (
-        <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
-          <Button>
-            <DefaultEllipsis />
-          </Button>
-          <Button href={`/galleries/${event.urlSlug}`}>
-            <span style={{ fontWeight: 500 }}>View Gallery</span>
-            <DefaultChevronRight
-              fontSize={"inherit"}
-              style={{ marginRight: "-0.25rem" }}
-              strokeWidth={"0.20rem"}
-            />
-          </Button>
-        </div>
-      );
-      validEntries.push(entry);
-    }
-  }
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -51,47 +25,12 @@ export default async function Page() {
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       {/* <FeaturedEventSection /> */}
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            width: "95vw",
-            maxWidth: "var(--page-max-width)",
-            padding: "6rem 1rem",
-            boxSizing: "border-box",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <h1
-            className="H1"
-            style={{
-              marginBottom: "0.5rem",
-              display: "flex",
-              boxSizing: "border-box",
-              width: "100%",
-            }}
-          >
-            Search Galleries
-          </h1>
-          <Suspense>
-            <EntrySearchTool
-              entries={validEntries}
-              entryTypePlural="Galleries"
-              entryTypeSingular="Gallery"
-              defaultListingMode="before"
-              defaultSortingMode="descending"
-            />
-          </Suspense>
-        </div>
-      </div>
+      <SearchSection
+        header={"Search Galleries"}
+        type={"galleries"}
+        listingMode={"before"}
+        defaultSortingMode={"descending"}
+      />
       <CallToActionSection
         title={`Want to collaborate\nwith UHDACM?`}
         subtitle="We'd love to hear from u or sumn"
@@ -118,3 +57,5 @@ export default async function Page() {
     </div>
   );
 }
+
+

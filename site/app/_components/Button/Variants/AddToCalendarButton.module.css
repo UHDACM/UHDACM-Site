@@ -5,10 +5,10 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  background-color: rgba(var(--color-neutral-1000), 0.85);
+  background-color: rgba(var(--color-neutral-1000), 1);
   transition: background-color 0.1s ease;
 }
 
 .CalendarOption:hover {
-  background-color: rgba(var(--color-neutral-800), 0.85);
+  background-color: rgba(var(--color-neutral-800), 1);
 }

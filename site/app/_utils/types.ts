@@ -109,9 +109,11 @@ export type Organization = {
 };
 
 
-export type ListingMode = "on" | "after" | "before";
-export const ListingModes: ListingMode[] = ["on", "after", "before"];
+export const ListingModes = ["on", "after", "before"] as const;
+export type ListingMode = typeof ListingModes[number];
 
+export const EntrySortModes = ["ascending", "descending"] as const;
+export type EntrySortMode = typeof EntrySortModes[number];
 
 export type QnA = {
   videoName: string,

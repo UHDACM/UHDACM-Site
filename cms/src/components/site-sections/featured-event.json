@@ -1,13 +1,17 @@
 {
   "collectionName": "components_site_sections_featured_events",
   "info": {
-    "displayName": "featured-event",
+    "displayName": "featured-event-section",
     "icon": "calendar"
   },
   "options": {},
   "attributes": {
-    "Header": {
+    "header": {
       "type": "string"
+    },
+    "sectionID": {
+      "type": "string",
+      "maxLength": 32
     }
   },
   "config": {}

@@ -1,0 +1,35 @@
+.heroSection {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	height: 80vh;
+	padding: 0rem 1rem;
+}
+
+.heroHeader {
+	display: flex;
+	flex-direction: column;
+	gap: 0rem;
+}
+
+.span {
+	color: rgb(var(--color-neutral-400));
+}
+
+.heroButtons {
+	margin-top: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+/**/
+
+
+@media (max-width: 768px) {
+	.heroSection {
+		height: auto;
+		padding: 4rem 0rem
+	}
+}

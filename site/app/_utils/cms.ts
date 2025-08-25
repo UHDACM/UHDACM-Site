@@ -1,7 +1,20 @@
 import { objectToUrlParams } from "./tools";
+import {
+  cmsCollectionPlural,
+  cmsCollectionSingular,
+  cmsSingleType,
+  cmsSingleTypePage,
+} from "./types/cms/cmsTypes";
+import {
+  isCMSCollectionPlural,
+  isCMSSingleType,
+  cmsCollectionPluralToSingular,
+  isCMSSingleTypePage,
+} from "./types/cms/cmsTypeValidation";
 
-export async function fetchCMS(path: cmsCollectionPlural | cmsSingleType, params?: Record<string, any>) {
-  let collectionTag: cmsCollectionSingular | cmsSingleType | undefined = undefined;
+// TODO: swap with entity service
+export async function fetchCMS(path: cmsCollectionPlural | cmsSingleType | cmsSingleTypePage, params?: Record<string, any>, additionalTags?: (cmsCollectionPlural | cmsSingleType | cmsSingleTypePage)[] | 'any') {
+  let collectionTag: cmsCollectionSingular | cmsSingleType | cmsSingleTypePage | undefined = undefined;
   if (isCMSCollectionPlural(path)) {
     const res = cmsCollectionPluralToSingular(path);
     if (res) {
@@ -10,7 +23,9 @@ export async function fetchCMS(path: cmsCollectionPlural | cmsSingleType, params
   } else if (isCMSSingleType(path)) {
     // its a single type, use path as is
     collectionTag = path;
-  } 
+  } else if (isCMSSingleTypePage(path)) {
+    collectionTag = path;
+  }
 
   if (!collectionTag) {
     console.log('failed to find collection tag', path);
@@ -21,10 +36,10 @@ export async function fetchCMS(path: cmsCollectionPlural | cmsSingleType, params
   try {
     const urlParams = params ? objectToUrlParams(params) : undefined;
     const url = `${process.env.NEXT_PUBLIC_CMS_URL}/api/${path}${urlParams ? `?${urlParams}` : ''}`;
-    console.log(`Fetching CMS: ${url}`);
+    // console.log(`Fetching CMS: ${url}`);
     const res = await fetch(url, {
       next: {
-        tags: [collectionTag]
+        tags: [collectionTag, ...(additionalTags || [])]
       },
       method: 'GET',
       headers: {
@@ -43,33 +58,29 @@ export async function fetchCMS(path: cmsCollectionPlural | cmsSingleType, params
   }
 }
 
-export type cmsCollectionSingular = 'event' | 'gallery' | 'organization' | 'person' | 'qna';
-export type cmsCollectionPlural = 'events' | 'galleries' | 'organizations' | 'people' | 'qnas';
 
-// BE SURE TO KEEP SINGULAR IN SYNC WITH PLURAL (e.g.: singular[0] = event, and plural[0] = events)
-export const cmsCollectionsSingular: cmsCollectionSingular[] = ['event', 'gallery', 'organization', 'person', 'qna'];
-export const cmsCollectionsPlural: cmsCollectionPlural[] = ['events', 'galleries', 'organizations', 'people', 'qnas'];
+export async function fetchCMSPage(page: cmsSingleTypePage) {
+  const populateList: string[] = [
+    'sections',
+    'sections.type',
+    'sections.leftComponent',
+    'sections.rightComponent',
+    'sections.leftComponent.form',
+    'sections.rightComponent.form',
+    'sections.leftComponent.textBlock',
+    'sections.rightComponent.textBlock',
+    'sections.leftComponent.textBlock.buttons',
+    'sections.rightComponent.textBlock.buttons',
+    'sections.leftComponent.imageCollection',
+    'sections.rightComponent.imageCollection',
+    'sections.leftComponent.imageCollection.images',
+    'sections.rightComponent.imageCollection.images',
+  ];
 
-export function isCMSCollectionSingular(value: any): value is cmsCollectionSingular {
-  return cmsCollectionsSingular.includes(value);
-}
+  const params: { [key: string]: string } = {};
+  for (const i in populateList) {
+    params[`populate[${i}]`] = `${populateList[i]}`;
+  }
 
-export function isCMSCollectionPlural(value: any): value is cmsCollectionPlural {
-  return cmsCollectionsPlural.includes(value);
-}
-
-export function cmsCollectionSingularToPlural(singular: cmsCollectionSingular): cmsCollectionPlural | undefined {
-  const index = cmsCollectionsSingular.indexOf(singular);
-  return index !== -1 ? cmsCollectionsPlural[index] : undefined;
-}
-
-export function cmsCollectionPluralToSingular(plural: cmsCollectionPlural): cmsCollectionSingular | undefined {
-  const index = cmsCollectionsPlural.indexOf(plural);
-  return index !== -1 ? cmsCollectionsSingular[index] : undefined;
-}
-
-export type cmsSingleType = 'featured-event' | 'leadership';
-export const cmsSingleTypes: cmsSingleType[] = ['featured-event', 'leadership'];
-export function isCMSSingleType(value: any): value is cmsSingleType {
-  return cmsSingleTypes.includes(value);
+  return await fetchCMS(page, params, 'any');
 }

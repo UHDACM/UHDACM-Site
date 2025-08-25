@@ -596,7 +596,7 @@ export interface ApiPageContactPageContact extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Section1: Schema.Attribute.DynamicZone<
+    sections: Schema.Attribute.DynamicZone<
       [
         'site-sections.split-hero-section',
         'site-sections.latest-qna',
@@ -632,14 +632,15 @@ export interface ApiPageEventsPageEvents extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Section1: Schema.Attribute.DynamicZone<
+    sections: Schema.Attribute.DynamicZone<
       [
         'site-sections.split-hero-section',
         'site-sections.latest-qna',
         'site-sections.featured-event',
         'site-sections.search-section',
       ]
-    >;
+    > &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -667,7 +668,7 @@ export interface ApiPageHomePageHome extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Section1: Schema.Attribute.DynamicZone<
+    sections: Schema.Attribute.DynamicZone<
       [
         'site-sections.split-hero-section',
         'site-sections.latest-qna',
@@ -703,7 +704,7 @@ export interface ApiPageJoinPageJoin extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Section1: Schema.Attribute.DynamicZone<
+    sections: Schema.Attribute.DynamicZone<
       [
         'site-sections.split-hero-section',
         'site-sections.latest-qna',
@@ -739,7 +740,7 @@ export interface ApiPageMediaPageMedia extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Section1: Schema.Attribute.DynamicZone<
+    sections: Schema.Attribute.DynamicZone<
       [
         'site-sections.split-hero-section',
         'site-sections.latest-qna',
@@ -826,41 +827,12 @@ export interface ApiQnaQna extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiSiteLogoSiteLogo extends Struct.SingleTypeSchema {
-  collectionName: 'site_logos';
+export interface ApiSiteInfoSiteInfo extends Struct.SingleTypeSchema {
+  collectionName: 'site_infos';
   info: {
-    displayName: 'site-logo';
-    pluralName: 'site-logos';
-    singularName: 'site-logo';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    img: Schema.Attribute.Media<'files' | 'images'> & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::site-logo.site-logo'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiSiteSocialLinksSiteSocialLinks
-  extends Struct.SingleTypeSchema {
-  collectionName: 'site_social_links_plural';
-  info: {
-    displayName: 'site-social-links';
-    pluralName: 'site-social-links-plural';
-    singularName: 'site-social-links';
+    displayName: 'site-info';
+    pluralName: 'site-infos';
+    singularName: 'site-info';
   };
   options: {
     draftAndPublish: true;
@@ -872,11 +844,13 @@ export interface ApiSiteSocialLinksSiteSocialLinks
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::site-social-links.site-social-links'
+      'api::site-info.site-info'
     > &
       Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    socials: Schema.Attribute.Component<'types.social-link', true>;
+    socials: Schema.Attribute.Component<'types.social-link', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1404,8 +1378,7 @@ declare module '@strapi/strapi' {
       'api::page-media.page-media': ApiPageMediaPageMedia;
       'api::person.person': ApiPersonPerson;
       'api::qna.qna': ApiQnaQna;
-      'api::site-logo.site-logo': ApiSiteLogoSiteLogo;
-      'api::site-social-links.site-social-links': ApiSiteSocialLinksSiteSocialLinks;
+      'api::site-info.site-info': ApiSiteInfoSiteInfo;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

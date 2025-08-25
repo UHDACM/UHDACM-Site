@@ -1,13 +1,13 @@
 "use client";
 import { SearchBar } from "@/app/_components/SearchBar/SearchBar";
 import Calendar from "@/app/_components/Calendar/Calendar";
-import { EntrySortMode, EntryListing } from "./EntryListing";
 import { useEffect, useState } from "react";
 import { getTodayYMD, intToMonth, toTitleCase } from "@/app/_utils/tools";
-import { ListingMode, SiteEvent } from "@/app/_utils/types";
+import { EntrySortMode, ListingMode, SiteEvent } from "@/app/_utils/types";
 import { DefaultClose } from "@/app/_icons/Icons";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 import { EntryTileProps } from "../EntryTile/EntryTile";
+import { EntryListing } from "./EntryListing";
 
 export default function EntrySearchTool({
   entryTypePlural,

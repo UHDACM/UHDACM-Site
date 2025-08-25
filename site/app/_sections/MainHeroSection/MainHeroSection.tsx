@@ -71,4 +71,5 @@ const MainHeroSection: React.FC<MainHeroSectionProps> = ({
   );
 };
 
+
 export default MainHeroSection;

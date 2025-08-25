@@ -6,11 +6,11 @@
   },
   "options": {},
   "attributes": {
-    "Text": {
+    "text": {
       "type": "string",
       "required": true
     },
-    "Icon": {
+    "icon": {
       "type": "enumeration",
       "default": "chevron-right",
       "enum": [
@@ -21,7 +21,7 @@
         "search"
       ]
     },
-    "IsIconOnRightSide": {
+    "isIconOnRightSide": {
       "type": "boolean",
       "conditions": {
         "visible": {
@@ -36,10 +36,20 @@
       "required": true,
       "default": true
     },
-    "Href": {
+    "href": {
       "type": "string",
+      "required": true
+    },
+    "target": {
+      "type": "enumeration",
       "required": true,
-      "regex": "^/"
+      "default": "_self",
+      "enum": [
+        "_self",
+        "_blank",
+        "_parent",
+        "_top"
+      ]
     }
   },
   "config": {}
