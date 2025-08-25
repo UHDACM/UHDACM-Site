@@ -1,0 +1,32 @@
+
+.heroHeader {
+	display: flex;
+	flex-direction: column;
+	gap: 0rem;
+}
+
+.span {
+	color: rgb(var(--color-neutral-400));
+}
+
+.heroButtons {
+	margin-top: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.textBlockInner {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: auto;
+	box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+	.textBlockInner {
+		width: 100%;
+	}
+}
