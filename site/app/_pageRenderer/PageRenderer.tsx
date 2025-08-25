@@ -4,6 +4,8 @@ import { cmsSingleTypePage, SiteSection } from "../_utils/types/cms/cmsTypes";
 import { isValidSiteSection } from "../_utils/types/cms/cmsTypeValidation";
 import Page404 from "../not-found";
 
+import styles from './PageRenderer.module.css';
+
 export default async function PageRenderer({ lostMessage, page }: { lostMessage?: string, page: cmsSingleTypePage }) {
   const res = await fetchCMSPage(page);
   if (!res || !res.data) {
@@ -35,8 +37,10 @@ export default async function PageRenderer({ lostMessage, page }: { lostMessage?
         flexDirection: "column",
         justifyContent: "center",
       }}
-    >
+    > 
+      <div className={styles.NavbarPadding} />
       <SectionsRenderer sections={sections} />
+      <div className={styles.NavbarPadding} />
     </div>
   );
 }
