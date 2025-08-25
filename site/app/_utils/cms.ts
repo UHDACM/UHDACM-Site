@@ -60,7 +60,7 @@ export async function fetchCMS(
       },
     });
     if (!res.ok) {
-      console.error("!!!!!!!!!!error!!!!!!!!!!\n", res);
+      console.log("!!!!!!!!!!error!!!!!!!!!!\n", res);
       throw new Error(`Failed to fetch API: ${path}`);
     }
     const data = await res.json();

@@ -8,6 +8,8 @@ import {
 } from "@/app/_utils/types/cms/cmsTypes";
 import CMSButton from "@/app/_components/Button/CMSButton/CMSButton";
 import {
+  isValidSplitHeroColumnFloatingImages,
+  isValidSplitHeroColumnForm,
   isValidSplitHeroColumnImageCollection,
   isValidSplitHeroColumnNone,
   isValidSplitHeroColumnSingleImage,
@@ -15,6 +17,9 @@ import {
 } from "@/app/_utils/types/cms/cmsTypeValidation";
 import HeroSingleImage from "./HeroSingleImage/HeroSingleImage";
 import HeroImageCollection from "./HeroImageCollection/HeroImageCollection";
+import HeroFloatingImages from "./HeroFloatingImage/HeroFloatingImages";
+import { HeroTextBlock } from "./HeroTextBlock/HeroTextBlock";
+import HeroForm from "./HeroForm/HeroForm";
 
 function SplitHeroColumnToComponent(component?: SplitHeroColumn) {
   if (component == null) {
@@ -30,6 +35,10 @@ function SplitHeroColumnToComponent(component?: SplitHeroColumn) {
     return <HeroSingleImage image={singleImage.image} />;
   } else if (isValidSplitHeroColumnImageCollection(component)) {
     return <HeroImageCollection images={component.imageCollection.images} />;
+  } else if (isValidSplitHeroColumnFloatingImages(component)) {
+    return <HeroFloatingImages images={component.floatingImages.images} />;
+  } else if (isValidSplitHeroColumnForm(component)) {
+    return <HeroForm iFrameUrl={component.form.iFrameFormUrl} />;
   }
   // else if (type == 'form') {
   //   return <HeroFormSection {...props} />;
@@ -74,89 +83,7 @@ const SplitHeroSection: React.FC<SplitHeroSectionProps> = ({
   );
 };
 
-function HeroTextBlock({
-  preheader,
-  header,
-  headerType,
-  subheader,
-  buttonsVisible,
-  buttons,
-  alignment,
-}: HeroTextBlockProps) {
-  let trueAlignment = "start";
-  if (alignment === "center") trueAlignment = "center";
-  else if (alignment === "right") trueAlignment = "end";
 
-  function toNode(text?: string): ReactNode {
-    if (!text) return null;
-    const lines = text.split("\\n");
-    return lines.map((line, idx) => (
-      <React.Fragment key={idx}>
-        {line}
-        {idx < lines.length - 1 && <br />}
-      </React.Fragment>
-    ));
-  }
-
-  const preheaderNode = toNode(preheader);
-  const headerNode = toNode(header);
-  const subheaderNode = toNode(subheader);
-
-  return (
-    <div
-      style={{
-        flex: 1,
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-          width: "auto",
-          alignItems: trueAlignment,
-          boxSizing: "border-box",
-        }}
-      >
-        <div className={styles.heroHeader}>
-          {preheader && (
-            <span
-              style={{ textAlign: alignment }}
-              className={`BodySmall ${styles.span}`}
-            >
-              {preheaderNode}
-            </span>
-          )}
-          {header && (
-            <div
-              className={headerType ? ` ${headerType}` : "Title"}
-              style={{ textAlign: alignment }}
-            >
-              {headerNode}
-            </div>
-          )}
-        </div>
-        {subheader && (
-          <div
-            style={{ whiteSpace: "pre-line", textAlign: alignment }}
-            className="SubtitleRegular"
-          >
-            {subheaderNode}
-          </div>
-        )}
-        {buttonsVisible && (
-          <div className={styles.heroButtons}>
-            {buttons?.map((button, index) => (
-              <CMSButton key={index} {...button} />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 
 export default SplitHeroSection;
