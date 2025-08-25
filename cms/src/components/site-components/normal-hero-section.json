@@ -6,16 +6,16 @@
   },
   "options": {},
   "attributes": {
-    "Preheader": {
+    "preheader": {
       "type": "string",
       "maxLength": 24
     },
-    "Header": {
+    "header": {
       "type": "string",
-      "maxLength": 32,
+      "maxLength": 64,
       "required": true
     },
-    "HeaderType": {
+    "headerType": {
       "type": "enumeration",
       "required": true,
       "default": "H1",
@@ -26,23 +26,23 @@
         "H3"
       ]
     },
-    "Subheader": {
+    "subheader": {
       "type": "string",
-      "maxLength": 64,
+      "maxLength": 512,
       "required": false
     },
-    "ButtonsVisible": {
+    "buttonsVisible": {
       "type": "boolean",
       "required": true,
       "default": true
     },
-    "Buttons": {
+    "buttons": {
       "type": "component",
       "conditions": {
         "visible": {
           "==": [
             {
-              "var": "ButtonsVisible"
+              "var": "buttonsVisible"
             },
             true
           ]
@@ -52,14 +52,14 @@
       "repeatable": true,
       "required": true
     },
-    "Alignment": {
+    "alignment": {
       "type": "enumeration",
       "required": true,
-      "default": "Left",
+      "default": "left",
       "enum": [
-        "Left",
-        "Center",
-        "Right"
+        "left",
+        "center",
+        "right"
       ]
     }
   },

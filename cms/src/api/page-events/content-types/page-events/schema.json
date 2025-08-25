@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Section1": {
+    "sections": {
       "type": "dynamiczone",
       "components": [
         "site-sections.split-hero-section",
@@ -19,7 +19,7 @@
         "site-sections.featured-event",
         "site-sections.search-section"
       ],
-      "required": false
+      "required": true
     }
   }
 }

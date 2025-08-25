@@ -8,7 +8,7 @@ import { fetchCMS } from "../_utils/cms";
 import { isPerson } from "../_utils/validation";
 import { Person, SocialObj } from "../_utils/types";
 import { ProduceCMSResourceURL } from "../_utils/tools";
-import { isValidLeadership } from "../_utils/types/cms/cmsTypes";
+import { isValidLeadership } from "../_utils/types/cms/cmsTypeValidation";
 
 export default async function Page() {
   return (

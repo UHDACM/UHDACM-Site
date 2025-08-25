@@ -1,15 +1,10 @@
 import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
-import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
+import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
 import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
-import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
-import { fetchCMS } from "../_utils/cms";
-import { isValidQnA } from "../_utils/validation";
-import { Suspense } from "react";
 import styles from "./eventsPage.module.css";
-import { EntryTileProps } from "../_components/EntryTile/EntryTile";
-import { intToMonth, ProduceCMSResourceURL, toTitleCase } from "../_utils/tools";
+import SearchSection from "../_sections/SearchSection/SearchSection";
 
 export default async function Page() {
   return (
@@ -22,7 +17,12 @@ export default async function Page() {
         addNavbarPadding={true}
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
-      <SearchQnAs />
+      <SearchSection
+        header={"Search QnAs"}
+        type={"qnas"}
+        listingMode={"before"}
+        defaultSortingMode={"descending"}
+      />
       <CallToActionSection
         title={`Want to collaborate\nwith UHDACM?`}
         subtitle="We'd love to hear from u or sumn"
@@ -42,73 +42,5 @@ export default async function Page() {
         }
       />
     </div>
-  );
-}
-
-async function SearchQnAs() {
-  const res = await fetchCMS("qnas", { populate: "Thumbnail" });
-
-  const validEntries: EntryTileProps[] = [];
-
-  if (res) {
-    const qnaRaw = res.data;
-    for (const QnA of qnaRaw) {
-      const UploadDateString = (() => {
-        const date = new Date(QnA.UploadDate);
-        if (!date.getMonth()) {
-          return "Unknown";
-        }
-        const MonthStr = toTitleCase(`${intToMonth(date.getMonth())}`);
-        return `${MonthStr.substring(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
-      })();
-      if (isValidQnA(QnA)) {
-        validEntries.push({
-          date: QnA.uploadDate,
-          description: QnA.descriptionShort,
-          header: QnA.videoName,
-          imageSrc: QnA.thumbnail
-            ? `${ProduceCMSResourceURL(QnA.thumbnail.url)}`
-            : undefined,
-          imageAlt: QnA.thumbnail?.alternativeText,
-          style: undefined,
-          subheader: `Guest: ${QnA.featuredGuests}`,
-          subheaderTwo: UploadDateString,
-          CallToAction: (
-            <div
-              className="BodyLarge"
-              style={{ display: "flex", gap: "0.5rem" }}
-            >
-              <Button>
-                <DefaultEllipsis />
-              </Button>
-              <Button href={`${QnA.videoLink}`}>
-                <span style={{ fontWeight: 500 }}>View Event</span>
-                <DefaultChevronRight
-                  fontSize={"inherit"}
-                  style={{ marginRight: "-0.25rem" }}
-                  strokeWidth={"0.20rem"}
-                />
-              </Button>
-            </div>
-          ),
-        });
-      }
-    }
-  }
-  return (
-    <Suspense>
-      <div className={styles.searchEventsRoot}>
-        <div className={styles.searchEventsInner}>
-          <h1 className={`H1 ${styles.searchEventsTitle}`}>Search QnAs</h1>
-          <EntrySearchTool
-            entries={validEntries}
-            entryTypePlural="QnAs"
-            entryTypeSingular="QnA"
-            defaultListingMode="before"
-            defaultSortingMode="descending"
-          />
-        </div>
-      </div>
-    </Suspense>
   );
 }

@@ -1,0 +1,14 @@
+.searchHeaderTitle {
+	margin-bottom: 0.5rem;
+	display: flex;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.innerStyling {
+  align-items: start;
+	height: 90vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

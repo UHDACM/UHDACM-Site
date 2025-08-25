@@ -7,6 +7,7 @@ import styles from "./media.module.css";
 import { fetchCMS } from "../_utils/cms";
 import { isValidQnA } from "../_utils/validation";
 import { ProduceCMSResourceURL } from "../_utils/tools";
+import LatestQnASection from "../_sections/LatestQnASection/LatestQnASection";
 
 export default async function Page() {
   return (
@@ -69,7 +70,7 @@ export default async function Page() {
           </Button>
         }
       />
-      <MostRecentQnAHero />
+      <LatestQnASection />
       <MainHeroSection
         title={`Something about Newsletters`}
         titleClassName="H1"
@@ -129,75 +130,4 @@ export default async function Page() {
   );
 }
 
-async function MostRecentQnAHero() {
-  const res = await fetchCMS("qnas", {
-    sort: "UploadDate:desc",
-    "pagination[limit]": 1,
-    'populate[0]': 'Thumbnail'
-  });
 
-  if (!res || !res.data || res.data.length === 0) {
-    return null;
-  }
-
-  const qna = res?.data[0];
-
-  if (!qna || !isValidQnA(qna)) {
-    return null;
-  }
-
-  return <MainHeroSection
-    title={`Watch our QnA\nwith ${qna.featuredGuests}`}
-    titleClassName="H1"
-    subtitle={`${qna.descriptionShort}`}
-    reverseOrder={false}
-    leftStyle={{ flex: 1 }}
-    rightStyle={{ flex: 1 }}
-    rightContent={<CoolImage src={`${ProduceCMSResourceURL(qna.thumbnail?.url)}`} />}
-    bottomContent={
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          gap: "0.5rem",
-          marginTop: "0.5rem",
-        }}
-      >
-        <Button href="/qnas">
-          <div
-            style={{
-              display: "flex",
-              gap: "0.5rem",
-              alignItems: "center",
-              fontWeight: 800,
-            }}
-          >
-            <DefaultSearch fontSize={"inherit"} strokeWidth={"0.20rem"} />
-            <span style={{ fontWeight: 500 }}>View all QnAs</span>
-          </div>
-        </Button>
-        <Button
-          href={qna.videoLink}
-          target="_blank"
-        >
-          <div
-            style={{
-              display: "flex",
-              gap: "0.25rem",
-              alignItems: "center",
-              fontWeight: 800,
-            }}
-          >
-            <span style={{ fontWeight: 500 }}>Watch Recent QnA</span>
-            <DefaultChevronRight
-              fontSize={"inherit"}
-              style={{ marginRight: "-0.25rem" }}
-              strokeWidth={"0.20rem"}
-            />
-          </div>
-        </Button>
-      </div>
-    }
-  />;
-}

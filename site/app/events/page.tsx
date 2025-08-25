@@ -3,14 +3,9 @@ import { DefaultChevronRight } from "@/app/_icons/Icons";
 import CoolImage from "../_components/CoolImage/CoolImage";
 import CallToActionSection from "../_sections/CallToActionSection/CallToActionSection";
 import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEventSection";
-import EntrySearchTool from "../_components/EntrySearchTool/EntrySearchTool";
 import Button from "../_components/Button/Button";
-import { fetchCMS } from "../_utils/cms";
-import { isValidSiteEvent } from "../_utils/validation";
-import { Suspense } from "react";
 import styles from "./eventsPage.module.css";
-import { EntryTileProps } from "../_components/EntryTile/EntryTile";
-import { EventToEntry } from "../_utils/tsxTools";
+import SearchSection from "../_sections/SearchSection/SearchSection";
 
 export default async function Page() {
   return (
@@ -24,7 +19,7 @@ export default async function Page() {
         rightContent={<CoolImage src="/sjd.JPG" />}
       />
       <FeaturedEventSection />
-      <SearchEvents />
+      <SearchSection header={'Search Events'} type={'events'} listingMode={'after'} defaultSortingMode={'ascending'} />
       <CallToActionSection
         title={`Want to collaborate\nwith UHDACM?`}
         subtitle="We'd love to hear from u or sumn"
@@ -44,36 +39,6 @@ export default async function Page() {
         }
       />
     </div>
-  );
-}
-
-async function SearchEvents() {
-  const res = await fetchCMS("events", { populate: "PreviewImage" });
-
-  const validEntries: EntryTileProps[] = [];
-  if (res) {
-    const eventsRaw = res.data;
-    for (const event of eventsRaw) {
-      if (isValidSiteEvent(event)) {
-        validEntries.push(EventToEntry(event));
-      }
-    }
-  }
-  return (
-    <Suspense>
-      <div className={styles.searchEventsRoot}>
-        <div className={styles.searchEventsInner}>
-          <h1 className={`H1 ${styles.searchEventsTitle}`}>Search Events</h1>
-          <EntrySearchTool
-            entries={validEntries}
-            entryTypePlural="Events"
-            entryTypeSingular="Event"
-            defaultListingMode="after"
-            defaultSortingMode="ascending"
-          />
-        </div>
-      </div>
-    </Suspense>
   );
 }
 

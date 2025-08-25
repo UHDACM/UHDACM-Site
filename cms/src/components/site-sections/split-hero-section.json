@@ -6,18 +6,32 @@
   },
   "options": {},
   "attributes": {
-    "LeftComponent": {
+    "leftComponent": {
       "type": "component",
       "component": "site-components.split-hero-column",
       "repeatable": false
     },
-    "RightComponent": {
+    "rightComponent": {
       "type": "component",
       "component": "site-components.split-hero-column",
       "repeatable": false,
       "required": false
     },
-    "CenterIfPossible": {
+    "centerIfPossible": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "sectionID": {
+      "type": "string",
+      "maxLength": 32
+    },
+    "reverseOnDesktop": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "reverseOnMobile": {
       "type": "boolean",
       "required": true,
       "default": false

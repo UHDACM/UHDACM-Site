@@ -6,26 +6,26 @@
   },
   "options": {},
   "attributes": {
-    "Type": {
+    "type": {
       "type": "enumeration",
       "required": true,
-      "default": "TextBlock",
+      "default": "none",
       "enum": [
-        "None",
-        "ImageCollection",
-        "Form",
-        "TextBlock"
+        "none",
+        "imageCollection",
+        "textBlock",
+        "form"
       ]
     },
-    "ImageCollection": {
+    "imageCollection": {
       "type": "component",
       "conditions": {
         "visible": {
           "==": [
             {
-              "var": "Type"
+              "var": "type"
             },
-            "ImageCollection"
+            "imageCollection"
           ]
         }
       },
@@ -33,15 +33,15 @@
       "repeatable": false,
       "required": true
     },
-    "TextBlock": {
+    "textBlock": {
       "type": "component",
       "conditions": {
         "visible": {
           "==": [
             {
-              "var": "Type"
+              "var": "type"
             },
-            "TextBlock"
+            "textBlock"
           ]
         }
       },
@@ -49,15 +49,15 @@
       "repeatable": false,
       "required": true
     },
-    "Form": {
+    "form": {
       "type": "component",
       "conditions": {
         "visible": {
           "==": [
             {
-              "var": "Type"
+              "var": "type"
             },
-            "Form"
+            "form"
           ]
         }
       },
