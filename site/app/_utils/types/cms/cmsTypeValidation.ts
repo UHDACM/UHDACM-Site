@@ -31,6 +31,8 @@ import {
   cmsSingleTypePage,
   cmsSingleTypePages,
   CMSButtonTargets,
+  SplitHeroColumnSingleImage,
+  SplitHeroColumnFloatingImages,
 } from "./cmsTypes";
 
 export function isValidFeaturedEvent(obj: unknown): obj is FeaturedEvent {
@@ -247,6 +249,10 @@ export function isValidSplitHeroColumn(obj: any): obj is SplitHeroColumn {
       return isValidSplitHeroColumnForm(obj);
     case "imageCollection":
       return isValidSplitHeroColumnImageCollection(obj);
+    case "singleImage":
+      return isValidSplitHeroColumnSingleImage(obj);
+    case "floatingImages":
+      return isValidSplitHeroColumnFloatingImages(obj);
     default:
       return false;
   }
@@ -306,6 +312,60 @@ export function isValidSplitHeroColumnImageCollection(
   }
 
   for (const img of imageCollection.images) {
+    if (!isStrapiPicture(img)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function isValidSplitHeroColumnSingleImage(
+  obj: unknown
+): obj is SplitHeroColumnSingleImage {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const { type, singleImage } = obj as SplitHeroColumnSingleImage;
+
+  if (type !== "singleImage") {
+    return false;
+  }
+
+  if (!singleImage || typeof singleImage !== "object") {
+    return false;
+  }
+
+  if (!isStrapiPicture(singleImage.image)) {
+    return false;
+  }
+
+  return true;
+}
+
+export function isValidSplitHeroColumnFloatingImages(
+  obj: unknown
+): obj is SplitHeroColumnFloatingImages {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const { type, floatingImages } = obj as SplitHeroColumnFloatingImages;
+
+  if (type !== "floatingImages") {
+    return false;
+  }
+
+  if (!floatingImages || typeof floatingImages !== "object") {
+    return false;
+  }
+
+  if (!Array.isArray(floatingImages.images)) {
+    return false;
+  }
+
+  for (const img of floatingImages.images) {
     if (!isStrapiPicture(img)) {
       return false;
     }

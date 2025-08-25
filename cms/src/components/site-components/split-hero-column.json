@@ -13,25 +13,11 @@
       "enum": [
         "none",
         "imageCollection",
+        "singleImage",
+        "floatingImages",
         "textBlock",
         "form"
       ]
-    },
-    "imageCollection": {
-      "type": "component",
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "type"
-            },
-            "imageCollection"
-          ]
-        }
-      },
-      "component": "site-components.image-collection",
-      "repeatable": false,
-      "required": true
     },
     "textBlock": {
       "type": "component",
@@ -62,6 +48,54 @@
         }
       },
       "component": "site-components.iframe-form",
+      "repeatable": false,
+      "required": true
+    },
+    "singleImage": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "singleImage"
+          ]
+        }
+      },
+      "component": "site-components.single-image",
+      "repeatable": false,
+      "required": true
+    },
+    "floatingImages": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "floatingImages"
+          ]
+        }
+      },
+      "component": "site-components.floating-images",
+      "repeatable": false,
+      "required": true
+    },
+    "imageCollection": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "imageCollection"
+          ]
+        }
+      },
+      "component": "site-components.image-collection",
       "repeatable": false,
       "required": true
     }

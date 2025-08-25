@@ -10,6 +10,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 import { SiGooglecalendar } from "react-icons/si";
 import { PiMicrosoftOutlookLogo } from "react-icons/pi";
+import { MdOutlineCollections } from "react-icons/md";
 
 export const DefaultEllipsis = FaEllipsis;
 
@@ -37,5 +38,7 @@ export const DefaultLocation = CiLocationOn;
 export const DefaultPeople = FiUsers;
 
 export const DefaultMenu = FiMenu;
+
+export const DefaultImageCollection = MdOutlineCollections;
 
 export const DefaultSearch = FiSearch;

@@ -68,9 +68,12 @@ a {
   text-decoration: none;
 }
 
+.dimOnHover {
+  transition: filter 0.1s;
+}
+
 .dimOnHover:hover {
   filter: brightness(0.8);
-  transition: filter 0.1s;
 }
 
 
@@ -84,6 +87,7 @@ a {
 .SectionInner {
 	width: 95vw;
 	max-width: var(--page-max-width);
+  max-height: 100%;
 	padding: 0rem 1rem;
 	box-sizing: border-box;
 	display: flex;

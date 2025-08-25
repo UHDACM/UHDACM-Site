@@ -1,6 +1,3 @@
-import { ReactNode } from "react";
-import FeaturedEventSection from "../_sections/FeaturedEventSection/FeaturedEventSection";
-import LatestQnASection from "../_sections/LatestQnASection/LatestQnASection";
 import { fetchCMSPage } from "../_utils/cms";
 import { SiteSection } from "../_utils/types/cms/cmsTypes";
 import { isValidSiteSection, isValidSiteSectionFeaturedEvent, isValidSiteSectionLatestQnA } from "../_utils/types/cms/cmsTypeValidation";
@@ -12,7 +9,7 @@ export default async function Page() {
   // console.log('res', res);
   const data = res.data;
 
-  // console.log('Fetched page-about data:', JSON.stringify(data, null, 2));
+  console.log('Fetched page-about data:', JSON.stringify(data, null, 2));
 
   const sections: SiteSection[] = data.sections;
   for (let section of sections) {

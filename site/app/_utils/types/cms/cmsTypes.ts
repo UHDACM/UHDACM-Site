@@ -88,6 +88,8 @@ export const SplitHeroColumnTypes = [
   "textBlock",
   "form",
   "imageCollection",
+  "singleImage",
+  "floatingImages",
   "none",
 ] as const;
 export type SplitHeroColumnType = (typeof SplitHeroColumnTypes)[number];
@@ -99,6 +101,20 @@ export interface SplitHeroColumn {
 export interface SplitHeroColumnImageCollection extends SplitHeroColumn {
   type: "imageCollection";
   imageCollection: {
+    images: StrapiPicture[];
+  };
+}
+
+export interface SplitHeroColumnSingleImage extends SplitHeroColumn {
+  type: "singleImage";
+  singleImage: {
+    image: StrapiPicture;
+  };
+}
+
+export interface SplitHeroColumnFloatingImages extends SplitHeroColumn {
+  type: "floatingImages";
+  floatingImages: {
     images: StrapiPicture[];
   };
 }

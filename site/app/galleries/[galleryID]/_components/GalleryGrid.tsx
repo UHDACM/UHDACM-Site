@@ -8,12 +8,14 @@ import { CarouselThumbnail } from "./CarouselThumbnail";
 import { StrapiPicture } from "@/app/_utils/types";
 import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 
+import styles from './GalleryGrid.module.css';
 
 export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
   const dispatch = useDispatch<AppDispatch>();
   
-  const mediaArray = media;
+  // const mediaArray = media;
 
+  const mediaArray = [...media, ...media, ...media];
 
   const onImageClick = (index: number) => {
     dispatch(
@@ -40,34 +42,23 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
     );
   };
 
+
+
   return (
     <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        margin: "0 auto",
-        zIndex: 10,
-      }}
+      className="SectionRoot"
     >
       <div
-        style={{
-          width: "95vw",
-          maxWidth: "var(--page-max-width)",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: "0.5rem",
-          padding: "2rem 1rem",
-          boxSizing: "border-box",
-        }}
+        className={`SectionInner ${styles.galleryGrid}`}
       >
         {mediaArray.map((img, i) => (
           <img
-            key={img.id || i}
+            key={i}
             src={`${ProduceCMSResourceURL(img.url)}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             style={{
               width: "100%",
+              aspectRatio: 1,
               borderRadius: "0.5rem",
               objectFit: "cover",
               cursor: "pointer",
