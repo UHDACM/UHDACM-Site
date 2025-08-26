@@ -37,7 +37,8 @@ export default async function LatestQnASection({ reverseOnDesktop, sectionID }: 
         style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "flex-start",
+          alignItems: "center",
+          justifyContent: 'center',
           gap: "0.5rem",
           marginTop: "0.5rem",
           flexWrap: 'wrap'
