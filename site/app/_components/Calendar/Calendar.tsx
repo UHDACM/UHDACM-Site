@@ -197,7 +197,7 @@ export default function Calendar({
         })}
         {Array.from({ length: daysInMonth }).map((_, i) => {
           const EventOnToday = dotsOnDatesYMD.includes(
-            `${year}-${monthToInt(month as Month) + 1}-${i + 1}`
+            `${year}-${monthToInt(month as Month) + 1}-${i}`
           );
           return (
             <div
