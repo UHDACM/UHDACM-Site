@@ -9,11 +9,12 @@ import {
   DefaultLinkedin,
   DefaultYoutube,
 } from "@/app/_icons/Icons";
-import { getTodayYMD, ProduceCMSResourceURL } from "@/app/_utils/tools";
+import { getTodayYMD } from "@/app/_utils/tools";
 import Logo from '../Logo/Logo';
 import { isValidSiteInfo } from '@/app/_utils/types/cms/cmsTypeValidation';
 import { fetchCMS } from '@/app/_utils/cms';
 import { SocialObj } from '@/app/_utils/types';
+import { TryGetImageFormatUrl } from '@/app/_utils/types/cms/cmsTypeTools';
 
 
 export default async function Footer() {
@@ -24,7 +25,7 @@ export default async function Footer() {
   if (res) {
     const data = res.data;
     if (isValidSiteInfo(data)) {
-      logoURL = ProduceCMSResourceURL(data.logo.url);
+      logoURL = TryGetImageFormatUrl(data.logo, 'small');
       socials = data.socials || socials;
     }
   }
@@ -36,7 +37,7 @@ export default async function Footer() {
       <div className={`SectionInner ${styles.footerInner}`}>
         <div className={styles.footerRow}>
           <Link href="/" className={styles.logoLink}>
-            <Logo src={logoURL} />
+            <Logo src={logoURL || undefined} />
           </Link>
           <div className={styles.navLinks}>
             {NavigationTree.map((entry) => (
@@ -66,7 +67,7 @@ export default async function Footer() {
                       case "discord":
                         return <DefaultDiscord color="rgb(var(--color-font-default))" />;
                       default:
-                        return null;
+                        return undefined;
                     }
                   })()}
                 </Link>

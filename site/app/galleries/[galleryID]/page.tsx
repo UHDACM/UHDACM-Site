@@ -29,9 +29,9 @@ import { fetchCMS } from "@/app/_utils/cms";
 import { isStrapiPicture, isValidSiteEvent } from "@/app/_utils/validation";
 import { StrapiPicture } from "@/app/_utils/types";
 import Page404 from "@/app/not-found";
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
+import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
 
 type EventPageParams = Promise<{
   galleryID: string;
@@ -83,9 +83,9 @@ export default async function EventPage({
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         rightContent={
-          <CoolImage
-            src={`${ProduceCMSResourceURL(event.previewImage?.url)}`}
-          />
+          isStrapiPicture(event.previewImage) ? (
+            <HeroSingleImage image={event.previewImage} />
+          ) : undefined
         }
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -96,7 +96,7 @@ export default async function EventPage({
 
       <GalleryGrid media={validMedia} />
 
-      <CallToActionSection
+      {/* <CallToActionSection
         title={`Show up, Schedule, Share`}
         subtitle="Your next step is your best step. Be sure to make it count!"
         actionComponent={
@@ -118,7 +118,7 @@ export default async function EventPage({
             </div>
           </Button>
         }
-      />
+      /> */}
     </div>
   );
 }

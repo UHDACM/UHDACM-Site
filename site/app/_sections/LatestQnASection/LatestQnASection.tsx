@@ -1,10 +1,11 @@
 import { fetchCMS } from "@/app/_utils/cms";
-import { isValidQnA } from "@/app/_utils/validation";
+import { isStrapiPicture, isValidQnA } from "@/app/_utils/validation";
 import MainHeroSection from "../MainHeroSection/MainHeroSection";
 import CoolImage from "@/app/_components/CoolImage/CoolImage";
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import Button from "@/app/_components/Button/Button";
 import { DefaultChevronRight, DefaultSearch } from "@/app/_icons/Icons";
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
+import HeroSingleImage from "../SplitHeroSection/HeroSingleImage/HeroSingleImage";
 
 export default async function LatestQnASection({ reverseOnDesktop, sectionID }: { reverseOnDesktop?: boolean, sectionID?: string }) {
   const res = await fetchCMS("qnas", {
@@ -31,7 +32,7 @@ export default async function LatestQnASection({ reverseOnDesktop, sectionID }: 
     reverseOrder={reverseOnDesktop}
     leftStyle={{ flex: 1 }}
     rightStyle={{ flex: 1 }}
-    rightContent={<CoolImage src={`${ProduceCMSResourceURL(qna.thumbnail?.url)}`} />}
+    rightContent={isStrapiPicture(qna.thumbnail) ? <HeroSingleImage image={qna.thumbnail} /> : null}
     bottomContent={
       <div
         style={{

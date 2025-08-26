@@ -7,8 +7,8 @@ import styles from "./FeaturedEventSection.module.css";
 import Button from "@/app/_components/Button/Button";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import { isValidFeaturedEvent } from "@/app/_utils/types/cms/cmsTypeValidation";
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 
 export default async function FeaturedEventSection({ sectionID }: { sectionID?: string }) {
   const res = await fetchCMS("featured-event", {
@@ -32,7 +32,7 @@ export default async function FeaturedEventSection({ sectionID }: { sectionID?: 
   }
 
   const imgUrl = isStrapiPicture(previewImageHD)
-    ? `${ProduceCMSResourceURL(previewImageHD.url)}`
+    ? `${TryGetImageFormatUrl(previewImageHD, 'medium')}`
     : undefined;
 
   const dateStart = new Date(event.dateStart);
@@ -113,13 +113,13 @@ export default async function FeaturedEventSection({ sectionID }: { sectionID?: 
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "0.5rem",
+                      gap: "0.4rem",
                     }}
                   >
                     <span className="BodyLargeHeavy">View Event</span>
                     <DefaultChevronRight
                       fontSize={"inherit"}
-                      style={{ marginRight: "-0.25rem" }}
+                      style={{ marginRight: "-0.3rem" }}
                       strokeWidth={"0.20rem"}
                     />
                   </div>

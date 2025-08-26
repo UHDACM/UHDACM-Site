@@ -13,28 +13,14 @@ export default function CallToActionSection({
 }: CallToActionSectionProps) {
   return (
     <div
+      className={'SectionRoot'}
       style={{
-        width: "100%",
-        height: "80vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        boxSizing: "border-box",
+        margin: '12rem 0'
       }}
     >
       <div
-        style={{
-          maxWidth: "var(--page-max-width)",
-          width: "95vw",
-          padding: "2rem 1rem",
-          boxSizing: "border-box",
-          flexDirection: "column",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "0.8rem",
-          textAlign: "center",
-        }}
+        className="SectionInner"
+        style={{gap: '0.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'}}
       >
         <h1
           className="Title"

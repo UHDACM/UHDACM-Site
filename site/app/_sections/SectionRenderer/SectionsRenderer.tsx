@@ -22,16 +22,17 @@ export default function SectionsRenderer({
     <>
       {sections.map((section, i) => {
         let Comp: ReactNode = undefined;
+        const id = section.id;
         if (isValidSiteSectionLeadership(section)) {
-          Comp = <LeadershipSection sectionID={section.sectionID} key={i} />;
+          Comp = <LeadershipSection sectionID={section.sectionID} key={id} />;
         }
         if (isValidSiteSectionFeaturedEvent(section)) {
-          Comp = <FeaturedEventSection sectionID={section.sectionID} key={i} />;
+          Comp = <FeaturedEventSection sectionID={section.sectionID} key={id} />;
         } else if (isValidSiteSectionLatestQnA(section)) {
           Comp = (
             <LatestQnASection sectionID={section.sectionID}
               reverseOnDesktop={section.reverseOnDesktop}
-              key={i}
+              key={id}
             />
           );
         } else if (isValidSiteSectionSearch(section)) {
@@ -41,11 +42,11 @@ export default function SectionsRenderer({
               type={section.type}
               listingMode={section.listingMode}
               defaultSortingMode={section.defaultSortingMode}
-              key={i}
+              key={id}
             />
           );
         } else if (isValidSiteSectionSplitHero(section)) {
-          Comp = <SplitHeroSection {...section} key={i} />;
+          Comp = <SplitHeroSection {...section} key={id} />;
         }
         if (!Comp) return null;
         return Comp;

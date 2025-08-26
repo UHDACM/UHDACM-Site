@@ -6,9 +6,9 @@ import { useDispatch } from "react-redux";
 import { CarouselFullScreenImage } from "./CarouselFullScreenImage";
 import { CarouselThumbnail } from "./CarouselThumbnail";
 import { StrapiPicture } from "@/app/_utils/types";
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 
 import styles from './GalleryGrid.module.css';
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 
 export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,7 +23,7 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
         items: mediaArray.map((img, i) => (
           <CarouselFullScreenImage
             key={img.id || i}
-            src={`${ProduceCMSResourceURL(img.url)}`}
+            src={`${TryGetImageFormatUrl(img, 'large')}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             caption={img.caption}
           />
@@ -31,7 +31,7 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
         thumbnails: mediaArray.map((img, i) => (
           <CarouselThumbnail
             key={img.id || i}
-            src={`${ProduceCMSResourceURL(img.url)}`}
+            src={`${TryGetImageFormatUrl(img, 'thumbnail')}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
           />
         )),
@@ -47,6 +47,7 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
   return (
     <div
       className="SectionRoot"
+      style={{margin: '2rem 0 4rem 0'}}
     >
       <div
         className={`SectionInner ${styles.galleryGrid}`}
@@ -54,7 +55,7 @@ export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
         {mediaArray.map((img, i) => (
           <img
             key={i}
-            src={`${ProduceCMSResourceURL(img.url)}`}
+            src={`${TryGetImageFormatUrl(img, 'small')}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             style={{
               width: "100%",

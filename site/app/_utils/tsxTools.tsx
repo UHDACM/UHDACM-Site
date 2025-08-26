@@ -3,13 +3,13 @@ import ShareButton from "../_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "../_components/Button/Variants/AddToCalendarButton";
 import { EntryTileProps } from "../_components/EntryTile/EntryTile";
 import { DefaultChevronRight } from "../_icons/Icons";
-import { ProduceCMSResourceURL } from "./tools";
 import { SiteEvent } from "./types";
+import { TryGetImageFormatUrl } from "./types/cms/cmsTypeTools";
 import { isStrapiPicture } from "./validation";
 
 export function EventToEntry(event: SiteEvent): EntryTileProps {
   const imgUrl = isStrapiPicture(event.previewImage)
-    ? `${ProduceCMSResourceURL(event.previewImage.url)}`
+    ? `${TryGetImageFormatUrl(event.previewImage, 'medium')}`
     : undefined;
 
   const dateStart = new Date(event.dateStart);

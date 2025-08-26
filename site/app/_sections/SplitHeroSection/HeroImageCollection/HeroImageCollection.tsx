@@ -1,6 +1,5 @@
 "use client";
 
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import { StrapiPicture } from "@/app/_utils/types";
 import HeroSingleImageStyles from "../HeroSingleImage/HeroSingleImage.module.css";
 import { DefaultImageCollection } from "@/app/_icons/Icons";
@@ -9,6 +8,8 @@ import { AppDispatch } from "@/app/_features/store";
 import { setPopupCarousel } from "@/app/_features/popupCarousel/popupCarouselSlice";
 import { CarouselFullScreenImage } from "@/app/galleries/[galleryID]/_components/CarouselFullScreenImage";
 import { CarouselThumbnail } from "@/app/galleries/[galleryID]/_components/CarouselThumbnail";
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
+import { isStrapiPicture } from "@/app/_utils/validation";
 
 export default function HeroImageCollection({
   images,
@@ -31,7 +32,7 @@ export default function HeroImageCollection({
         items: mediaArray.map((img, i) => (
           <CarouselFullScreenImage
             key={img.id || i}
-            src={`${ProduceCMSResourceURL(img.url)}`}
+            src={`${isStrapiPicture(img) ? TryGetImageFormatUrl(img, 'large') : undefined}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
             caption={img.caption}
           />
@@ -39,7 +40,7 @@ export default function HeroImageCollection({
         thumbnails: mediaArray.map((img, i) => (
           <CarouselThumbnail
             key={img.id || i}
-            src={`${ProduceCMSResourceURL(img.url)}`}
+            src={`${isStrapiPicture(img) ? TryGetImageFormatUrl(img, 'thumbnail') : undefined}`}
             alt={img.alternativeText || `Gallery image ${i + 1}`}
           />
         )),
@@ -65,7 +66,7 @@ export default function HeroImageCollection({
         style={{ position: "relative" }}
       >
         <img
-          src={ProduceCMSResourceURL(images[0].url)}
+          src={`${isStrapiPicture(images[0]) ? TryGetImageFormatUrl(images[0], 'medium') : undefined}`}
           alt={images[0].alternativeText}
           className={HeroSingleImageStyles.image}
           style={{ zIndex: 10 }}
