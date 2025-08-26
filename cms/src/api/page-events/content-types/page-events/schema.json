@@ -17,7 +17,8 @@
         "site-sections.split-hero-section",
         "site-sections.latest-qna",
         "site-sections.featured-event",
-        "site-sections.search-section"
+        "site-sections.search-section",
+        "site-sections.leadership-section"
       ],
       "required": true
     }

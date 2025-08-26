@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_galleries_plural",
+  "info": {
+    "singularName": "page-galleries",
+    "pluralName": "page-galleries-plural",
+    "displayName": "page-galleries"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "site-sections.split-hero-section",
+        "site-sections.search-section",
+        "site-sections.leadership-section",
+        "site-sections.latest-qna",
+        "site-sections.featured-event"
+      ],
+      "required": true
+    }
+  }
+}

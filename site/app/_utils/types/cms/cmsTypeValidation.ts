@@ -1,4 +1,3 @@
-
 import { EntrySortModes, ListingModes } from "../../types";
 import { isPerson, isStrapiPicture, isValidSiteEvent } from "../../validation";
 import {
@@ -33,7 +32,10 @@ import {
   CMSButtonTargets,
   SplitHeroColumnSingleImage,
   SplitHeroColumnFloatingImages,
+  SiteSectionLeadership,
 } from "./cmsTypes";
+import { SiteInfo } from "./cmsTypes";
+import { isSocialObj as isValidSocialObj } from "../../validation";
 
 export function isValidFeaturedEvent(obj: unknown): obj is FeaturedEvent {
   if (!obj || typeof obj != "object") {
@@ -144,6 +146,8 @@ export function isValidSiteSection(obj: unknown): obj is SiteSection {
   }
 
   switch (__component) {
+    case "site-sections.leadership-section":
+      return isValidSiteSectionLeadership(obj);
     case "site-sections.featured-event":
       return isValidSiteSectionFeaturedEvent(obj);
     case "site-sections.latest-qna":
@@ -155,6 +159,19 @@ export function isValidSiteSection(obj: unknown): obj is SiteSection {
     default:
       return false;
   }
+}
+
+export function isValidSiteSectionLeadership(obj: unknown): obj is SiteSectionLeadership {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const { __component } = obj as SiteSectionLeadership;
+  if (__component !== "site-sections.leadership-section") {
+    return false;
+  }
+
+  return true;
 }
 
 export function isValidSiteSectionFeaturedEvent(obj: unknown): obj is SiteSectionFeaturedEvent {
@@ -508,6 +525,32 @@ export function isValidCMSButton(obj: unknown): obj is CMSButton {
 
   if (!CMSButtonTargets.includes(target)) {
     return false;
+  }
+
+  return true;
+}
+
+export function isValidSiteInfo(obj: unknown): obj is SiteInfo {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const { logo, socials } = obj as SiteInfo;
+
+  if (!isStrapiPicture(logo)) {
+    return false;
+  }
+
+  if (socials !== undefined) {
+    if (!Array.isArray(socials)) {
+      return false;
+    }
+
+    for (const social of socials) {
+      if (!isValidSocialObj(social)) {
+        return false;
+      }
+    }
   }
 
   return true;

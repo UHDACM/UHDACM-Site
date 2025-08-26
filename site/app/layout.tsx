@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./figma.css";
 import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import ReduxProvider from "./_features/ReduxProvider";
 import Body from "./body";
+import NavbarSC from "./_components/Navbar/NavbarSC";
+import Footer from "./_components/Footer/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,7 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReduxProvider>
-        <Body className={`${inter.variable} antialiased`}>{children}</Body>
+        <Body className={`${inter.variable} antialiased`}>
+          <NavbarSC />
+          {children}
+          <Footer />
+        </Body>
       </ReduxProvider>
     </html>
   );

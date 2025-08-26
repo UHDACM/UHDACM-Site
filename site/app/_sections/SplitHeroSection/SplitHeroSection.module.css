@@ -1,37 +1,39 @@
-.heroSection {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	height: 60vh;
-	padding: 4rem 1rem;
-	box-sizing: border-box;
+/* :global is required because SectionRoot (global) conflicts with .heroSection. This isn't a problem until the project is built */
+:global(.SectionRoot).heroSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 78vh;
+  padding: 4rem 1rem;
+  box-sizing: border-box;
 }
 
-.heroInner {
-	display: flex;
-	flex-direction: row;
-	max-height: 100%;
-	gap: 1rem;
-	box-sizing: border-box;
+:global(.SectionInner).heroInner {
+  max-width: var(--page-max-width);
+  display: flex;
+  flex-direction: row;
+  max-height: 100%;
+  gap: 1rem;
+  box-sizing: border-box;
 }
 
 .reverseOnDesktop {
-	flex-direction: row-reverse;
+  flex-direction: row-reverse;
 }
 
 @media (max-width: 768px) {
-	.heroSection {
-		height: auto;
-		min-height: 50vh;
-		padding: 4rem 0rem;
-	}
+  :global(.SectionRoot).heroSection {
+    height: auto;
+    min-height: 75vh;
+    padding: 4rem 0rem;
+  }
 
-	.heroInner {
-		flex-direction: column;
-		gap: 2rem;
-	}
+  :global(.SectionInner).heroInner {
+    flex-direction: column;
+    gap: 2rem;
+  }
 
-	.reverseOnMobile {
-		flex-direction: column-reverse;
-	}
+  .reverseOnMobile {
+    flex-direction: column-reverse;
+  }
 }

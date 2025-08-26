@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_qnas_plural",
+  "info": {
+    "singularName": "page-qnas",
+    "pluralName": "page-qnas-plural",
+    "displayName": "page-qnas"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "site-sections.split-hero-section",
+        "site-sections.search-section",
+        "site-sections.leadership-section",
+        "site-sections.latest-qna",
+        "site-sections.featured-event"
+      ],
+      "required": true
+    }
+  }
+}

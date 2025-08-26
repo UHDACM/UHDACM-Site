@@ -1,6 +1,7 @@
 import {
   isValidSiteSectionFeaturedEvent,
   isValidSiteSectionLatestQnA,
+  isValidSiteSectionLeadership,
   isValidSiteSectionSearch,
   isValidSiteSectionSplitHero,
 } from "@/app/_utils/types/cms/cmsTypeValidation";
@@ -10,6 +11,7 @@ import LatestQnASection from "../LatestQnASection/LatestQnASection";
 import SearchSection from "../SearchSection/SearchSection";
 import { SiteSection } from "@/app/_utils/types/cms/cmsTypes";
 import SplitHeroSection from "../SplitHeroSection/SplitHeroSection";
+import LeadershipSection from "../LeadershipSection/LeadershipSection";
 
 export default function SectionsRenderer({
   sections,
@@ -20,18 +22,21 @@ export default function SectionsRenderer({
     <>
       {sections.map((section, i) => {
         let Comp: ReactNode = undefined;
+        if (isValidSiteSectionLeadership(section)) {
+          Comp = <LeadershipSection sectionID={section.sectionID} key={i} />;
+        }
         if (isValidSiteSectionFeaturedEvent(section)) {
-          Comp = <FeaturedEventSection key={i} />;
+          Comp = <FeaturedEventSection sectionID={section.sectionID} key={i} />;
         } else if (isValidSiteSectionLatestQnA(section)) {
           Comp = (
-            <LatestQnASection
+            <LatestQnASection sectionID={section.sectionID}
               reverseOnDesktop={section.reverseOnDesktop}
               key={i}
             />
           );
         } else if (isValidSiteSectionSearch(section)) {
           Comp = (
-            <SearchSection
+            <SearchSection sectionID={section.sectionID}
               header={section.header}
               type={section.type}
               listingMode={section.listingMode}

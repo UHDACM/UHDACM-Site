@@ -8,8 +8,9 @@ import styles from "./Navbar.module.css";
 import { DefaultClose, DefaultMenu } from "@/app/_icons/Icons";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 import Transition from "../Transition/Transition";
+import Logo from "../Logo/Logo";
 
-export default function Navbar() {
+export default function Navbar({ logoURL }: { logoURL?: string }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,13 +23,13 @@ export default function Navbar() {
   }, []);
   return (
     <>
-      <NavbarDesktop scrolled={scrolled} />
-      <NavbarMobile scrolled={scrolled} />
+      <NavbarDesktop logoURL={logoURL} scrolled={scrolled} />
+      <NavbarMobile logoURL={logoURL} scrolled={scrolled} />
     </>
   );
 }
 
-function NavbarMobile({ scrolled }: { scrolled: boolean }) {
+function NavbarMobile({ logoURL, scrolled }: { logoURL?: string; scrolled: boolean }) {
   const [active, setActive] = useState(false);
   const { disableOverflowY, enableOverflowY } = useBodyOverflowY();
 
@@ -78,7 +79,7 @@ function NavbarMobile({ scrolled }: { scrolled: boolean }) {
         />
         {/* <DefaultMenu color={'rgb(var(--color-font-default))'} size={'2.5rem'} style={{position: 'absolute', top: 0 }} /> */}
       </div>
-      <NavbarLogo onClick={() => handleSetActive(false)} />
+      <NavbarLogo logoURL={logoURL} onClick={() => handleSetActive(false)} />
       <Transition
         forceStyle={{
           width: "100%",
@@ -120,14 +121,14 @@ function NavbarMobile({ scrolled }: { scrolled: boolean }) {
   );
 }
 
-function NavbarDesktop({ scrolled }: { scrolled: boolean }) {
+function NavbarDesktop({ logoURL, scrolled }: { logoURL?: string; scrolled: boolean }) {
   return (
     <nav
       className={`${styles.Navbar} ${scrolled ? styles.scrolled : ""} ${
         styles.ShowDesktop
       }`}
     >
-      <NavbarLogo />
+      <NavbarLogo logoURL={logoURL} />
       <div className={styles.navLinks}>
         {NavigationTree.map((entry) => (
           <Link
@@ -146,14 +147,11 @@ function NavbarDesktop({ scrolled }: { scrolled: boolean }) {
   );
 }
 
-export function NavbarLogo({ onClick }: { onClick?: () => void }) {
+export function NavbarLogo({ logoURL, onClick }: { logoURL: string | undefined; onClick?: () => void }) {
   return (
     <Link href="/" className={styles.logoLink} onClick={onClick}>
-      <Logo />
+      <Logo src={logoURL} />
     </Link>
   );
 }
 
-export function Logo() {
-  return <img src="/Logo.png" alt="NavbarLogo" className={styles.logo} />
-}

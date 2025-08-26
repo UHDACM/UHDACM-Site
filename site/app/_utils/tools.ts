@@ -40,21 +40,21 @@ function formatDate(date: Date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-export function buildICS() {
-  return `BEGIN:VCALENDAR
-    VERSION:2.0
-    PRODID:-//Your Company//Your Product//EN
-    BEGIN:VEVENT
-    UID:${Date.now()}@example.com
-    DTSTAMP:${formatDate(new Date())}
-    DTSTART:20250901T150000Z
-    DTEND:20250901T160000Z
-    SUMMARY:Team Meeting
-    DESCRIPTION:Discuss Q3 goals
-    LOCATION:HQ Conference Room
-    END:VEVENT
-    END:VCALENDAR`;
-}
+// export function buildICS() {
+//   return `BEGIN:VCALENDAR
+//     VERSION:2.0
+//     PRODID:-//Your Company//Your Product//EN
+//     BEGIN:VEVENT
+//     UID:${Date.now()}@example.com
+//     DTSTAMP:${formatDate(new Date())}
+//     DTSTART:20250901T150000Z
+//     DTEND:20250901T160000Z
+//     SUMMARY:Team Meeting
+//     DESCRIPTION:Discuss Q3 goals
+//     LOCATION:HQ Conference Room
+//     END:VEVENT
+//     END:VCALENDAR`;
+// }
 
 export type CalendarPayload = {
   title: string;

@@ -2,11 +2,9 @@ import React, { ReactNode } from "react";
 
 import styles from "./SplitHeroSection.module.css";
 import {
-  HeroTextBlock as HeroTextBlockProps,
   SiteSectionSplitHero,
   SplitHeroColumn
 } from "@/app/_utils/types/cms/cmsTypes";
-import CMSButton from "@/app/_components/Button/CMSButton/CMSButton";
 import {
   isValidSplitHeroColumnFloatingImages,
   isValidSplitHeroColumnForm,
@@ -70,9 +68,9 @@ const SplitHeroSection: React.FC<SplitHeroSectionProps> = ({
   }
 
   return (
-    <div className={`${styles.heroSection} SectionRoot`} id={sectionID}>
+    <div className={`SectionRoot ${styles.heroSection}`} id={sectionID}>
       <div
-        className={`${styles.heroInner} SectionInner ${
+        className={`SectionInner ${styles.heroInner} ${
           reverseOnDesktop ? styles.reverseOnDesktop : ""
         } ${reverseOnMobile ? styles.reverseOnMobile : ""}`}
       >

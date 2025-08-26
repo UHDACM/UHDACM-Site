@@ -23,7 +23,7 @@
     "socials": {
       "type": "component",
       "component": "types.social-link",
-      "repeatable": false
+      "repeatable": true
     }
   }
 }

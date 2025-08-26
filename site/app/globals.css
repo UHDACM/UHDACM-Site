@@ -98,7 +98,7 @@ a {
 
 @media (max-width: 1200px) {
   :root {
-    --page-max-width: 50rem;
+    --page-max-width: 60rem;
   }
 }
 
@@ -108,5 +108,11 @@ a {
   }
   .SectionInner {
     padding: 0rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-max-width: 36rem;
   }
 }

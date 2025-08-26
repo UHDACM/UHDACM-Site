@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_site_sections_leadership_sections",
+  "info": {
+    "displayName": "leadership-section",
+    "icon": "user"
+  },
+  "options": {},
+  "attributes": {
+    "sectionID": {
+      "type": "string",
+      "required": false
+    }
+  },
+  "config": {}
+}

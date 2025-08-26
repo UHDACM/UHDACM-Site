@@ -49,7 +49,8 @@
   gap: 0.5rem;
 }
 
-@media (max-width: 576px) {
+/* After this point, the image just doesn't fit right. */
+@media (max-width: 440px) {
   .imageContainer {
     display: none;
   }

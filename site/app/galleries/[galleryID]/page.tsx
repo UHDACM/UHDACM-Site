@@ -5,23 +5,23 @@ import {
   DefaultShareOutline,
 } from "@/app/_icons/Icons";
 
-function ShareButton() {
-  return (
-    <Button>
-      <div
-        style={{
-          display: "flex",
-          gap: "0.25rem",
-          alignItems: "center",
-          fontWeight: 800,
-        }}
-      >
-        <span style={{ fontWeight: 500 }}>Share</span>
-        <DefaultShareOutline fontSize={"inherit"} strokeWidth={"0.15rem"} />
-      </div>
-    </Button>
-  );
-}
+// function ShareButton() {
+//   return (
+//     <Button>
+//       <div
+//         style={{
+//           display: "flex",
+//           gap: "0.25rem",
+//           alignItems: "center",
+//           fontWeight: 800,
+//         }}
+//       >
+//         <span style={{ fontWeight: 500 }}>Share</span>
+//         <DefaultShareOutline fontSize={"inherit"} strokeWidth={"0.15rem"} />
+//       </div>
+//     </Button>
+//   );
+// }
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import GalleryGrid from "./_components/GalleryGrid";
@@ -30,6 +30,8 @@ import { isStrapiPicture, isValidSiteEvent } from "@/app/_utils/validation";
 import { StrapiPicture } from "@/app/_utils/types";
 import Page404 from "@/app/not-found";
 import { ProduceCMSResourceURL } from "@/app/_utils/tools";
+import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
+import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 
 type EventPageParams = Promise<{
   galleryID: string;
@@ -74,18 +76,12 @@ export default async function EventPage({
         position: "relative",
       }}
     >
-      {/* <Button
-        className="Button--Hallow"
-        href='/events'
-      >
-        <DefaultChevronLeft strokeWidth={'0.2rem'} style={{ marginLeft: "-0.25rem" }} /> Back
-      </Button> */}
+      <NavbarPadding />
       <MainHeroSection
         spanText="GALLERY"
         title={`${event.name}`}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        addNavbarPadding={true}
         rightContent={
           <CoolImage
             src={`${ProduceCMSResourceURL(event.previewImage?.url)}`}
@@ -93,7 +89,7 @@ export default async function EventPage({
         }
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
-            <ShareButton />
+            <ShareButton copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/galleries/${event.urlSlug}`} replaceTextOnCopyString="Copied Gallery URL" />
           </div>
         }
       />
