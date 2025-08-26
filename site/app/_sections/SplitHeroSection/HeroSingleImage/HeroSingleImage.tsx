@@ -11,7 +11,7 @@ export default function HeroSingleImage({
     <div className={styles.container}>
       <div className={styles.imageWrapper}>
         <img
-          src={TryGetImageFormatUrl(image, 'medium')}
+          src={TryGetImageFormatUrl(image, 'large')}
           alt={image.alternativeText}
           className={styles.image}
         />
