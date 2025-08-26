@@ -15,7 +15,7 @@
 }
 
 .heroRow {
-	width: 95vw;
+	width: 90vw;
 	max-width: var(--page-max-width);
 	/* height: 100%; */
 	display: flex;

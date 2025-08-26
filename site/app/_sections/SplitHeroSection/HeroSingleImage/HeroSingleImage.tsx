@@ -1,6 +1,6 @@
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import { StrapiPicture } from "@/app/_utils/types";
 import styles from "./HeroSingleImage.module.css";
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 
 export default function HeroSingleImage({
   image,
@@ -11,7 +11,7 @@ export default function HeroSingleImage({
     <div className={styles.container}>
       <div className={styles.imageWrapper}>
         <img
-          src={ProduceCMSResourceURL(image.url)}
+          src={TryGetImageFormatUrl(image, 'medium')}
           alt={image.alternativeText}
           className={styles.image}
         />

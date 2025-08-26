@@ -38,9 +38,10 @@ export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarBut
       return;
       }
       window.open(link, "_blank");
-    } else if (calendar === "Apple") {
-      // Add Apple Calendar integration
-    }
+    } 
+    // else if (calendar === "Apple") {
+    //   // Add Apple Calendar integration
+    // }
   };
 
   const leftMenu = AddToCalendarProps.menuLeft;
@@ -58,7 +59,7 @@ export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarBut
         <div
           style={{
             display: "flex",
-            gap: "0.25rem",
+            gap: "0.5rem",
             alignItems: "center",
             fontWeight: 800,
           }}

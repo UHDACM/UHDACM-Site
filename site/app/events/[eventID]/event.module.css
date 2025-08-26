@@ -1,16 +1,15 @@
 .eventDescription {
-  max-width: 40rem;
-  width: 100%;
+  width: 36rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
+  margin-top: 4rem;
 }
 
 @media (max-width: 768px) {
   .eventDescription {
-    max-width: 100%;
-    text-align: center;
-    align-items: center;
+    width: 100%;
+    margin-top: 8rem;
+    padding: 0rem 1rem;
   }
 }

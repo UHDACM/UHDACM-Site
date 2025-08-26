@@ -17,7 +17,7 @@ export default function ShareButton({ copyText, replaceTextOnCopyString }: { cop
       <div
         style={{
           display: "flex",
-          gap: "0.25rem",
+          gap: "0.4rem",
           alignItems: "center",
         }}
       >

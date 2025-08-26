@@ -11,16 +11,14 @@ import { EntrySortMode, ListingMode, QnA } from "@/app/_utils/types";
 import Button from "@/app/_components/Button/Button";
 import {
   DefaultChevronRight,
-  DefaultEllipsis,
   DefaultOpenInNewTab,
-  DefaultYoutube,
 } from "@/app/_icons/Icons";
 import {
   intToMonth,
-  ProduceCMSResourceURL,
   toTitleCase,
 } from "@/app/_utils/tools";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 export default async function SearchSection({
   header,
   type,
@@ -169,7 +167,7 @@ export async function QnAsSearchTool({
           description: QnA.descriptionShort,
           header: QnA.videoName,
           imageSrc: QnA.thumbnail
-            ? `${ProduceCMSResourceURL(QnA.thumbnail.url)}`
+            ? `${TryGetImageFormatUrl(QnA.thumbnail, 'medium')}`
             : undefined,
           imageAlt: QnA.thumbnail?.alternativeText,
           style: undefined,

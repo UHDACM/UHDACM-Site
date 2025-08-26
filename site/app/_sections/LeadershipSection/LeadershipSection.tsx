@@ -1,7 +1,7 @@
 import PersonTile from "@/app/_components/PersonTile/PersonTile";
 import { fetchCMS } from "@/app/_utils/cms";
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import { Person, SocialObj } from "@/app/_utils/types";
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 import { isValidLeadership } from "@/app/_utils/types/cms/cmsTypeValidation";
 import { isPerson } from "@/app/_utils/validation";
 
@@ -48,7 +48,7 @@ export default async function LeadershipSection({ sectionID }: { sectionID?: str
             <PersonTile
               key={idx}
               imgCoverOrContain="cover"
-              img={`${ProduceCMSResourceURL(person.picture?.url)}`}
+              img={`${person.picture ? TryGetImageFormatUrl(person.picture, 'medium') : ''}`}
               previewTitle={person.nameShort}
               fullTitle={person.name}
               previewSubTitle={person.roleShort}

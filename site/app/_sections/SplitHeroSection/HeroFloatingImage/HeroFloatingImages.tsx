@@ -1,6 +1,7 @@
 import { StrapiPicture } from '@/app/_utils/types';
 import HeroSingleImageStyles from '../HeroSingleImage/HeroSingleImage.module.css';
-import { ProduceCMSResourceURL } from '@/app/_utils/tools';
+import { TryGetImageFormatUrl } from '@/app/_utils/types/cms/cmsTypeTools';
+import { isStrapiPicture } from '@/app/_utils/validation';
 
 interface Props {
   images: StrapiPicture[];
@@ -88,7 +89,7 @@ export default function HeroFloatingImages({ images }: Props) {
           return (
             <img
               key={index}
-              src={ProduceCMSResourceURL(images[index].url)}
+              src={isStrapiPicture(images[index]) ? TryGetImageFormatUrl(images[index], index == 0 ? 'medium' : 'small') : undefined}
               alt={`floatingImg${index}`}
               style={{
                 userSelect: "none",

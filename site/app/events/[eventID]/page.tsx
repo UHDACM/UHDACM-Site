@@ -33,14 +33,13 @@ function CalendarButton({ event }: { event: SiteEvent }) {
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import { fetchCMS } from "@/app/_utils/cms";
-import { isValidSiteEvent } from "@/app/_utils/validation";
+import { isStrapiPicture, isValidSiteEvent } from "@/app/_utils/validation";
 import Page404 from "@/app/not-found";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 import { SiteEvent } from "@/app/_utils/types";
-import { ProduceCMSResourceURL } from "@/app/_utils/tools";
-import SplitHeroSection from "@/app/_sections/SplitHeroSection/SplitHeroSection";
-import { SplitHeroColumnTextBlock } from "@/app/_utils/types/cms/cmsTypes";
 import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
+import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
+import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -123,13 +122,9 @@ export default async function EventPage({
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
         rightContent={
-          <CoolImage
-            style={{ height: "24rem", overflow: "hidden" }}
-            src={
-              `${ProduceCMSResourceURL(event.previewImage?.url)}` ||
-              "/sjd.JPG"
-            }
-          />
+          isStrapiPicture(event.previewImage) ? (
+            <HeroSingleImage image={event.previewImage} />
+          ) : undefined
         }
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -173,22 +168,15 @@ export default async function EventPage({
           bodyColor="rgb(var(--color-font-accent))"
         />
       </div>
-      <div
-        style={{
-          width: "100%",
-          boxSizing: "border-box",
-          padding: "2rem 1rem",
-          marginTop: "4rem",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div className={styles.eventDescription}>
-          <h1 className="H1">Event Description</h1>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {event.descriptionFull && (
-              <StrapiRichTextRenderer content={event.descriptionFull} />
-            )}
+      <div className="SectionRoot">
+        <div className="SectionInner">
+          <div className={styles.eventDescription}>
+            <h1 className="H1">Event Description</h1>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {event.descriptionFull && (
+                <StrapiRichTextRenderer content={event.descriptionFull} />
+              )}
+            </div>
           </div>
         </div>
       </div>
