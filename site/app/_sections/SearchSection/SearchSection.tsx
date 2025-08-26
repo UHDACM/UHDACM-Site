@@ -110,7 +110,7 @@ export async function GalleriesSearchTool({
       entry.CallToAction = (
         <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
           <ShareButton
-            copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/galleries/${event.urlSlug}`}
+            copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/galleries/${event.urlSlug}`}
             replaceTextOnCopyString="Copied!"
           />
           <Button href={`/galleries/${event.urlSlug}`}>
@@ -141,7 +141,7 @@ export async function QnAsSearchTool({
   listingMode = "before",
   defaultSortingMode = "descending",
 }: SearchSectionSearchToolProps) {
-  const res = await fetchCMS("qnas", { populate: "thumbnail" });
+  const res = await fetchCMS("qnas", { populate: "thumbnail" }, ['qnas']);
 
   const validEntries: EntryTileProps[] = [];
 

@@ -72,7 +72,7 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
           // menuLeft={true}
         />
         <ShareButton
-          copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/events/${event.urlSlug}`}
+          copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/events/${event.urlSlug}`}
           replaceTextOnCopyString="Link Copied"
         />
         <Button href={`/events/${event.urlSlug}`}>
