@@ -1,6 +1,6 @@
 // TODO: Migrate all cms types to this file
 
-import { EntrySortMode, ListingMode, Person, SiteEvent, StrapiPicture } from "../../types";
+import { EntrySortMode, ListingMode, Person, SiteEvent, SocialObj, StrapiPicture } from "../../types";
 
 // =========================== featuredEvent ===========================
 export interface FeaturedEvent {
@@ -32,7 +32,7 @@ export const cmsCollectionsPlural = [
 export type cmsCollectionSingular = (typeof cmsCollectionsSingular)[number];
 export type cmsCollectionPlural = (typeof cmsCollectionsPlural)[number];
 
-export const cmsSingleTypes = ["featured-event", "leadership"] as const;
+export const cmsSingleTypes = ["featured-event", "leadership", "site-info"] as const;
 export type cmsSingleType = (typeof cmsSingleTypes)[number];
 
 export const cmsSingleTypePages = [
@@ -42,11 +42,13 @@ export const cmsSingleTypePages = [
   "page-home",
   "page-join",
   "page-media",
-  "site-info",
+  "page-galleries",
+  "page-qnas"
 ] as const;
 export type cmsSingleTypePage = (typeof cmsSingleTypePages)[number];
 
 const sectionCMSNames = [
+  "site-sections.leadership-section",
   "site-sections.split-hero-section",
   "site-sections.search-section",
   "site-sections.featured-event",
@@ -60,6 +62,10 @@ export interface SiteSection {
   __component: cmsSectionName;
   id: number;
   sectionID?: string;
+}
+
+export interface SiteSectionLeadership extends SiteSection {
+  __component: "site-sections.leadership-section";
 }
 
 export interface SiteSectionFeaturedEvent extends SiteSection {
@@ -188,4 +194,9 @@ export interface SiteSectionSplitHero extends SiteSection {
 
 export interface SitePage {
   sections: SiteSection[];
+}
+
+export interface SiteInfo {
+  logo: StrapiPicture;
+  socials?: SocialObj[];
 }

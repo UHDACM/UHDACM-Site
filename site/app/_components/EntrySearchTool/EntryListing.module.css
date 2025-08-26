@@ -14,7 +14,23 @@
   width: 7.5rem;
 }
 
+.hideOnMobile {
+  display: initial;
+}
+
+.hideOnDesktop {
+  display: none;
+}
+
 @media (max-width: 992px) {
+  .hideOnMobile {
+    display: none;
+  }
+
+  .hideOnDesktop {
+    display: initial;
+  }
+  
   .selectWrapper {
     width: 6rem;
   }

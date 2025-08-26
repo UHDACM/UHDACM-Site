@@ -48,7 +48,7 @@ export async function fetchCMS(
     const url = `${process.env.NEXT_PUBLIC_CMS_URL}/api/${path}${
       urlParams ? `?${urlParams}` : ""
     }`;
-    // console.log(`Fetching CMS: ${url}`);
+    console.log(`Fetching CMS: ${url} \nwith tag: ${collectionTag} + ${JSON.stringify(additionalTags)}`);
     const res = await fetch(url, {
       next: {
         tags: [collectionTag, ...(additionalTags || [])],

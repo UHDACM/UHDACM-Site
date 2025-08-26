@@ -3,7 +3,12 @@
 import Select from "@/app/_components/Select/Select";
 import { useState } from "react";
 import EntryTile, { EntryTileProps } from "../EntryTile/EntryTile";
-import { EntrySortMode, EntrySortModes, ListingMode, ListingModes } from "@/app/_utils/types";
+import {
+  EntrySortMode,
+  EntrySortModes,
+  ListingMode,
+  ListingModes,
+} from "@/app/_utils/types";
 import { toTitleCase } from "@/app/_utils/tools";
 
 import styles from "./EntryListing.module.css";
@@ -41,8 +46,9 @@ export function EntryListing({
     defaultSortingMode || "ascending"
   );
 
+  const entryList = entries;
   const remainingEntrySet = new Set<number>();
-  entries.forEach((entry, entryIndex) => {
+  entryList.forEach((entry, entryIndex) => {
     if (entry.header) {
       if (!entry.header.toLowerCase().includes(search?.toLowerCase() || "")) {
         return;
@@ -164,44 +170,41 @@ export function EntryListing({
             }`}
         </h5>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-          maxHeight: "80vh",
-          overflowY: remainingEntrySet.size != 0 ? "auto" : "hidden",
-        }}
-      >
-        {entries
-          .sort((a, b) => {
-            const diff =
-              new Date(a.date).getTime() - new Date(b.date).getTime();
-            if (sortingMode == "ascending") {
-              return diff;
-            } else {
-              return -diff;
-            }
-          })
-          .map((entry, i) => {
-
-            // if (!remainingEntrySet.has(i)) {
-            //   return undefined;
-            // }
-
-            return (
-              <div
-                key={i}
-                className={`${styles["CardContainer"]} ${
-                  !remainingEntrySet.has(i) ? styles["hide"] : ""
-                }`}
-              >
-                <EntryTile
-                  {...entry}
-                />
-              </div>
-            );
-          })}
+      <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+            // maxHeight: "80vh",
+            paddingBottom: "8rem",
+            // overflowY: remainingEntrySet.size != 0 ? "auto" : 'visible',
+          }}
+        >
+          {entryList
+            .sort((a, b) => {
+              const diff =
+                new Date(a.date).getTime() - new Date(b.date).getTime();
+              if (sortingMode == "ascending") {
+                return diff;
+              } else {
+                return -diff;
+              }
+            })
+            .map((entry, i) => {
+              if (!remainingEntrySet.has(i)) {
+                return undefined;
+              }
+              return (
+                <div
+                  key={i}
+                  className={`${styles["CardContainer"]}`}
+                >
+                  <EntryTile {...entry} />
+                </div>
+              );
+            })}
+        </div>
       </div>
     </div>
   );

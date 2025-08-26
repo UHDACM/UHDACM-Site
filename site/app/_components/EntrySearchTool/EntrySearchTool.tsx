@@ -1,13 +1,15 @@
 "use client";
 import { SearchBar } from "@/app/_components/SearchBar/SearchBar";
 import Calendar from "@/app/_components/Calendar/Calendar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getTodayYMD, intToMonth, toTitleCase } from "@/app/_utils/tools";
 import { EntrySortMode, ListingMode, SiteEvent } from "@/app/_utils/types";
 import { DefaultClose } from "@/app/_icons/Icons";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 import { EntryTileProps } from "../EntryTile/EntryTile";
 import { EntryListing } from "./EntryListing";
+
+import styles from "./EntryListing.module.css";
 
 export default function EntrySearchTool({
   entryTypePlural,
@@ -32,10 +34,6 @@ export default function EntrySearchTool({
   const [search, setSearch] = useState("");
   const [calendarActive, setCalendarActive] = useState(false);
 
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 992 : true
-  );
-
   const handleSetCalendarActive = (state: boolean) => {
     setCalendarActive(state);
     if (!state) {
@@ -44,20 +42,6 @@ export default function EntrySearchTool({
       disableOverflowY();
     }
   };
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth <= 992) {
-        setIsMobile(true);
-        setSearch(""); // no search on mobile
-      } else {
-        setIsMobile(false);
-      }
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const SearchBarComp = (
     <SearchBar inputValue={search} onInputValueChange={(v) => setSearch(v)} />
@@ -86,114 +70,113 @@ export default function EntrySearchTool({
       search={search}
       defaultListingMode={defaultListingMode}
       defaultSortingMode={defaultSortingMode}
-      onDatePress={isMobile ? () => handleSetCalendarActive(true) : undefined}
+      onDatePress={() => handleSetCalendarActive(true)}
     />
   );
 
-  if (isMobile) {
-    return (
-      <div
-        id="search"
-        style={{
-          width: "100%",
-          height: "auto",
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          gap: "1rem",
-          boxSizing: "border-box",
-        }}
-      >
-        {EntryListingComp}
-        {calendarActive && (
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              position: "fixed",
-              backgroundColor: "rgba(var(--color-neutral-1000), 0.75)",
-              top: 0,
-              left: 0,
-              zIndex: 1000,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "95vw",
-                maxWidth: "25rem",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: '0.5rem'
-              }}
-            >
-              <span className="H3">Select A Date</span>
-              {CalendarComp}
-            </div>
-            <DefaultClose
-              style={{ position: "absolute", top: "1rem", right: "1rem" }}
-              color={"rgb(var(--color-font-default))"}
-              size={"2.5rem"}
-              onClick={() => handleSetCalendarActive(false)}
-            />
-          </div>
-        )}
-      </div>
-    );
-  } else {
-    return (
-      <div
-        id="search"
-        style={{
-          width: "100%",
-          height: "auto",
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          gap: "1rem",
-          boxSizing: "border-box"
-        }}
-      >
+  return (
+    <>
+      <div style={{ width: "100%" }} className={styles.hideOnDesktop}>
         <div
           style={{
-            flex: 3,
+            width: "100%",
+            height: "auto",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div
-            style={{
-              // maxWidth: "25rem",
-              width: "100%",
-              boxSizing: "border-box",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.5rem",
-            }}
-          >
-            {SearchBarComp}
-            {CalendarComp}
-          </div>
-        </div>
-        <div
-          style={{
-            flex: 5,
-            display: "flex",
-            flexDirection: "column",
             alignItems: "flex-start",
-            justifyContent: "flex-start",
+            justifyContent: "center",
+            gap: "1rem",
             boxSizing: "border-box",
           }}
         >
           {EntryListingComp}
+          {calendarActive && (
+            <div
+              style={{
+                width: "100vw",
+                height: "100vh",
+                position: "fixed",
+                backgroundColor: "rgba(var(--color-neutral-1000), 0.75)",
+                top: 0,
+                left: 0,
+                zIndex: 1000,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "95vw",
+                  maxWidth: "25rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <span className="H3">Select A Date</span>
+                {CalendarComp}
+              </div>
+              <DefaultClose
+                style={{ position: "absolute", top: "1rem", right: "1rem" }}
+                color={"rgb(var(--color-font-default))"}
+                size={"2.5rem"}
+                onClick={() => handleSetCalendarActive(false)}
+              />
+            </div>
+          )}
         </div>
       </div>
-    );
-  }
+      <div style={{ width: "100%" }} className={styles.hideOnMobile}>
+        <div
+          style={{
+            width: "100%",
+            height: "auto",
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            gap: "1rem",
+            boxSizing: "border-box",
+          }}
+        >
+          <div
+            style={{
+              flex: 3,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-end",
+              justifyContent: "flex-start",
+            }}
+          >
+            <div
+              style={{
+                // maxWidth: "25rem",
+                width: "100%",
+                boxSizing: "border-box",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              {SearchBarComp}
+              {CalendarComp}
+            </div>
+          </div>
+          <div
+            style={{
+              flex: 5,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              boxSizing: "border-box",
+            }}
+          >
+            {EntryListingComp}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

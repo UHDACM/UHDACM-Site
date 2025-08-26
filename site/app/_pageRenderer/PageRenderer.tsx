@@ -19,7 +19,7 @@ export default async function PageRenderer({ lostMessage, page }: { lostMessage?
   const sections: SiteSection[] = data.sections;
   for (let section of sections) {
     if (!isValidSiteSection(section)) {
-      // console.log("Invalid section found:", section);
+      console.log("Invalid section found:", section);
       return (
         <Page404
           customMessage={
@@ -37,10 +37,14 @@ export default async function PageRenderer({ lostMessage, page }: { lostMessage?
         flexDirection: "column",
         justifyContent: "center",
       }}
-    > 
-      <div className={styles.NavbarPadding} />
+    >
+      <NavbarPadding />
       <SectionsRenderer sections={sections} />
-      <div className={styles.NavbarPadding} />
+      <NavbarPadding />
     </div>
   );
+}
+
+export function NavbarPadding() {
+  return <div className={styles.NavbarPadding} />;
 }

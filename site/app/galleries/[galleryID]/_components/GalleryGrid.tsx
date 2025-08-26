@@ -13,9 +13,9 @@ import styles from './GalleryGrid.module.css';
 export default function GalleryGrid({ media }: { media: StrapiPicture[] }) {
   const dispatch = useDispatch<AppDispatch>();
   
-  // const mediaArray = media;
+  const mediaArray = media;
 
-  const mediaArray = [...media, ...media, ...media];
+  // const mediaArray = [...media, ...media, ...media];
 
   const onImageClick = (index: number) => {
     dispatch(

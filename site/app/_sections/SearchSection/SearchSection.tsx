@@ -16,12 +16,14 @@ export default async function SearchSection({
   header,
   type,
   listingMode,
-  defaultSortingMode
+  defaultSortingMode,
+  sectionID
 }: {
   header?: string;
   type: SearchSectionType;
   listingMode: ListingMode;
   defaultSortingMode: EntrySortMode;
+  sectionID?: string;
 }) {
   const CurrentSearchSectionSearchToolProps = {
     listingMode,
@@ -42,7 +44,7 @@ export default async function SearchSection({
 
   return (
     <Suspense>
-      <div className={"SectionRoot"}>
+      <div className={"SectionRoot"} id={sectionID}>
         <div className={`SectionInner ${styles.innerStyling}`}>
           {header && <h1 className={`H1 ${styles.searchHeaderTitle}`}>{header}</h1>}
           {Comp}

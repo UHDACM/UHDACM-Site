@@ -10,11 +10,11 @@ import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendar
 import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import { isValidFeaturedEvent } from "@/app/_utils/types/cms/cmsTypeValidation";
 
-export default async function FeaturedEventSection() {
+export default async function FeaturedEventSection({ sectionID }: { sectionID?: string }) {
   const res = await fetchCMS("featured-event", {
     "populate[event][populate]": "*",
     populate: "previewImageHD",
-  });
+  }, ['events']);
 
   if (!res) {
     return;
@@ -75,7 +75,7 @@ export default async function FeaturedEventSection() {
   }
 
   return (
-    <div className={styles.SectionRoot}>
+    <div className={styles.SectionRoot} id={sectionID}>
       <div className={styles.SectionInner}>
         <h1 className="H1">Featured Event</h1>
         <div className={styles.featuredEventWrapper}>

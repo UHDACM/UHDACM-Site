@@ -38,6 +38,9 @@ import Page404 from "@/app/not-found";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 import { SiteEvent } from "@/app/_utils/types";
 import { ProduceCMSResourceURL } from "@/app/_utils/tools";
+import SplitHeroSection from "@/app/_sections/SplitHeroSection/SplitHeroSection";
+import { SplitHeroColumnTextBlock } from "@/app/_utils/types/cms/cmsTypes";
+import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -113,12 +116,12 @@ export default async function EventPage({
         position: "relative",
       }}
     >
+      <NavbarPadding />
       <MainHeroSection
         spanText="EVENT"
         title={event.name}
         leftStyle={{ flex: 1 }}
         rightStyle={{ flex: 1 }}
-        addNavbarPadding={true}
         rightContent={
           <CoolImage
             style={{ height: "24rem", overflow: "hidden" }}

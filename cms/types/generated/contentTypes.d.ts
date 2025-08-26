@@ -566,6 +566,7 @@ export interface ApiPageAboutPageAbout extends Struct.SingleTypeSchema {
         'site-sections.latest-qna',
         'site-sections.featured-event',
         'site-sections.search-section',
+        'site-sections.leadership-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -602,6 +603,7 @@ export interface ApiPageContactPageContact extends Struct.SingleTypeSchema {
         'site-sections.latest-qna',
         'site-sections.featured-event',
         'site-sections.search-section',
+        'site-sections.leadership-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -638,6 +640,44 @@ export interface ApiPageEventsPageEvents extends Struct.SingleTypeSchema {
         'site-sections.latest-qna',
         'site-sections.featured-event',
         'site-sections.search-section',
+        'site-sections.leadership-section',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageGalleriesPageGalleries extends Struct.SingleTypeSchema {
+  collectionName: 'page_galleries_plural';
+  info: {
+    displayName: 'page-galleries';
+    pluralName: 'page-galleries-plural';
+    singularName: 'page-galleries';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-galleries.page-galleries'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.search-section',
+        'site-sections.leadership-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
       ]
     > &
       Schema.Attribute.Required;
@@ -674,6 +714,7 @@ export interface ApiPageHomePageHome extends Struct.SingleTypeSchema {
         'site-sections.latest-qna',
         'site-sections.featured-event',
         'site-sections.search-section',
+        'site-sections.leadership-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -710,6 +751,7 @@ export interface ApiPageJoinPageJoin extends Struct.SingleTypeSchema {
         'site-sections.latest-qna',
         'site-sections.featured-event',
         'site-sections.search-section',
+        'site-sections.leadership-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -746,6 +788,44 @@ export interface ApiPageMediaPageMedia extends Struct.SingleTypeSchema {
         'site-sections.latest-qna',
         'site-sections.featured-event',
         'site-sections.search-section',
+        'site-sections.leadership-section',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageQnasPageQnas extends Struct.SingleTypeSchema {
+  collectionName: 'page_qnas_plural';
+  info: {
+    displayName: 'page-qnas';
+    pluralName: 'page-qnas-plural';
+    singularName: 'page-qnas';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-qnas.page-qnas'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'site-sections.split-hero-section',
+        'site-sections.search-section',
+        'site-sections.leadership-section',
+        'site-sections.latest-qna',
+        'site-sections.featured-event',
       ]
     > &
       Schema.Attribute.Required;
@@ -850,7 +930,7 @@ export interface ApiSiteInfoSiteInfo extends Struct.SingleTypeSchema {
     logo: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    socials: Schema.Attribute.Component<'types.social-link', false>;
+    socials: Schema.Attribute.Component<'types.social-link', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1373,9 +1453,11 @@ declare module '@strapi/strapi' {
       'api::page-about.page-about': ApiPageAboutPageAbout;
       'api::page-contact.page-contact': ApiPageContactPageContact;
       'api::page-events.page-events': ApiPageEventsPageEvents;
+      'api::page-galleries.page-galleries': ApiPageGalleriesPageGalleries;
       'api::page-home.page-home': ApiPageHomePageHome;
       'api::page-join.page-join': ApiPageJoinPageJoin;
       'api::page-media.page-media': ApiPageMediaPageMedia;
+      'api::page-qnas.page-qnas': ApiPageQnasPageQnas;
       'api::person.person': ApiPersonPerson;
       'api::qna.qna': ApiQnaQna;
       'api::site-info.site-info': ApiSiteInfoSiteInfo;

@@ -182,6 +182,17 @@ export interface SiteSectionsLatestQna extends Struct.ComponentSchema {
   };
 }
 
+export interface SiteSectionsLeadershipSection extends Struct.ComponentSchema {
+  collectionName: 'components_site_sections_leadership_sections';
+  info: {
+    displayName: 'leadership-section';
+    icon: 'user';
+  };
+  attributes: {
+    sectionID: Schema.Attribute.String;
+  };
+}
+
 export interface SiteSectionsSearchSection extends Struct.ComponentSchema {
   collectionName: 'components_site_sections_search_sections';
   info: {
@@ -274,6 +285,7 @@ declare module '@strapi/strapi' {
       'site-components.split-hero-column': SiteComponentsSplitHeroColumn;
       'site-sections.featured-event': SiteSectionsFeaturedEvent;
       'site-sections.latest-qna': SiteSectionsLatestQna;
+      'site-sections.leadership-section': SiteSectionsLeadershipSection;
       'site-sections.search-section': SiteSectionsSearchSection;
       'site-sections.split-hero-section': SiteSectionsSplitHeroSection;
       'types.social-link': TypesSocialLink;

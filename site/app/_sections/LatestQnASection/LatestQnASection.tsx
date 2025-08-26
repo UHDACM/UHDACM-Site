@@ -6,7 +6,7 @@ import { ProduceCMSResourceURL } from "@/app/_utils/tools";
 import Button from "@/app/_components/Button/Button";
 import { DefaultChevronRight, DefaultSearch } from "@/app/_icons/Icons";
 
-export default async function LatestQnASection({ reverseOnDesktop }: { reverseOnDesktop?: boolean }) {
+export default async function LatestQnASection({ reverseOnDesktop, sectionID }: { reverseOnDesktop?: boolean, sectionID?: string }) {
   const res = await fetchCMS("qnas", {
     sort: "uploadDate:desc",
     "pagination[limit]": 1,
@@ -24,6 +24,7 @@ export default async function LatestQnASection({ reverseOnDesktop }: { reverseOn
   }
 
   return <MainHeroSection
+  id={sectionID}
     title={`Watch our QnA\nwith ${qna.featuredGuests}`}
     titleClassName="H1"
     subtitle={`${qna.descriptionShort}`}

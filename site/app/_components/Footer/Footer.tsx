@@ -1,8 +1,7 @@
 import styles from './Footer.module.css'
 
 import Link from "next/link";
-import { Logo } from "../Navbar/Navbar";
-import { NavigationTree } from "@/app/_utils/globals";
+import { defaultSocials, NavigationTree } from "@/app/_utils/globals";
 import {
   DefaultDiscord,
   DefaultGithub,
@@ -10,15 +9,34 @@ import {
   DefaultLinkedin,
   DefaultYoutube,
 } from "@/app/_icons/Icons";
-import { getTodayYMD } from "@/app/_utils/tools";
+import { getTodayYMD, ProduceCMSResourceURL } from "@/app/_utils/tools";
+import Logo from '../Logo/Logo';
+import { isValidSiteInfo } from '@/app/_utils/types/cms/cmsTypeValidation';
+import { fetchCMS } from '@/app/_utils/cms';
+import { SocialObj } from '@/app/_utils/types';
 
-export default function Footer() {
+
+export default async function Footer() {
+  let logoURL: string | undefined = undefined;
+  let socials: SocialObj[] = defaultSocials;
+
+  const res = await fetchCMS("site-info", { populate: "*" });
+  if (res) {
+    const data = res.data;
+    if (isValidSiteInfo(data)) {
+      logoURL = ProduceCMSResourceURL(data.logo.url);
+      socials = data.socials || socials;
+    }
+  }
+  
+  console.log('its the footer');
+
   return (
     <div className={`SectionRoot ${styles.footerRoot}`}>
       <div className={`SectionInner ${styles.footerInner}`}>
         <div className={styles.footerRow}>
           <Link href="/" className={styles.logoLink}>
-            <Logo />
+            <Logo src={logoURL} />
           </Link>
           <div className={styles.navLinks}>
             {NavigationTree.map((entry) => (
@@ -33,27 +51,26 @@ export default function Footer() {
           </div>
           <div className={styles.socialsCol}>
             <div className={`H3 ${styles.socialsRow}`}>
-              <Link href="https://github.com/UHDACM" target="_blank">
-                <DefaultGithub color="rgb(var(--color-font-default))" />
-              </Link>
-              <Link
-                href="https://www.linkedin.com/company/uhd-acm/"
-                target="_blank"
-              >
-                <DefaultLinkedin color="rgb(var(--color-font-default))" />
-              </Link>
-              <Link href="https://www.youtube.com/@uhdacm" target="_blank">
-                <DefaultYoutube color="rgb(var(--color-font-default))" />
-              </Link>
-              <Link href="https://www.instagram.com/uhdacm" target="_blank">
-                <DefaultInstagram color="rgb(var(--color-font-default))" />
-              </Link>
-              <Link
-                href="https://discord.com/invite/362vxfy7SE"
-                target="_blank"
-              >
-                <DefaultDiscord color="rgb(var(--color-font-default))" />
-              </Link>
+              {socials.map((social) => (
+                <Link key={social.url} href={social.url} target="_blank">
+                  {(() => {
+                    switch (social.type) {
+                      case "github":
+                        return <DefaultGithub color="rgb(var(--color-font-default))" />;
+                      case "linkedin":
+                        return <DefaultLinkedin color="rgb(var(--color-font-default))" />;
+                      case "youtube":
+                        return <DefaultYoutube color="rgb(var(--color-font-default))" />;
+                      case "instagram":
+                        return <DefaultInstagram color="rgb(var(--color-font-default))" />;
+                      case "discord":
+                        return <DefaultDiscord color="rgb(var(--color-font-default))" />;
+                      default:
+                        return null;
+                    }
+                  })()}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
