@@ -12,35 +12,43 @@ import {
   isCMSSingleTypePage,
 } from "./types/cms/cmsTypeValidation";
 
+type fetchableCMSCollection =
+  | cmsCollectionPlural
+  | cmsSingleType
+  | cmsSingleTypePage;
+type cmsCollectionSingulars =
+  | cmsCollectionSingular
+  | cmsSingleType
+  | cmsSingleTypePage | 'any';
+
 // TODO: swap with entity service
 export async function fetchCMS(
-  path: cmsCollectionPlural | cmsSingleType | cmsSingleTypePage,
+  path: fetchableCMSCollection,
   params?: Record<string, any>,
-  additionalTags?:
-    | (cmsCollectionPlural | cmsSingleType | cmsSingleTypePage)[]
-    | "any"
+  additionalTags?: fetchableCMSCollection[] | "any"
 ) {
-  let collectionTag:
-    | cmsCollectionSingular
-    | cmsSingleType
-    | cmsSingleTypePage
-    | undefined = undefined;
-  if (isCMSCollectionPlural(path)) {
-    const res = cmsCollectionPluralToSingular(path);
-    if (res) {
-      collectionTag = res;
-    }
-  } else if (isCMSSingleType(path)) {
-    // its a single type, use path as is
-    collectionTag = path;
-  } else if (isCMSSingleTypePage(path)) {
-    collectionTag = path;
-  }
-
+  let collectionTag: cmsCollectionSingulars | undefined =
+    convertFetchableToSingular(path);
+    
   if (!collectionTag) {
     console.log("failed to find collection tag", path);
     // this should never happen
     return undefined;
+  }
+
+  const dependencyTags: cmsCollectionSingulars[] = [collectionTag];
+  if (additionalTags) {
+    if (Array.isArray(additionalTags)) {
+      for (const tag of additionalTags) {
+        const singularTag = convertFetchableToSingular(tag);
+        if (singularTag) {
+          dependencyTags.push(singularTag);
+        }
+      }
+    } else if (additionalTags === "any") {
+      // If additionalTags is "any", we can add all possible tags
+      dependencyTags.push("any");
+    }
   }
 
   try {
@@ -48,10 +56,14 @@ export async function fetchCMS(
     const url = `${process.env.NEXT_PUBLIC_CMS_URL}/api/${path}${
       urlParams ? `?${urlParams}` : ""
     }`;
-    console.log(`Fetching CMS: ${url} \nwith tag: ${collectionTag} + ${JSON.stringify(additionalTags)}`);
+    console.log(
+      `Fetching CMS: ${url} \nwith tag: ${collectionTag} | ${JSON.stringify(
+        dependencyTags
+      )}`
+    );
     const res = await fetch(url, {
       next: {
-        tags: [collectionTag, ...(additionalTags || [])],
+        tags: dependencyTags,
       },
       method: "GET",
       headers: {
@@ -83,7 +95,6 @@ export async function fetchCMSPage(page: cmsSingleTypePage) {
     "sections.leftComponent.textBlock.buttons",
     "sections.rightComponent.textBlock.buttons",
 
-
     "sections.leftComponent.imageCollection",
     "sections.rightComponent.imageCollection",
     "sections.leftComponent.imageCollection.images",
@@ -93,7 +104,7 @@ export async function fetchCMSPage(page: cmsSingleTypePage) {
     "sections.rightComponent.singleImage",
     "sections.leftComponent.singleImage.image",
     "sections.rightComponent.singleImage.image",
-    
+
     "sections.leftComponent.floatingImages",
     "sections.rightComponent.floatingImages",
     "sections.leftComponent.floatingImages.images",
@@ -107,3 +118,18 @@ export async function fetchCMSPage(page: cmsSingleTypePage) {
 
   return await fetchCMS(page, params, "any");
 }
+
+const convertFetchableToSingular = (
+  path: fetchableCMSCollection
+): cmsCollectionSingulars | undefined => {
+  if (isCMSCollectionPlural(path)) {
+    return cmsCollectionPluralToSingular(path);
+  }
+  if (isCMSSingleType(path)) {
+    return path;
+  }
+  if (isCMSSingleTypePage(path)) {
+    return path;
+  }
+  return undefined;
+};

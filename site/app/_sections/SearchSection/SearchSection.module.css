@@ -7,8 +7,16 @@
 
 .innerStyling {
   align-items: start;
-	min-height: 90vh;
+  min-height: 30rem;
+	margin: 4rem 1rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+@media (max-width: 768px) {
+	.innerStyling {
+		min-height: 24rem;
+		margin: 4rem 0rem;
+	}
 }

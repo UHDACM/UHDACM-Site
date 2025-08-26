@@ -7,17 +7,26 @@ import { ReactNode, Suspense } from "react";
 import styles from "./SearchSection.module.css";
 import EntrySearchTool from "@/app/_components/EntrySearchTool/EntrySearchTool";
 import { SearchSectionType } from "@/app/_utils/types/cms/cmsTypes";
-import { EntrySortMode, ListingMode } from "@/app/_utils/types";
+import { EntrySortMode, ListingMode, QnA } from "@/app/_utils/types";
 import Button from "@/app/_components/Button/Button";
-import { DefaultChevronRight, DefaultEllipsis } from "@/app/_icons/Icons";
-import { intToMonth, ProduceCMSResourceURL, toTitleCase } from "@/app/_utils/tools";
+import {
+  DefaultChevronRight,
+  DefaultEllipsis,
+  DefaultOpenInNewTab,
+  DefaultYoutube,
+} from "@/app/_icons/Icons";
+import {
+  intToMonth,
+  ProduceCMSResourceURL,
+  toTitleCase,
+} from "@/app/_utils/tools";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 export default async function SearchSection({
   header,
   type,
   listingMode,
   defaultSortingMode,
-  sectionID
+  sectionID,
 }: {
   header?: string;
   type: SearchSectionType;
@@ -27,16 +36,16 @@ export default async function SearchSection({
 }) {
   const CurrentSearchSectionSearchToolProps = {
     listingMode,
-    defaultSortingMode
+    defaultSortingMode,
   };
 
   let Comp: ReactNode = undefined;
 
-  if (type == 'events') {
+  if (type == "events") {
     Comp = <EventsSearchTool {...CurrentSearchSectionSearchToolProps} />;
-  } else if (type == 'galleries') {
+  } else if (type == "galleries") {
     Comp = <GalleriesSearchTool {...CurrentSearchSectionSearchToolProps} />;
-  } else if (type == 'qnas') {
+  } else if (type == "qnas") {
     Comp = <QnAsSearchTool {...CurrentSearchSectionSearchToolProps} />;
   } else {
     return null;
@@ -46,7 +55,9 @@ export default async function SearchSection({
     <Suspense>
       <div className={"SectionRoot"} id={sectionID}>
         <div className={`SectionInner ${styles.innerStyling}`}>
-          {header && <h1 className={`H1 ${styles.searchHeaderTitle}`}>{header}</h1>}
+          {header && (
+            <h1 className={`H1 ${styles.searchHeaderTitle}`}>{header}</h1>
+          )}
           {Comp}
         </div>
       </div>
@@ -58,7 +69,6 @@ type SearchSectionSearchToolProps = {
   listingMode: ListingMode;
   defaultSortingMode: EntrySortMode;
 };
-
 
 export async function EventsSearchTool({
   listingMode = "after",
@@ -86,12 +96,10 @@ export async function EventsSearchTool({
   );
 }
 
-
 export async function GalleriesSearchTool({
   listingMode = "after",
   defaultSortingMode = "ascending",
 }: SearchSectionSearchToolProps) {
-
   const res = await fetchCMS("events", {
     "populate[0]": "previewImage",
     "populate[1]": "gallery",
@@ -103,7 +111,10 @@ export async function GalleriesSearchTool({
       const entry = EventToEntry(event);
       entry.CallToAction = (
         <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
-          <ShareButton copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/galleries/${event.urlSlug}`} replaceTextOnCopyString="Copied!" />
+          <ShareButton
+            copyText={`${process.env.NEXT_PUBLIC_SITE_URL}/galleries/${event.urlSlug}`}
+            replaceTextOnCopyString="Copied!"
+          />
           <Button href={`/galleries/${event.urlSlug}`}>
             <span style={{ fontWeight: 500 }}>View Gallery</span>
             <DefaultChevronRight
@@ -132,23 +143,27 @@ export async function QnAsSearchTool({
   listingMode = "before",
   defaultSortingMode = "descending",
 }: SearchSectionSearchToolProps) {
-  
   const res = await fetchCMS("qnas", { populate: "thumbnail" });
 
   const validEntries: EntryTileProps[] = [];
 
+  const getUploadDateString = (QnA: QnA) => {
+    const date = new Date(QnA.uploadDate);
+    if (!date.getMonth()) {
+      return "Unknown";
+    }
+    const MonthStr = toTitleCase(`${intToMonth(date.getMonth())}`);
+    return `${MonthStr.substring(
+      0,
+      3
+    )} ${date.getDate()}, ${date.getFullYear()}`;
+  };
+
   if (res) {
     const qnaRaw = res.data;
     for (const QnA of qnaRaw) {
-      const UploadDateString = (() => {
-        const date = new Date(QnA.UploadDate);
-        if (!date.getMonth()) {
-          return "Unknown";
-        }
-        const MonthStr = toTitleCase(`${intToMonth(date.getMonth())}`);
-        return `${MonthStr.substring(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
-      })();
       if (isValidQnA(QnA)) {
+        const UploadDateString = getUploadDateString(QnA);
         validEntries.push({
           date: QnA.uploadDate,
           description: QnA.descriptionShort,
@@ -165,15 +180,24 @@ export async function QnAsSearchTool({
               className="BodyLarge"
               style={{ display: "flex", gap: "0.5rem" }}
             >
-              <Button>
-                <DefaultEllipsis />
-              </Button>
-              <Button href={`${QnA.videoLink}`}>
-                <span style={{ fontWeight: 500 }}>View Event</span>
-                <DefaultChevronRight
+              <ShareButton
+                copyText={`${QnA.videoLink}`}
+                replaceTextOnCopyString="Copied!"
+              />
+              <Button
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.25rem",
+                }}
+                href={`${QnA.videoLink}`}
+                target="_blank"
+              >
+                <span style={{ fontWeight: 500 }}>Watch QnA</span>
+                <DefaultOpenInNewTab
                   fontSize={"inherit"}
-                  style={{ marginRight: "-0.25rem" }}
-                  strokeWidth={"0.20rem"}
+                  // style={{ marginRight: "-0.25rem" }}
+                  // strokeWidth={"0.025rem"}
                 />
               </Button>
             </div>

@@ -29,8 +29,6 @@ export default async function LeadershipSection({ sectionID }: { sectionID?: str
     return true;
   });
 
-  console.log('leadership', validPeople);
-
   return (
     <div className={"SectionRoot"} style={{margin: '4rem 0rem'}} id={sectionID}>
       <div className={"SectionInner"}>
