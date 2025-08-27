@@ -20,3 +20,15 @@
   overflow: hidden;
   border: 1px solid rgb(var(--color-stroke-normal));
 }
+
+@media (max-width: 1200px) {
+  .imageWrapper {
+    height: 22rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .imageWrapper {
+    height: 18rem;
+  }
+}
