@@ -27,9 +27,13 @@ const FeaturedEvent: React.FC<FeaturedEventProps> = ({
     <div className={styles.container} style={containerStyle}>
       <div className={styles.content} style={contentStyle}>
         <div className="H2">{title}</div>
-        <div className="BodyLargeHeavy">{largeHeavy}</div>
-        <div className="BodyLargeHeavy">{smallHeavy}</div>
-        <div className="BodyRegular">{caption}</div>
+        <div className="BodyLargeHeavy" style={{
+          color: 'rgb(var(--color-font-primary))'
+        }}>{largeHeavy}</div>
+        <div className="BodyLargeHeavy" style={{
+          color: 'rgb(var(--color-font-secondary))'
+        }}>{smallHeavy}</div>
+        <div className="BodyRegular" style={{marginTop: '0.25rem'}}>{caption}</div>
         {BottomComponent && (
           <div className={styles.buttonRow}>{BottomComponent}</div>
         )}
