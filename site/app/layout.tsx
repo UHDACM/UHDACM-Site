@@ -6,6 +6,7 @@ import ReduxProvider from "./_features/ReduxProvider";
 import Body from "./body";
 import NavbarSC from "./_components/Navbar/NavbarSC";
 import Footer from "./_components/Footer/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReduxProvider>
+        <Analytics />
         <Body className={`${inter.variable} antialiased`}>
           <NavbarSC />
           {children}
