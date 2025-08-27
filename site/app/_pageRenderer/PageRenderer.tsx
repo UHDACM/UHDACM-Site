@@ -14,7 +14,7 @@ export default async function PageRenderer({ lostMessage, page }: { lostMessage?
   // console.log('res', res);
   const data = res.data;
 
-  console.log("Fetched page-home data:", JSON.stringify(data, null, 2));
+  // console.log("Fetched "+page+" data:", JSON.stringify(data, null, 2));
 
   const sections: SiteSection[] = data.sections;
   for (let section of sections) {

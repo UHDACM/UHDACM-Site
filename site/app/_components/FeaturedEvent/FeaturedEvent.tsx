@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../Button/Button";
 import styles from "./FeaturedEvent.module.css";
 
 interface FeaturedEventProps {
@@ -14,7 +13,7 @@ interface FeaturedEventProps {
 }
 
 
-const FeaturedEvent: React.FC<FeaturedEventProps> = async ({
+const FeaturedEvent: React.FC<FeaturedEventProps> = ({
   title,
   largeHeavy,
   smallHeavy,
