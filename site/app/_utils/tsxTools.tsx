@@ -12,6 +12,7 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
     ? `${TryGetImageFormatUrl(event.previewImage, 'medium')}`
     : undefined;
 
+    console.log('ebrk', event.dateStart, event.dateEnd);
   const dateStart = new Date(event.dateStart);
   const dateEnd = new Date(event.dateEnd);
 

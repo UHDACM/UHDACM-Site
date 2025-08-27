@@ -86,6 +86,7 @@ export default function Calendar({
           `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
       )
     : [];
+  console.log('Dots on dates:', dotsOnDatesYMD);
   return (
     <div
       style={{
@@ -196,8 +197,9 @@ export default function Calendar({
           );
         })}
         {Array.from({ length: daysInMonth }).map((_, i) => {
+          console.log(`checking date: ${year}-${monthToInt(month as Month) + 1}-${i + 1}`);
           const EventOnToday = dotsOnDatesYMD.includes(
-            `${year}-${monthToInt(month as Month) + 1}-${i}`
+            `${year}-${monthToInt(month as Month) + 1}-${i + 1}`
           );
           return (
             <div
