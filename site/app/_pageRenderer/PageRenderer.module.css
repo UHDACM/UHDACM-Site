@@ -1,5 +1,5 @@
 .NavbarPadding {
-	height: 5rem;
+	height: 2rem;
 }
 
 @media (max-width: 1200px) {
@@ -10,6 +10,6 @@
 
 @media (max-width: 768px) {
   .NavbarPadding {
-    height: 5rem;
+    height: 3rem;
   }
 }
