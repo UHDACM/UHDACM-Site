@@ -20,6 +20,7 @@ export default async function LeadershipSection({ sectionID }: { sectionID?: str
     return;
   }
 
+  // const people = [...leadership.people, ...leadership.people, ...leadership.people, ...leadership.people];
   const people = leadership.people;
 
   const validPeople: Person[] = people.filter((person: any) => {
@@ -32,7 +33,7 @@ export default async function LeadershipSection({ sectionID }: { sectionID?: str
   return (
     <div className={"SectionRoot"} style={{margin: '4rem 0rem'}} id={sectionID}>
       <div className={"SectionInner"}>
-        <h1 className={`H1`} style={{ whiteSpace: "pre-line", marginBottom: '0.5rem' }}>
+        <h1 className={`H1`} style={{ whiteSpace: "pre-line", marginBottom: '0.5rem', textAlign: 'center' }}>
           Meet our Leadership
         </h1>
         <div

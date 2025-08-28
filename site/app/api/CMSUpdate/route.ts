@@ -24,6 +24,7 @@ export async function POST(req: Request) {
   console.log(`Revalidating tag for model: ${model}`);
   // revalidates all paths that rely on the CMS collection
   revalidateTag(model);
+  revalidateTag('any');
 
   return new Response(JSON.stringify({ okay: true }));
 }

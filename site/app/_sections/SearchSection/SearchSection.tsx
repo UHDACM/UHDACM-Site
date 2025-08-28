@@ -79,7 +79,7 @@ export async function GalleriesSearchTool(props: SearchSectionSearchToolProps) {
   const res = await fetchCMS("events", {
     "populate[0]": "previewImage",
     "populate[1]": "gallery",
-  });
+  }, ['galleries']);
   const eventsRaw = res ? res.data : [];
   const validGalleryEvents: SiteEvent[] = [];
   for (const event of eventsRaw) {

@@ -9,6 +9,25 @@ type EventPageParams = Promise<{
   eventID: string;
 }>;
 
+
+export const generateStaticParams = async () => {
+  const res = await fetchCMS("events", {});
+  
+  const paths: string[] = [];
+  if (res && res.data && Array.isArray(res.data)) {
+    for (let event of res.data) {
+      if (event.urlSlug) {
+        paths.push(event.urlSlug);
+      }
+    }
+  }
+  // if (res && res.data && Array.isArray(res.data)) {
+  //   paths.push(...res.data.map((event) => event.attributes.urlSlug));
+  // }
+
+  return paths.map((eventID) => ({ eventID }));
+};
+
 export default async function EventPage({
   params,
 }: {
@@ -33,6 +52,9 @@ export default async function EventPage({
   return <EventPageClientComponent event={event} />;
 }
 
+// export function getStaticPaths () {
+
+// }
 
 function EventPage404() {
   return (

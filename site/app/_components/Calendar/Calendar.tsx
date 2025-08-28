@@ -179,7 +179,7 @@ export default function Calendar({
                 position: "relative",
                 color:
                   i == 0 || i == 6
-                    ? "rgb(var(--color-font-accent))"
+                    ? "rgb(var(--color-font-secondary))"
                     : "inherit",
               }}
             >

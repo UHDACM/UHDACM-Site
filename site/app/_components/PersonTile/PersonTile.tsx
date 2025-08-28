@@ -100,14 +100,13 @@ export default function PersonTile({
             zIndex: 2,
             display: "flex",
             flexDirection: "column",
-            gap: "0.5rem",
+            gap: "0.1rem",
           }}
         >
           <p
             style={{
               color: "white",
               margin: 0,
-              fontSize: "1.25rem",
               ...previewTitleStyle,
             }}
             className={"BodyLargeHeavy"}
@@ -118,7 +117,6 @@ export default function PersonTile({
             style={{
               color: "white",
               margin: 0,
-              fontSize: "0.75rem",
               ...previewSubTitleStyle,
             }}
             className={"BodySmall"}
@@ -302,7 +300,7 @@ function PersonTileExpanded({
                     if (!IconComponent) return null;
                     return (
                       <IconComponent
-                        size={40}
+                        size={'2rem'}
                         style={combinedStyles}
                         onClick={onClickFunc}
                         key={key}
@@ -319,7 +317,7 @@ function PersonTileExpanded({
                   cursor: "pointer",
                   color: "rgb(var(--color-font-default))",
                 }}
-                size={"1.5rem"}
+                size={"2rem"}
                 onClick={() => {
                   setOpen(false);
                   onClose && onClose();
