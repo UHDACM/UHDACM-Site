@@ -355,6 +355,7 @@ export function isValidSplitHeroColumnSingleImage(
   }
 
   if (!isStrapiPicture(singleImage.image)) {
+    console.log("Invalid singleImage found:", JSON.stringify(singleImage, null, 2));
     return false;
   }
 
