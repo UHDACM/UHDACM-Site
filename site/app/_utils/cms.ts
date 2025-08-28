@@ -116,7 +116,7 @@ export async function fetchCMSPage(page: cmsSingleTypePage) {
     params[`populate[${i}]`] = `${populateList[i]}`;
   }
 
-  return await fetchCMS(page, params, "any");
+  return await fetchCMS(page, params);
 }
 
 const convertFetchableToSingular = (
