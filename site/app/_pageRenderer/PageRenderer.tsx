@@ -19,7 +19,7 @@ export default async function PageRenderer({ lostMessage, page }: { lostMessage?
   const sections: SiteSection[] = data.sections;
   for (let section of sections) {
     if (!isValidSiteSection(section)) {
-      console.log("Invalid section found:", section);
+      console.log("Invalid section found:", JSON.stringify(section, null, 2));
       return (
         <Page404
           customMessage={

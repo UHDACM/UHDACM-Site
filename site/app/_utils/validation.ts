@@ -93,18 +93,22 @@ export function isStrapiPicture(obj: any): obj is StrapiPicture {
   if (typeof obj.url !== "string") return false;
   // if (typeof obj.alternativeText !== "string") return false;
   // if (typeof obj.caption !== "string") return false;
-  if (typeof obj.width !== "number") return false;
-  if (typeof obj.height !== "number") return false;
-  if (typeof obj.name !== "string") return false;
-  if (!obj.formats || typeof obj.formats !== "object") return false;
-  if (obj.formats.thumbnail && !isStrapiPictureFormat(obj.formats.thumbnail))
-    return false;
-  if (obj.formats.small && !isStrapiPictureFormat(obj.formats.small))
-    return false;
-  if (obj.formats.medium && !isStrapiPictureFormat(obj.formats.medium))
-    return false;
-  if (obj.formats.large && !isStrapiPictureFormat(obj.formats.large))
-    return false;
+  // if (typeof obj.width !== "number") return false;
+  // if (typeof obj.height !== "number") return false;
+  // if (typeof obj.name !== "string") return false;
+  if (obj.formats) {
+    if (typeof obj.formats !== "object") {
+      return false;
+    }
+    if (obj.formats.thumbnail && !isStrapiPictureFormat(obj.formats.thumbnail))
+      return false;
+    if (obj.formats.small && !isStrapiPictureFormat(obj.formats.small))
+      return false;
+    if (obj.formats.medium && !isStrapiPictureFormat(obj.formats.medium))
+      return false;
+    if (obj.formats.large && !isStrapiPictureFormat(obj.formats.large))
+      return false;
+  }
   return true;
 }
 
