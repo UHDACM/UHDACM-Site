@@ -1,4 +1,6 @@
-.galleryGrid {
+/* global needed because SectionInner conflicts with global grid styles */
+
+:global(.SectionInner).galleryGrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 0.5rem;

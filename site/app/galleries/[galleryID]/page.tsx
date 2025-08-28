@@ -1,28 +1,4 @@
 import Button from "@/app/_components/Button/Button";
-import CoolImage from "@/app/_components/CoolImage/CoolImage";
-import {
-  DefaultChevronRight,
-  DefaultShareOutline,
-} from "@/app/_icons/Icons";
-
-// function ShareButton() {
-//   return (
-//     <Button>
-//       <div
-//         style={{
-//           display: "flex",
-//           gap: "0.25rem",
-//           alignItems: "center",
-//           fontWeight: 800,
-//         }}
-//       >
-//         <span style={{ fontWeight: 500 }}>Share</span>
-//         <DefaultShareOutline fontSize={"inherit"} strokeWidth={"0.15rem"} />
-//       </div>
-//     </Button>
-//   );
-// }
-import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import GalleryGrid from "./_components/GalleryGrid";
 import { fetchCMS } from "@/app/_utils/cms";
@@ -36,6 +12,22 @@ import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/He
 type EventPageParams = Promise<{
   galleryID: string;
 }>;
+
+
+export const generateStaticParams = async () => {
+  const res = await fetchCMS("events", {});
+  
+  const paths: string[] = [];
+  if (res && res.data && Array.isArray(res.data)) {
+    for (let event of res.data) {
+      if (event.urlSlug) {
+        paths.push(event.urlSlug);
+      }
+    }
+  }
+
+  return paths.map((galleryID) => ({ galleryID }));
+};
 
 export default async function EventPage({
   params,

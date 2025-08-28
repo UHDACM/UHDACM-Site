@@ -63,7 +63,7 @@ export async function fetchCMS(
     );
     const res = await fetch(url, {
       next: {
-        tags: dependencyTags,
+        tags: dependencyTags
       },
       method: "GET",
       headers: {
