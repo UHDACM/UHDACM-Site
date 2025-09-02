@@ -58,6 +58,7 @@ export type SearchSectionSearchToolProps = {
 export async function EventsSearchTool(props: SearchSectionSearchToolProps) {
   const res = await fetchCMS("events", { populate: "previewImage" });
 
+  
   const validEvents: SiteEvent[] = [];
   if (res) {
     const eventsRaw = res.data;
@@ -67,6 +68,7 @@ export async function EventsSearchTool(props: SearchSectionSearchToolProps) {
       }
     }
   }
+
   return (
     <EventSearchTool
       events={validEvents}

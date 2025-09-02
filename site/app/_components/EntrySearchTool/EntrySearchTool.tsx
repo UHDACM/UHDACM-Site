@@ -74,6 +74,7 @@ export default function EntrySearchTool({
     />
   );
 
+
   return (
     <>
       <div style={{ width: "100%" }} className={styles.hideOnDesktop}>

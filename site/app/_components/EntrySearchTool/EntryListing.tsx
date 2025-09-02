@@ -8,8 +8,9 @@ import {
   EntrySortModes,
   ListingMode,
   ListingModes,
+  Month,
 } from "@/app/_utils/types";
-import { toTitleCase } from "@/app/_utils/tools";
+import { monthToInt, toTitleCase } from "@/app/_utils/tools";
 
 import styles from "./EntryListing.module.css";
 
@@ -57,7 +58,9 @@ export function EntryListing({
 
     // const eventID = entries.id.toString();
     const eventDate = new Date(entry.date);
-    const selectedDate = new Date(`${year}-${month}-${day}`);
+    const selectedDate = new Date(Number(year), Number(monthToInt(month as Month)), Number(day));
+
+    
 
     // Zero out the time for both dates to compare only year, month, day
     eventDate.setHours(0, 0, 0, 0);

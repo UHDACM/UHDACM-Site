@@ -15,7 +15,5 @@ export default async function NavbarSC() {
     }
   }
 
-  console.log('its the navbar');
-
   return <Navbar logoURL={logoURL} />;
 }

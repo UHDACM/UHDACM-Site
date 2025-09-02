@@ -30,7 +30,6 @@ export default async function Footer() {
     }
   }
   
-  console.log('its the footer');
 
   return (
     <div className={`SectionRoot ${styles.footerRoot}`}>

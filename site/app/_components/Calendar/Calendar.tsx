@@ -86,7 +86,6 @@ export default function Calendar({
           `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
       )
     : [];
-  console.log('Dots on dates:', dotsOnDatesYMD);
   return (
     <div
       style={{
