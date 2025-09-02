@@ -2,6 +2,8 @@ import Button from "../_components/Button/Button";
 import ShareButton from "../_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "../_components/Button/Variants/AddToCalendarButton";
 import { EntryTileProps } from "../_components/EntryTile/EntryTile";
+import Footer from "../_components/Footer/Footer";
+import NavbarSC from "../_components/Navbar/NavbarSC";
 import { DefaultChevronRight } from "../_icons/Icons";
 import { SiteEvent } from "./types";
 import { generateEventShareText, ProduceDateRangeText, TryGetImageFormatUrl } from "./types/cms/cmsTypeTools";
@@ -57,4 +59,14 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
     subheader: subheader,
     subheaderTwo: event.location,
   };
+}
+
+export function WrapInNavbarAndFooter({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <NavbarSC key="Navbar" />
+      {children}
+      <Footer key="Footer" />
+    </>
+  );
 }

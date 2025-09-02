@@ -34,7 +34,7 @@
   .selectWrapper {
     width: 6rem;
   }
-  .underlineOnMobile {
+  :global(.H5).underlineOnMobile {
     text-decoration: underline;
   }
 
@@ -45,6 +45,12 @@
 
 @media (max-width: 768px) {
   .CardContainer {
-    height: 13rem;
+    height: 14rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .CardContainer {
+    height: 16rem;
   }
 }

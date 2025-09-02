@@ -1,9 +1,12 @@
 import PageRenderer from "../_pageRenderer/PageRenderer";
+import { WrapInNavbarAndFooter } from "../_utils/tsxTools";
 
 export default async function Page() {
   return (
-    <PageRenderer page="page-media" />
-  )
+    <WrapInNavbarAndFooter>
+      <PageRenderer page="page-media" />
+    </WrapInNavbarAndFooter>
+  );
 }
 
 // import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";
@@ -137,5 +140,3 @@ export default async function Page() {
 //     </div>
 //   );
 // }
-
-

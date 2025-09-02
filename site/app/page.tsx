@@ -1,8 +1,11 @@
 import PageRenderer from "./_pageRenderer/PageRenderer";
+import { WrapInNavbarAndFooter } from "./_utils/tsxTools";
 
 export default async function Page() {
   return (
-    <PageRenderer page="page-home" />
+    <WrapInNavbarAndFooter>
+      <PageRenderer page="page-home" />
+    </WrapInNavbarAndFooter>
   )
 }
 

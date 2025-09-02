@@ -1,9 +1,12 @@
 import PageRenderer from "../_pageRenderer/PageRenderer";
+import { WrapInNavbarAndFooter } from "../_utils/tsxTools";
 
 export default async function Page() {
   return (
-    <PageRenderer page="page-qnas" />
-  )
+    <WrapInNavbarAndFooter>
+      <PageRenderer page="page-qnas" />
+    </WrapInNavbarAndFooter>
+  );
 }
 
 // import MainHeroSection from "../_sections/MainHeroSection/MainHeroSection";

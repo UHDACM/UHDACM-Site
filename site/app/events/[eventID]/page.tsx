@@ -4,15 +4,15 @@ import { fetchCMS } from "@/app/_utils/cms";
 import { isValidSiteEvent } from "@/app/_utils/validation";
 import Page404 from "@/app/not-found";
 import EventPageClientComponent from "./EventPageClientComponent";
+import { WrapInNavbarAndFooter } from "@/app/_utils/tsxTools";
 
 type EventPageParams = Promise<{
   eventID: string;
 }>;
 
-
 export const generateStaticParams = async () => {
   const res = await fetchCMS("events", {});
-  
+
   const paths: string[] = [];
   if (res && res.data && Array.isArray(res.data)) {
     for (let event of res.data) {
@@ -49,7 +49,11 @@ export default async function EventPage({
     return <EventPage404 />;
   }
 
-  return <EventPageClientComponent event={event} />;
+  return (
+    <WrapInNavbarAndFooter>
+      <EventPageClientComponent event={event} />;
+    </WrapInNavbarAndFooter>
+  );
 }
 
 // export function getStaticPaths () {

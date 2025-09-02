@@ -9,15 +9,15 @@ import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
 import { generateEventShareText } from "@/app/_utils/types/cms/cmsTypeTools";
+import { WrapInNavbarAndFooter } from "@/app/_utils/tsxTools";
 
 type EventPageParams = Promise<{
   galleryID: string;
 }>;
 
-
 export const generateStaticParams = async () => {
   const res = await fetchCMS("events", {});
-  
+
   const paths: string[] = [];
   if (res && res.data && Array.isArray(res.data)) {
     for (let event of res.data) {
@@ -61,34 +61,39 @@ export default async function EventPage({
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "start",
-        position: "relative",
-      }}
-    >
-      <NavbarPadding />
-      <MainHeroSection
-        spanText="GALLERY"
-        title={`${event.name}`}
-        leftStyle={{ flex: 1 }}
-        rightStyle={{ flex: 1 }}
-        rightContent={
-          isStrapiPicture(event.previewImage) ? (
-            <HeroSingleImage image={event.previewImage} />
-          ) : undefined
-        }
-        bottomContent={
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            <ShareButton copyText={`${generateEventShareText(event)}`} replaceTextOnCopyString="Copied Invite" />
-          </div>
-        }
-      />
+    <WrapInNavbarAndFooter>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          position: "relative",
+        }}
+      >
+        <NavbarPadding />
+        <MainHeroSection
+          spanText="GALLERY"
+          title={`${event.name}`}
+          leftStyle={{ flex: 1 }}
+          rightStyle={{ flex: 1 }}
+          rightContent={
+            isStrapiPicture(event.previewImage) ? (
+              <HeroSingleImage image={event.previewImage} />
+            ) : undefined
+          }
+          bottomContent={
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <ShareButton
+                copyText={`${generateEventShareText(event)}`}
+                replaceTextOnCopyString="Copied Invite"
+              />
+            </div>
+          }
+        />
 
-      <GalleryGrid media={validMedia} />
-    </div>
+        <GalleryGrid media={validMedia} />
+      </div>
+    </WrapInNavbarAndFooter>
   );
 }
 
