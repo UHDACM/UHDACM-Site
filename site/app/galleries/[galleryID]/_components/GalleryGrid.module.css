@@ -9,19 +9,19 @@
 }
 
 @media (max-width: 1200px) {
-  .galleryGrid {
+  :global(.SectionInner).galleryGrid {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .galleryGrid {
+  :global(.SectionInner).galleryGrid {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
 @media (max-width: 576px) {
-  .galleryGrid {
+  :global(.SectionInner).galleryGrid {
     grid-template-columns: 1fr 1fr;
   }
 }
