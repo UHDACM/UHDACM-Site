@@ -7,7 +7,7 @@ import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendar
 import FeaturedEvent from "@/app/_components/FeaturedEvent/FeaturedEvent";
 import { DefaultChevronRight } from "@/app/_icons/Icons";
 import { FeaturedEvent as FeaturedSiteEvent } from "@/app/_utils/types/cms/cmsTypes";
-import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
+import { generateEventShareText, TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 import { isStrapiPicture, isValidSiteEvent } from "@/app/_utils/validation";
 
 export default function FeaturedEventComp({
@@ -84,8 +84,8 @@ export default function FeaturedEventComp({
             }}
           >
             <ShareButton
-              copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/events/${event.urlSlug}`}
-              replaceTextOnCopyString="Link Copied"
+              copyText={generateEventShareText(event)}
+              replaceTextOnCopyString="Copied Invite"
             />
             <AddToCalendarButton
               title={event.name}

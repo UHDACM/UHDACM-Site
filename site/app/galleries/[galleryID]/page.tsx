@@ -8,6 +8,7 @@ import Page404 from "@/app/not-found";
 import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
+import { generateEventShareText } from "@/app/_utils/types/cms/cmsTypeTools";
 
 type EventPageParams = Promise<{
   galleryID: string;
@@ -81,7 +82,7 @@ export default async function EventPage({
         }
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
-            <ShareButton copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/galleries/${event.urlSlug}`} replaceTextOnCopyString="Copied Gallery URL" />
+            <ShareButton copyText={`${generateEventShareText(event)}`} replaceTextOnCopyString="Copied Invite" />
           </div>
         }
       />

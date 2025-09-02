@@ -19,3 +19,4 @@ export function getDefaultIconForCMSButton(icon: CMSButtonIcon) {
 
   return iconMap[icon] || null;
 }
+

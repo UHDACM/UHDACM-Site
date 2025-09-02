@@ -8,9 +8,9 @@ import {
 } from "@/app/_icons/Icons";
 import Button from "../Button";
 import { useState } from "react";
-import { CalendarLinkGoogle, CalendarLinkOutlook, CalendarPayload } from "@/app/_utils/tools";
+import { buildICS, CalendarLinkGoogle, CalendarLinkOutlook, CalendarPayload, downloadICS } from "@/app/_utils/tools";
 
-type CalendarOption = "Google" | "Outlook" | "Apple";
+type CalendarOption = "Google" | "Outlook" | "Apple" | "Other";
 
 
 interface AddToCalendarButtonProps extends CalendarPayload {
@@ -32,13 +32,16 @@ export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarBut
       return;
       }
       window.open(link, "_blank");
-    } else if (calendar === "Outlook") {
-      const link = CalendarLinkOutlook(AddToCalendarProps);
-      if (!link) {
-      return;
-      }
-      window.open(link, "_blank");
-    } 
+    } else if (calendar == "Other") {
+      downloadICS(buildICS(AddToCalendarProps), `Event: ${AddToCalendarProps.title}.ics`);
+    }
+    // else if (calendar === "Outlook") {
+    //   const link = CalendarLinkOutlook(AddToCalendarProps);
+    //   if (!link) {
+    //   return;
+    //   }
+    //   window.open(link, "_blank");
+    // } 
     // else if (calendar === "Apple") {
     //   // Add Apple Calendar integration
     // }
@@ -100,13 +103,13 @@ export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarBut
             </span>
           </div>
           <div className={styles.CalendarOption}
-            onClick={() => handleAddToCalendar("Outlook")}
+            onClick={() => handleAddToCalendar("Other")}
           >
-            <DefaultOutlook size={"1rem"} />{" "}
+            <DefaultCalendar size={"1rem"} />{" "}
             <span
               style={{ textWrap: "nowrap", backgroundColor: "transparent" }}
             >
-              Outlook
+              Other
             </span>
           </div>
         </div>

@@ -10,7 +10,7 @@ import { EventToEntry } from "@/app/_utils/tsxTools";
 import { QnA, SiteEvent } from "@/app/_utils/types";
 import { SearchSectionSearchToolProps } from "./SearchSection";
 import { intToMonth, toTitleCase } from "@/app/_utils/tools";
-import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
+import { generateGalleryShareText, generateQnAShareText, TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 
 interface GallerySearchToolProps extends SearchSectionSearchToolProps {
   galleryEvents: SiteEvent[];
@@ -27,8 +27,8 @@ export function GallerySearchTool({
     entry.CallToAction = (
       <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
         <ShareButton
-          copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/galleries/${galleryEvent.urlSlug}`}
-          replaceTextOnCopyString="Copied!"
+          copyText={generateGalleryShareText(galleryEvent)}
+          replaceTextOnCopyString="Copied Invite"
         />
         <Button href={`/galleries/${galleryEvent.urlSlug}`}>
           <span style={{ fontWeight: 500 }}>View Gallery</span>
@@ -114,8 +114,8 @@ export function QnASearchTool({
       CallToAction: (
         <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
           <ShareButton
-            copyText={`${QnA.videoLink}`}
-            replaceTextOnCopyString="Copied!"
+            copyText={`${generateQnAShareText(QnA)}`}
+            replaceTextOnCopyString="Copied invite"
           />
           <Button
             style={{

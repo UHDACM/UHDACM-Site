@@ -13,14 +13,15 @@ import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActio
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
 import { SiteEvent } from "@/app/_utils/types";
+import { generateEventShareText } from '@/app/_utils/types/cms/cmsTypeTools';
 import { isStrapiPicture } from "@/app/_utils/validation";
 
 
-function ShareEventButton({ urlSlug }: { urlSlug: string }) {
+function ShareEventButton({ event }: { event: SiteEvent }) {
   return (
     <ShareButton
-      copyText={process.env.NEXT_PUBLIC_SELF_URL + "/events/" + urlSlug}
-      replaceTextOnCopyString={"Copied URL"}
+      copyText={generateEventShareText(event)}
+      replaceTextOnCopyString={"Copied Invite"}
     />
   );
 }
@@ -100,7 +101,7 @@ export default function EventPageClientComponent({ event } : { event: SiteEvent 
         bottomContent={
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <CalendarButton event={event} />
-            <ShareEventButton urlSlug={event.urlSlug} />
+            <ShareEventButton event={event} />
           </div>
         }
       />
@@ -165,7 +166,7 @@ export default function EventPageClientComponent({ event } : { event: SiteEvent 
             }}
           >
             <CalendarButton event={event} />
-            <ShareEventButton urlSlug={event.urlSlug} />
+            <ShareEventButton event={event} />
           </div>
         }
       />

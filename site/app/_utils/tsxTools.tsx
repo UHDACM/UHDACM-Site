@@ -4,7 +4,7 @@ import AddToCalendarButton from "../_components/Button/Variants/AddToCalendarBut
 import { EntryTileProps } from "../_components/EntryTile/EntryTile";
 import { DefaultChevronRight } from "../_icons/Icons";
 import { SiteEvent } from "./types";
-import { TryGetImageFormatUrl } from "./types/cms/cmsTypeTools";
+import { generateEventShareText, ProduceDateRangeText, TryGetImageFormatUrl } from "./types/cms/cmsTypeTools";
 import { isStrapiPicture } from "./validation";
 
 export function EventToEntry(event: SiteEvent): EntryTileProps {
@@ -12,45 +12,8 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
     ? `${TryGetImageFormatUrl(event.previewImage, 'medium')}`
     : undefined;
 
-    console.log('ebrk', event.dateStart, event.dateEnd);
-  const dateStart = new Date(event.dateStart);
-  const dateEnd = new Date(event.dateEnd);
+  const subheader = ProduceDateRangeText(event.dateStart, event.dateEnd);
 
-  // Format date as "MMM D, YYYY"
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-
-  // Format time as "h:mm AM/PM"
-  const formatTime = (date: Date) =>
-    date.toLocaleTimeString(undefined, {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-  const sameDay =
-    dateStart.getFullYear() === dateEnd.getFullYear() &&
-    dateStart.getMonth() === dateEnd.getMonth() &&
-    dateStart.getDate() === dateEnd.getDate();
-
-  const sameTime =
-    dateStart.getHours() === dateEnd.getHours() &&
-    dateStart.getMinutes() === dateEnd.getMinutes();
-
-  let subheader = "";
-  if (!sameDay) {
-    subheader = `${formatDate(dateStart)} - ${formatDate(dateEnd)}`;
-  } else if (!sameTime) {
-    subheader = `${formatDate(dateStart)}, ${formatTime(
-      dateStart
-    )} - ${formatTime(dateEnd)}`;
-  } else {
-    subheader = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
-  }
   return {
     date: event.dateStart,
     dateEnd: event.dateEnd,
@@ -73,8 +36,8 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
           // menuLeft={true}
         />
         <ShareButton
-          copyText={`${process.env.NEXT_PUBLIC_SELF_URL}/events/${event.urlSlug}`}
-          replaceTextOnCopyString="Link Copied"
+          copyText={generateEventShareText(event)}
+          replaceTextOnCopyString="Copied Invite"
         />
         <Button href={`/events/${event.urlSlug}`}>
           <span style={{ fontWeight: 500 }}>View</span>
