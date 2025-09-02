@@ -88,30 +88,6 @@ export default async function EventPage({
       />
 
       <GalleryGrid media={validMedia} />
-
-      {/* <CallToActionSection
-        title={`Show up, Schedule, Share`}
-        subtitle="Your next step is your best step. Be sure to make it count!"
-        actionComponent={
-          <Button style={{ marginTop: "0.5rem" }}>
-            <div
-              style={{
-                display: "flex",
-                gap: "0.25rem",
-                alignItems: "center",
-                fontWeight: 800,
-              }}
-            >
-              <span style={{ fontWeight: 500 }}>Contact Us</span>
-              <DefaultChevronRight
-                fontSize={"inherit"}
-                style={{ marginRight: "-0.25rem" }}
-                strokeWidth={"0.20rem"}
-              />
-            </div>
-          </Button>
-        }
-      /> */}
     </div>
   );
 }

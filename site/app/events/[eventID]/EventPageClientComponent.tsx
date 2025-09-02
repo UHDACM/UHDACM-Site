@@ -1,21 +1,25 @@
-'use client'
+"use client";
+import Button from "@/app/_components/Button/Button";
 // handles date, strictly on client side.
 
-
-import styles from './event.module.css';
+import styles from "./event.module.css";
 
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendarButton";
 import StrapiRichTextRenderer from "@/app/_components/StrapiRichTextRenderer/StrapiRichTextRenderer";
-import { DefaultClock, DefaultLocation, DefaultPeople } from "@/app/_icons/Icons";
+import {
+  DefaultClock,
+  DefaultLocation,
+  DefaultPeople,
+} from "@/app/_icons/Icons";
 import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
 import { SiteEvent } from "@/app/_utils/types";
-import { generateEventShareText } from '@/app/_utils/types/cms/cmsTypeTools';
+import { generateEventShareText } from "@/app/_utils/types/cms/cmsTypeTools";
 import { isStrapiPicture } from "@/app/_utils/validation";
-
+import { getDefaultIconForCMSButton } from "@/app/_utils/types/cms/cmsTypeToolsTsx";
 
 function ShareEventButton({ event }: { event: SiteEvent }) {
   return (
@@ -38,7 +42,11 @@ function CalendarButton({ event }: { event: SiteEvent }) {
   );
 }
 
-export default function EventPageClientComponent({ event } : { event: SiteEvent } ) {
+export default function EventPageClientComponent({
+  event,
+}: {
+  event: SiteEvent;
+}) {
   const dateStart = new Date(event.dateStart);
   const dateEnd = new Date(event.dateEnd);
 
@@ -78,7 +86,8 @@ export default function EventPageClientComponent({ event } : { event: SiteEvent 
     subheader = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
   }
 
-  return (<div
+  return (
+    <div
       style={{
         display: "flex",
         flexDirection: "column",
@@ -167,13 +176,22 @@ export default function EventPageClientComponent({ event } : { event: SiteEvent 
           >
             <CalendarButton event={event} />
             <ShareEventButton event={event} />
+            <Button
+              style={{
+                display: "flex",
+                gap: "0.5rem",
+                justifyContent: "center",
+              }}
+              href="/events#search"
+            >
+              Other Events {getDefaultIconForCMSButton("chevron-right")}
+            </Button>
           </div>
         }
       />
     </div>
   );
 }
-
 
 type EventDetailsProps = {
   icon: "clock" | "location" | "people";
