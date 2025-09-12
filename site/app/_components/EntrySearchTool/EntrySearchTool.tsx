@@ -51,8 +51,6 @@ export default function EntrySearchTool({
     }
   };
 
-
-
   // Force a rerender after 500ms to ensure client components load properly
   // this is a workaround
   const [_, setForceRerender] = useState(0);
@@ -60,7 +58,6 @@ export default function EntrySearchTool({
   useEffect(() => {
     setTimeout(() => setForceRerender(1), 500);
   }, []);
-  
 
   const SearchBarComp = (
     <SearchBar inputValue={search} onInputValueChange={(v) => setSearch(v)} />
@@ -78,7 +75,7 @@ export default function EntrySearchTool({
     />
   );
 
-  const EntryListingComp = (
+  const GenerateEntryListingComp = (onDatePressActive: boolean) => (
     <EntryListing
       entries={entries}
       day={day}
@@ -89,7 +86,9 @@ export default function EntrySearchTool({
       search={search}
       defaultListingMode={defaultListingMode}
       defaultSortingMode={defaultSortingMode}
-      onDatePress={() => handleSetCalendarActive(true)}
+      onDatePress={
+        onDatePressActive ? () => handleSetCalendarActive(true) : undefined
+      }
     />
   );
 
@@ -122,7 +121,7 @@ export default function EntrySearchTool({
             boxSizing: "border-box",
           }}
         >
-          {EntryListingComp}
+          {GenerateEntryListingComp(true)}
           {calendarActive && (
             <div
               style={{
@@ -207,7 +206,7 @@ export default function EntrySearchTool({
               boxSizing: "border-box",
             }}
           >
-            {EntryListingComp}
+            {GenerateEntryListingComp(false)}
           </div>
         </div>
       </div>

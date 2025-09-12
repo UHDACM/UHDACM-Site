@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   title: "UHD ACM",
   description: "Home page of UHD ACM",
   icons: {
-    icon: 'favicon_io/favicon-32x32.png',
-    shortcut: 'favicon_io/favicon-32x32.png',
-    apple: 'favicon_io/apple-touch-icon.png',
+    icon: '/favicon_io/favicon-32x32.png',
+    shortcut: '/favicon_io/favicon-32x32.png',
+    apple: '/favicon_io/apple-touch-icon.png',
   }
 };
 
