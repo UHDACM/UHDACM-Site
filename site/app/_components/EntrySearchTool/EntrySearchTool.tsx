@@ -38,7 +38,8 @@ export default function EntrySearchTool({
   useEffect(() => {
     const [nowYear, nowMonth, nowDay] = getTodayYMD();
     setYear(`${nowYear}`);
-    setMonth(intToMonth(nowMonth) || "January");
+    const monthStr = intToMonth(nowMonth) || "january";
+    setMonth(toTitleCase(monthStr));
     setDay(nowDay);
   }, []);
 
