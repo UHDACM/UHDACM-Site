@@ -9,7 +9,6 @@ import { DefaultChevronRight, DefaultOpenInNewTab } from "@/app/_icons/Icons";
 import { EventToEntry } from "@/app/_utils/tsxTools";
 import { QnA, SiteEvent } from "@/app/_utils/types";
 import { SearchSectionSearchToolProps } from "./SearchSection";
-import { intToMonth, toTitleCase } from "@/app/_utils/tools";
 import { generateGalleryShareText, generateQnAShareText, TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 
 interface GallerySearchToolProps extends SearchSectionSearchToolProps {

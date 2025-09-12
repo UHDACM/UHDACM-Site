@@ -122,7 +122,7 @@ export function EntryListing({
             }}
             onClick={onDatePress}
           >
-            {`${month} ${day}, ${year}`}
+            {`${toTitleCase(month)} ${day}, ${year}`}
           </h3>
         </div>
         <div

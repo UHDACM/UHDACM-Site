@@ -19,6 +19,7 @@ export default async function SearchSection({
   defaultSortingMode: EntrySortMode;
   sectionID?: string;
 }) {
+
   const CurrentSearchSectionSearchToolProps = {
     listingMode,
     defaultSortingMode,
@@ -55,7 +56,7 @@ export type SearchSectionSearchToolProps = {
   defaultSortingMode: EntrySortMode;
 };
 
-export async function EventsSearchTool(props: SearchSectionSearchToolProps) {
+async function EventsSearchTool(props: SearchSectionSearchToolProps) {
   const res = await fetchCMS("events", { populate: "previewImage" });
 
   
@@ -77,7 +78,7 @@ export async function EventsSearchTool(props: SearchSectionSearchToolProps) {
   );
 }
 
-export async function GalleriesSearchTool(props: SearchSectionSearchToolProps) {
+async function GalleriesSearchTool(props: SearchSectionSearchToolProps) {
   const res = await fetchCMS("events", {
     "populate[0]": "previewImage",
     "populate[1]": "gallery",
@@ -97,11 +98,11 @@ export async function GalleriesSearchTool(props: SearchSectionSearchToolProps) {
   );
 }
 
-export async function QnAsSearchTool({
+async function QnAsSearchTool({
   listingMode = "before",
   defaultSortingMode = "descending",
 }: SearchSectionSearchToolProps) {
-  const res = await fetchCMS("qnas", { populate: "thumbnail" }, ["qnas"]);
+  const res = await fetchCMS("qnas", { populate: "thumbnail" });
 
   const validQnAs: QnA[] = [];
   if (res) {

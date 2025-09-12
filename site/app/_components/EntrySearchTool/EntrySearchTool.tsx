@@ -1,15 +1,16 @@
 "use client";
 import { SearchBar } from "@/app/_components/SearchBar/SearchBar";
 import Calendar from "@/app/_components/Calendar/Calendar";
-import { useState } from "react";
-import { getTodayYMD, intToMonth, toTitleCase } from "@/app/_utils/tools";
-import { EntrySortMode, ListingMode, SiteEvent } from "@/app/_utils/types";
+import { useEffect, useState } from "react";
+import { intToMonth, toTitleCase } from "@/app/_utils/tools";
+import { EntrySortMode, ListingMode } from "@/app/_utils/types";
 import { DefaultClose } from "@/app/_icons/Icons";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 import { EntryTileProps } from "../EntryTile/EntryTile";
 import { EntryListing } from "./EntryListing";
 
 import styles from "./EntryListing.module.css";
+import { getTodayYMD } from "@/app/_utils/clientTools";
 
 export default function EntrySearchTool({
   entryTypePlural,
@@ -25,14 +26,21 @@ export default function EntrySearchTool({
   defaultSortingMode?: EntrySortMode;
 }) {
   const { disableOverflowY, enableOverflowY } = useBodyOverflowY();
-  const [nowYear, nowMonth, nowDay] = getTodayYMD();
-  const [day, setDay] = useState(nowDay);
+
+  const [day, setDay] = useState(0);
   const [month, setMonth] = useState<string>(
-    toTitleCase(intToMonth(nowMonth) || "january")
+    toTitleCase(intToMonth(0) || "january")
   );
-  const [year, setYear] = useState<string>(`${nowYear}`);
+  const [year, setYear] = useState<string>(`${0}`);
   const [search, setSearch] = useState("");
   const [calendarActive, setCalendarActive] = useState(false);
+
+  useEffect(() => {
+    const [nowYear, nowMonth, nowDay] = getTodayYMD();
+    setYear(`${nowYear}`);
+    setMonth(intToMonth(nowMonth) || "January");
+    setDay(nowDay);
+  }, []);
 
   const handleSetCalendarActive = (state: boolean) => {
     setCalendarActive(state);
@@ -42,6 +50,17 @@ export default function EntrySearchTool({
       disableOverflowY();
     }
   };
+
+
+
+  // Force a rerender after 500ms to ensure client components load properly
+  // this is a workaround
+  const [_, setForceRerender] = useState(0);
+
+  useEffect(() => {
+    setTimeout(() => setForceRerender(1), 500);
+  }, []);
+  
 
   const SearchBarComp = (
     <SearchBar inputValue={search} onInputValueChange={(v) => setSearch(v)} />
@@ -74,6 +93,20 @@ export default function EntrySearchTool({
     />
   );
 
+  // console.log("entry listing settings", {
+  //   day,
+  //   month,
+  //   year,
+  //   search,
+  //   listingMode: defaultListingMode,
+  //   sortingMode: defaultSortingMode,
+  //   entryTypeSingular,
+  //   entries,
+  // });
+
+  if (!day || !month || !year) {
+    return null;
+  }
 
   return (
     <>

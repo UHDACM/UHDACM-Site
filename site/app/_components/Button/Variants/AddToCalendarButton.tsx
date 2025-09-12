@@ -102,7 +102,7 @@ export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarBut
               Google Calendar
             </span>
           </div>
-          <div className={styles.CalendarOption}
+          {/* <div className={styles.CalendarOption}
             onClick={() => handleAddToCalendar("Other")}
           >
             <DefaultCalendar size={"1rem"} />{" "}
@@ -111,7 +111,7 @@ export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarBut
             >
               Other
             </span>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

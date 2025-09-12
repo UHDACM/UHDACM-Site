@@ -4,7 +4,6 @@ import MainHeroSection from "../MainHeroSection/MainHeroSection";
 import CoolImage from "@/app/_components/CoolImage/CoolImage";
 import Button from "@/app/_components/Button/Button";
 import { DefaultChevronRight, DefaultSearch } from "@/app/_icons/Icons";
-import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
 import HeroSingleImage from "../SplitHeroSection/HeroSingleImage/HeroSingleImage";
 
 export default async function LatestQnASection({ reverseOnDesktop, sectionID }: { reverseOnDesktop?: boolean, sectionID?: string }) {

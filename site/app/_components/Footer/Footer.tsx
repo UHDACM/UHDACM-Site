@@ -9,7 +9,6 @@ import {
   DefaultLinkedin,
   DefaultYoutube,
 } from "@/app/_icons/Icons";
-import { getTodayYMD } from "@/app/_utils/tools";
 import Logo from '../Logo/Logo';
 import { isValidSiteInfo } from '@/app/_utils/types/cms/cmsTypeValidation';
 import { fetchCMS } from '@/app/_utils/cms';
@@ -75,8 +74,11 @@ export default async function Footer() {
           </div>
         </div>
         <span className={`BodySmall ${styles.copyright}`}>
-          UHD ACM © {getTodayYMD()[0]}. All rights reserved.
+          UHD ACM © All rights reserved.
         </span>
+        {/* <span className={`BodySmall ${styles.copyright}`}>
+          UHD ACM © {getTodayYMD()[0]}. All rights reserved.
+        </span> */}
       </div>
     </div>
   );
