@@ -1,7 +1,12 @@
+import Button from "./_components/Button/Button";
+
 const defaultMessage = (
-  <p className="H4" style={{ textAlign: "center" }}>
-    Sorry, we couldn&apos;t find the page you&apos;re looking for.
-  </p>
+  <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
+    <p className="H4" style={{ textAlign: "center" }}>
+      Sorry, we couldn&apos;t find the page you&apos;re looking for.
+    </p>
+    <Button href="/" >Go back home</Button>
+  </div>
 );
 export default async function Page404({
   customMessage,
