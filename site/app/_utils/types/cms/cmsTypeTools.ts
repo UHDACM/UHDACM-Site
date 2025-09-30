@@ -79,7 +79,7 @@ export function generateEventShareText(event: SiteEvent): string {
 
 export function generateGalleryShareText(galleryEvent: SiteEvent): string {
   const dateRangeStr = ProduceDateRangeText(galleryEvent.dateStart, galleryEvent.dateEnd);
-  return `UHDACM Gallery: ${galleryEvent.name}\n\nDate: ${dateRangeStr}\nLocation: ${galleryEvent.location}\n\nDescription: ${galleryEvent.descriptionShort}\n\n${process.env.NEXT_PUBLIC_SELF_URL}/events/${galleryEvent.urlSlug}`;
+  return `UHDACM Gallery: ${galleryEvent.name}\n\nDate: ${dateRangeStr}\nLocation: ${galleryEvent.location}\n\nDescription: ${galleryEvent.descriptionShort}\n\n${process.env.NEXT_PUBLIC_SELF_URL}/galleries/${galleryEvent.urlSlug}`;
 }
 
 export function generateQnAShareText(QnA: QnA): string {

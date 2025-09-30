@@ -26,10 +26,27 @@ export default function PopupCarousel() {
     if (isActive) setIndex(activeIndex ?? 0);
   }, [isActive, activeIndex]);
 
+  React.useEffect(() => {
+    if (!isActive) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+        setIndex((i) => Math.min(items.length - 1, i + 1));
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+        setIndex((i) => Math.max(0, i - 1));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isActive, items.length]);
+
   if (!isActive || !items || items.length === 0) return null;
 
   const canGoLeft = showArrows && index > 0;
   const canGoRight = showArrows && index < items.length - 1;
+
+
 
   return (
     <div className={styles.overlay}>

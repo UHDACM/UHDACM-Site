@@ -8,7 +8,7 @@ import Page404 from "@/app/not-found";
 import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
-import { generateEventShareText } from "@/app/_utils/types/cms/cmsTypeTools";
+import { generateGalleryShareText } from "@/app/_utils/types/cms/cmsTypeTools";
 import { WrapInNavbarAndFooter } from "@/app/_utils/tsxTools";
 
 type EventPageParams = Promise<{
@@ -40,7 +40,7 @@ export default async function EventPage({
     "populate[0]": "previewImage",
     "populate[1]": "gallery.media",
     "filters[urlSlug][$eq]": galleryID,
-  });
+  }, ['galleries']);
 
   if (!res) {
     return <Galleries404 />;
@@ -84,8 +84,8 @@ export default async function EventPage({
           bottomContent={
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <ShareButton
-                copyText={`${generateEventShareText(event)}`}
-                replaceTextOnCopyString="Copied Invite"
+                copyText={`${generateGalleryShareText(event)}`}
+                replaceTextOnCopyString="Copied Gallery URL"
               />
             </div>
           }
