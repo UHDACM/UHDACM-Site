@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Button from "../_components/Button/Button";
 import ShareButton from "../_components/Button/CommonVariants/ShareButton";
 import AddToCalendarButton from "../_components/Button/Variants/AddToCalendarButton";
@@ -63,10 +64,10 @@ export function EventToEntry(event: SiteEvent): EntryTileProps {
 
 export function WrapInNavbarAndFooter({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <Fragment key="PageWrapperNavbarFooter">
       <NavbarSC key="Navbar" />
       {children}
       <Footer key="Footer" />
-    </>
+    </Fragment>
   );
 }

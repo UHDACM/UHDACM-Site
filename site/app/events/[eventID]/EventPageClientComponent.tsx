@@ -153,7 +153,7 @@ export default function EventPageClientComponent({
         <div className="SectionInner">
           <div className={styles.eventDescription}>
             <h1 className="H1">Event Description</h1>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", flexDirection: "column", maxWidth: '100%' }}>
               {event.descriptionFull && (
                 <StrapiRichTextRenderer content={event.descriptionFull} />
               )}
