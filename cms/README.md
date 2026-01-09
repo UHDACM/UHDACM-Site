@@ -1,6 +1,8 @@
 # UHD ACM HeadlessCMS (Powered by Strapi)
 Strapi allows UHD ACM to do dynamic content updates via a headless CMS, enabling seamless site management without altering the frontend code.
 
+*Notes on how to obtain API key is available below*
+
 ## How CMS is connected with frontend
 The CMS integrates with the frontend located in the `./site` directory through a webhook (`/api/CMSUpdate`). Content is fetched via HTTP GET requests, which include:
 - URL parameters to specify the requested content.
@@ -53,6 +55,14 @@ Compiles the admin panel for deployment.
 ```bash
 npm run build # or yarn build
 ```
+
+## Obtaining API Key
+Once Strapi is running, go to the admin portal and go to settings (gear icon, left side), then press API Tokens (below overview), and obtain the read only key.
+
+If you cannot view the token, regenerate it, and save that key in your env.
+
+It will allow the frontend to request data from the strapiCMS.
+
 
 ## Types
 There are many types.
