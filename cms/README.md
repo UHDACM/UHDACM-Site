@@ -16,12 +16,31 @@ Before running any scripts, ensure that the Strapi CLI is installed globally. Yo
 npm install -g strapi
 ```
 
+You'll need the following env vars to run the strapi correctly
+```env
+# Server
+HOST=0.0.0.0
+PORT=1337
+APP_KEYS=yourAppKey1,yourAppKey2,yourAppKey3,yourAppKey4
+API_TOKEN_SALT=yourApiTokenSalt
+ADMIN_JWT_SECRET=yourAdminJwtSecret
+TRANSFER_TOKEN_SALT=yourTransferTokenSalt
+
+# Database (SQLite default)
+DATABASE_CLIENT=sqlite
+DATABASE_FILENAME=.tmp/data.db
+```
+
 ---
 ### `develop`
 Starts the app with autoReload for development.  
 ```bash
 npm run develop # or yarn develop
 ```
+
+> Note: first time running it will require you to setup a "admin account".
+
+Read strapi docs to learn more.
 
 ### `start`
 Runs the app without autoReload for production.  
