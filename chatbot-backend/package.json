@@ -5,6 +5,8 @@
     "start": "node ./dist"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
@@ -24,10 +26,12 @@
     "braces": "^3.0.3",
     "chokidar": "^3.6.0",
     "concat-map": "^0.0.1",
+    "cors": "^2.8.5",
     "create-require": "^1.1.1",
     "debug": "^4.4.3",
     "diff": "^4.0.2",
     "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "fill-range": "^7.1.1",
     "glob-parent": "^5.1.2",
     "has-flag": "^3.0.0",
