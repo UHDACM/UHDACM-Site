@@ -1,20 +1,20 @@
-import { env_vars } from "./tools/env/envVars";
-
+import { env_vars } from './tools/env/envVars';
+import './langchain/langchain';
 console.log(env_vars.PORT);
 
-import express, { Request, Response } from "express";
-import cors from "cors";
+import express, { Request, Response } from 'express';
+import cors from 'cors';
 
 const app = express();
 const PORT = 4000;
-const FRONTEND_ADDRESS = "http://localhost:3000";
+const FRONTEND_ADDRESS = 'http://localhost:3000';
 
 type ChatRequestBody = {
   messages: unknown;
 };
 
 app.use(express.json());
-app.use(cors({origin: FRONTEND_ADDRESS,}));
+app.use(cors({ origin: FRONTEND_ADDRESS }));
 
 const allowedOrigins = [FRONTEND_ADDRESS];
 
@@ -28,21 +28,22 @@ const allowedOrigins = [FRONTEND_ADDRESS];
 //   next();
 // });
 
-app.post("/chat", (req: Request<{}, {}, ChatRequestBody>, res: Response) => {
+app.post('/chat', (req: Request<{}, {}, ChatRequestBody>, res: Response) => {
   const { messages } = req.body;
-  if (!Array.isArray(messages) || !messages.every(m => typeof m === "string")) {
+  if (
+    !Array.isArray(messages) ||
+    !messages.every((m) => typeof m === 'string')
+  ) {
     return res.status(400).json({
-      error: "messages must be an array of strings",
+      error: 'messages must be an array of strings',
     });
   }
-  return res.status(200).json({ ok: "BEANS" });
+  return res.status(200).json({ ok: 'BEANS' });
 });
 
 app.listen(PORT, () => {
   console.log(`listening on http://localhost:${PORT}`);
 });
-
-
 
 /* Try test on browser console?
 fetch("http://localhost:4000/chat", {
