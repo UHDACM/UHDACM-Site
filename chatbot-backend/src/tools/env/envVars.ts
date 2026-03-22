@@ -4,6 +4,7 @@ import { LogMessage } from "../../log/log";
 dotenv.config();
 
 const pe = process.env;
+console.log('env-debug', JSON.stringify(pe));
 
 export const env_vars = {
   FRONTEND_ADDRESS: pe.FRONTEND_ADDRESS!,

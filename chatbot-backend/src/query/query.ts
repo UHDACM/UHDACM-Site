@@ -152,6 +152,7 @@ export const processQuery = async (query: string, context?: QueryMessage[]) => {
   - You may invent actions (not links) if it is convenient for the user.
   - Use markdown.
   - If they ask about an event, gallery, etc., provide a link action.
+  - Do not mention MCP tools.
 
   JSON SCHEMA:
   {
