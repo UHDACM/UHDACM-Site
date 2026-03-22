@@ -226,16 +226,18 @@ app.post(
 
       // console.log('cias', context);
       const validContext: QueryMessage[] = [];
-      for (const msg of context) {
-        try {
-          checkQueryMessage(msg);
-          validContext.push(msg);
-        } catch (e) {
-          LogMessage((e as Error).message, {
-            file: "index.ts",
-            path: "/chat",
-            msg: msg,
-          });
+      if (Array.isArray(context)) {
+        for (const msg of context) {
+          try {
+            checkQueryMessage(msg);
+            validContext.push(msg);
+          } catch (e) {
+            LogMessage((e as Error).message, {
+              file: "index.ts",
+              path: "/chat",
+              msg: msg,
+            });
+          }
         }
       }
 
