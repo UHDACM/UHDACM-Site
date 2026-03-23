@@ -74,6 +74,7 @@ async function initializeMCP() {
     const transport = new StdioClientTransport({
       command: "node",
       args: ["./dist/chatbot-backend/src/MCPServer.js"],
+      env: process.env
     });
 
     mcpClient = new Client({ name: "uhd-acm-client", version: "1.0.0" }, { capabilities: {} });
