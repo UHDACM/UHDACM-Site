@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+console.error('MCP-child env varrs', process.env);
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";

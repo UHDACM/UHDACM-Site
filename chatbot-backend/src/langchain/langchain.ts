@@ -1,7 +1,7 @@
-import 'dotenv/config';
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
-import { env_vars } from '../tools/env/envVars';
-import { LogMessage } from '../log/log';
+import "dotenv/config";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { env_vars } from "../tools/env/envVars";
+import { LogMessage } from "../log/log";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { DynamicStructuredTool } from "@langchain/core/tools";
@@ -39,27 +39,28 @@ function shouldRotateKey(err: unknown): boolean {
   const msg = getErrorMessage(err).toLowerCase();
 
   const quotaLike =
-    msg.includes('429') ||
-    msg.includes('too many requests') ||
-    msg.includes('rate limit') ||
-    msg.includes('rate_limit') ||
-    msg.includes('quota') ||
-    msg.includes('resource has been exhausted') ||
-    msg.includes('resource exhausted') ||
-    msg.includes('exceeded quota') ||
-    msg.includes('quota exceeded') || msg.includes('expired');
+    msg.includes("429") ||
+    msg.includes("too many requests") ||
+    msg.includes("rate limit") ||
+    msg.includes("rate_limit") ||
+    msg.includes("quota") ||
+    msg.includes("resource has been exhausted") ||
+    msg.includes("resource exhausted") ||
+    msg.includes("exceeded quota") ||
+    msg.includes("quota exceeded") ||
+    msg.includes("expired");
 
   const transient =
-    msg.includes('timeout') ||
-    msg.includes('timed out') ||
-    msg.includes('fetch failed') ||
-    msg.includes('econnreset') ||
-    msg.includes('etimedout') ||
-    msg.includes('enotfound') ||
-    msg.includes('503') ||
-    msg.includes('502') ||
-    msg.includes('500') ||
-    msg.includes('temporarily unavailable');
+    msg.includes("timeout") ||
+    msg.includes("timed out") ||
+    msg.includes("fetch failed") ||
+    msg.includes("econnreset") ||
+    msg.includes("etimedout") ||
+    msg.includes("enotfound") ||
+    msg.includes("503") ||
+    msg.includes("502") ||
+    msg.includes("500") ||
+    msg.includes("temporarily unavailable");
 
   return quotaLike || transient;
 }
@@ -68,16 +69,22 @@ let mcpClient: Client | null = null;
 let mcpTools: DynamicStructuredTool[] = [];
 
 async function initializeMCP() {
-  try{
-    if (mcpClient) return; 
+  try {
+    if (mcpClient) return;
+    console.log("initializing MCP");
 
     const transport = new StdioClientTransport({
       command: "node",
       args: ["./dist/chatbot-backend/src/MCPServer.js"],
-      env: process.env
+      env: Object.fromEntries(
+        Object.entries(process.env).filter(([, v]) => v !== undefined),
+      ) as Record<string, string>,
     });
 
-    mcpClient = new Client({ name: "uhd-acm-client", version: "1.0.0" }, { capabilities: {} });
+    mcpClient = new Client(
+      { name: "uhd-acm-client", version: "1.0.0" },
+      { capabilities: {} },
+    );
     await mcpClient.connect(transport);
 
     const { tools } = await mcpClient.listTools();
@@ -85,7 +92,7 @@ async function initializeMCP() {
     mcpTools = tools.map((t) => {
       return new DynamicStructuredTool({
         name: t.name,
-        description: t.description || "", 
+        description: t.description || "",
         schema: z.object({ query: z.string().describe("The search query") }),
         func: async ({ query }) => {
           const result = await mcpClient!.callTool({
@@ -98,14 +105,16 @@ async function initializeMCP() {
     });
   } catch (err) {
     await LogMessage("Error initializing MCP client", {
-      function: 'initializeMCP',
-      error: getErrorMessage(err)
+      function: "initializeMCP",
+      error: getErrorMessage(err),
     });
-    throw new Error("\n \nRun npm run build\n You need the dist folder to be built before starting the server. \n \n");
+    throw new Error(
+      "\n \nRun npm run build\n You need the dist folder to be built before starting the server. \n \n",
+    );
   }
 }
 
-initializeMCP() 
+initializeMCP();
 
 export async function handleQuestion(question: string): Promise<string> {
   let lastErr: unknown = null;
@@ -125,28 +134,37 @@ export async function handleQuestion(question: string): Promise<string> {
       console.log("attempt", attempt);
       const response = await model.invoke([
         ["system", systemInstruction],
-        ["human", question]
+        ["human", question],
       ]);
       // Token usage
       if (response.usage_metadata) {
-        console.log(`📊 [Tokens - Initial] Input: ${response.usage_metadata.input_tokens} | Output: ${response.usage_metadata.output_tokens} | Total: ${response.usage_metadata.total_tokens}`);
+        console.log(
+          `📊 [Tokens - Initial] Input: ${response.usage_metadata.input_tokens} | Output: ${response.usage_metadata.output_tokens} | Total: ${response.usage_metadata.total_tokens}`,
+        );
       }
       //Check if the database use is necessary
       if (response.tool_calls && response.tool_calls.length > 0) {
         const toolCall = response.tool_calls[0];
-        const tool = mcpTools.find(t => t.name === toolCall.name);
+        const tool = mcpTools.find((t) => t.name === toolCall.name);
 
         if (tool) {
           console.log(`[Tool Called] Searching for:`, toolCall.args);
           const toolResult = await tool.invoke(toolCall.args as any);
           const finalResponse = await model.invoke([
-            ["system", systemInstruction], 
+            ["system", systemInstruction],
             ["human", question],
             response,
-            { role: "tool", tool_call_id: toolCall.id, name: tool.name, content: toolResult }
+            {
+              role: "tool",
+              tool_call_id: toolCall.id,
+              name: tool.name,
+              content: toolResult,
+            },
           ]);
           if (finalResponse.usage_metadata) {
-            console.log(`📊 [Tokens - Final] Input: ${finalResponse.usage_metadata.input_tokens} | Output: ${finalResponse.usage_metadata.output_tokens} | Total: ${finalResponse.usage_metadata.total_tokens}`);
+            console.log(
+              `📊 [Tokens - Final] Input: ${finalResponse.usage_metadata.input_tokens} | Output: ${finalResponse.usage_metadata.output_tokens} | Total: ${finalResponse.usage_metadata.total_tokens}`,
+            );
           }
 
           console.log("finished with tool", attempt);
@@ -165,8 +183,8 @@ export async function handleQuestion(question: string): Promise<string> {
       lastErr = err;
       if (!shouldRotateKey(err)) {
         await LogMessage((err as Error).message, {
-          function: 'handleQuestion'
-        })
+          function: "handleQuestion",
+        });
         throw err instanceof Error ? err : new Error(getErrorMessage(err));
       }
       advanceKey();
