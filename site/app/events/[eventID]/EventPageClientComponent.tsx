@@ -137,7 +137,7 @@ export default function EventPageClientComponent({
 
 
 
-      <NavbarPadding />
+      {/* <NavbarPadding /> */}
 
 
 
@@ -252,7 +252,7 @@ export default function EventPageClientComponent({
 
 
 
-      {/* <CallToActionSection
+      <CallToActionSection
         title={`Show up, Schedule, Share`}
         subtitle="Your next step is your best step. Be sure to make it count!"
         actionComponent={
@@ -280,7 +280,7 @@ export default function EventPageClientComponent({
             </Button>
           </div>
         }
-      /> */}
+      />
     </div>
   );
 }
