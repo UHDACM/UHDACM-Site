@@ -151,7 +151,7 @@ export default function SearchSectionV2Client({ items, type }: Props) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className={`BodyRegular ${styles.empty}`}>No results.</div>
+        <div className={`BodyLargeHeavy ${styles.empty}`}>No results O-O</div>
       ) : (
         <div className={styles.grid}>
           {filtered.map((it) => (

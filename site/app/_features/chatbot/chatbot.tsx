@@ -5,7 +5,7 @@ import styles from "./chatbot.module.css";
 
 import { HiOutlineSparkles } from "react-icons/hi";
 import { MdOutlineClose } from "react-icons/md";
-import { LuSend, LuSquareArrowOutUpRight } from "react-icons/lu";
+import { LuSend, LuSquareArrowOutUpRight, LuMessageCircle } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import { setChatbotDisableScrollOnMobile } from "../body/bodySlice";
 import { usePublicEnv } from "@/app/_context/PublicEnvContext/PublicEnvContext";
@@ -30,6 +30,11 @@ interface QueryMessage extends QueryResponse {
 
 const logoPNG = "/Logo.png";
 
+// localStorage flag tracking whether the teaser prompt has been seen/engaged with.
+// set to "true" when the chatbot is opened, the page has been open >10s, or the
+// teaser is closed. once "true", the teaser never appears again.
+const PROMPT_SEEN_KEY = "uhdacm_chat_prompt_seen";
+
 declare global {
   interface Window {
     turnstile?: {
@@ -53,6 +58,33 @@ export default function Chat() {
   const public_env = usePublicEnv();
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+
+  // teaser prompt ("Got questions? Just ask!") shown above the launcher pill.
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  // marks the teaser as seen so it never appears again, and hides it now.
+  const dismissPrompt = () => {
+    setShowPrompt(false);
+    localStorage.setItem(PROMPT_SEEN_KEY, "true");
+  };
+
+  // teaser logic (runs once on mount):
+  // - if already seen, do nothing.
+  // - otherwise show the teaser after 4s, and mark it seen after 10s on site.
+  useEffect(() => {
+    if (localStorage.getItem(PROMPT_SEEN_KEY) === "true") return;
+
+    const showTimer = setTimeout(() => setShowPrompt(true), 4000);
+    const seenTimer = setTimeout(
+      () => localStorage.setItem(PROMPT_SEEN_KEY, "true"),
+      10000,
+    );
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(seenTimer);
+    };
+  }, []);
 
   const getLinkPath = (url: string): string => {
     try {
@@ -397,6 +429,7 @@ What are you looking for today?`,
     posthog.capture("opened_chatbot", {
       href: window.location.href,
     });
+    dismissPrompt();
     setIsClosing(false);
     setIsOpen(true);
   };
@@ -473,9 +506,24 @@ What are you looking for today?`,
     <>
       {/*open chat button */}
       {!isOpen && (
-        <button onClick={handleOpening} className={styles.toggleButton}>
-          <HiOutlineSparkles size={30} strokeWidth={1} />
-        </button>
+        <>
+          {showPrompt && (
+            <div className={styles.promptBubble}>
+              <span className="BodyLarge">Got questions? Just ask!</span>
+              <button
+                className={styles.promptBubbleClose}
+                onClick={dismissPrompt}
+                aria-label="Dismiss"
+              >
+                <MdOutlineClose size={16} />
+              </button>
+            </div>
+          )}
+          <button onClick={handleOpening} className={styles.toggleButton}>
+            <LuMessageCircle size={24} strokeWidth={2} />
+            <span>Chat</span>
+          </button>
+        </>
       )}
 
       {/* actual chat window */}

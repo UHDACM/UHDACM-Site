@@ -10,6 +10,7 @@ import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
 import { generateGalleryShareText } from "@/app/_utils/types/cms/cmsTypeTools";
 import { WrapInNavbarAndFooter } from "@/app/_utils/tsxServerTools";
+import { public_env_vars } from "@/app/_utils/public_env_vars";
 
 type EventPageParams = Promise<{
   galleryID: string;
@@ -87,7 +88,7 @@ export default async function EventPage({
           bottomContent={
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <ShareButton
-                copyText={`${generateGalleryShareText(event)}`}
+                copyText={`${generateGalleryShareText(event, public_env_vars.NEXT_PUBLIC_SELF_URL)}`}
                 replaceTextOnCopyString="Copied Gallery URL"
               />
             </div>

@@ -86,7 +86,7 @@ export default function FeaturedEventComp({
             }}
           >
             <ShareButton
-              copyText={generateEventShareText(event)}
+              copyText={generateEventShareText(event, public_env.NEXT_PUBLIC_SELF_URL)}
               replaceTextOnCopyString="Copied Invite"
             />
             <AddToCalendarButton

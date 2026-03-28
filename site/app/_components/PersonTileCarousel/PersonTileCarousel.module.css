@@ -1,76 +1,25 @@
+/* Carousel-specific chrome only. The preview tile and expanded card markup
+   are provided by PersonTilePreview / PersonTileExpanded, which bring their
+   own styles from PersonTile.css. */
+
 .grid {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  overflow-x: hidden;
-  width: 100%;
-}
-
-.previewTile {
-  cursor: pointer;
-  position: relative;
-  width: 8rem;
-  height: 10rem;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid rgb(var(--color-stroke-normal));
-  padding: 0;
-  background: transparent;
-  display: block;
-}
-
-.previewTile img {
-  height: 100%;
-  width: 100%;
-  display: block;
-}
-
-.previewOverlay {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.7),
-    rgba(0, 0, 0, 0.5) 20%,
-    rgba(0, 0, 0, 0) 50%
-  );
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.previewTextBox {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  margin: 0.5rem;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  text-align: left;
-}
-
-.previewTextBox p {
-  color: white;
-  margin: 0;
+  justify-content: center;
+  gap: 1rem;
+  width: min(95%, 60rem);
+  margin-inline: auto;
 }
 
 .lightboxBackdrop {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #000c;
-  z-index: 1000;
+  background-color: #0008;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 1rem;
-  box-sizing: border-box;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -78,235 +27,70 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
-  max-width: 100%;
-}
-
-.expandedCard {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-}
-
-.expandedImg {
-  width: 12rem;
-  height: 15rem;
-  position: relative;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  background-color: #0004;
-  overflow: hidden;
-  border: 1px solid rgba(var(--color-font-default), 0.25);
-  border-right: none;
-  flex-shrink: 0;
-}
-
-.expandedImg img {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  display: block;
-}
-
-.expandedDescriptionCard {
-  width: 24rem;
-  border: 1px solid rgba(var(--color-font-default), 0.25);
-  border-left: none;
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-  background-color: rgb(var(--color-font-dark));
-  height: 15rem;
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.expandedDescription {
-  margin: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.expandedTitle {
-  color: rgb(var(--color-font-default));
-  text-align: left;
-  margin: 0;
-}
-
-.expandedSubtitle {
-  color: rgb(var(--color-font-default));
-  font-weight: 500;
-  text-align: left;
-  margin: 0;
-}
-
-.expandedFullDescription {
-  max-height: 7rem;
-  overflow-y: auto;
-  color: rgb(var(--color-font-default));
-  text-align: left;
-}
-
-.iconRow {
-  position: absolute;
-  bottom: 0.5rem;
-  left: 0.5rem;
-  display: flex;
-  align-items: end;
-}
-
-.closeBtn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  cursor: pointer;
-  color: rgb(var(--color-font-default));
-  background: transparent;
-  border: none;
-  padding: 0;
-  display: flex;
 }
 
 .chevronBtn {
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgb(var(--color-font-default));
+  color: white;
   cursor: pointer;
-  padding: 0;
-  flex-shrink: 0;
-  transition: background-color 150ms ease;
+  transition: background 0.2s;
 }
 
 .chevronBtn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.75);
 }
 
-.chevronBtn:focus-visible {
-  outline: 2px solid rgb(var(--color-primary));
-  outline-offset: 2px;
+.chevronBtn:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .strip {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+  max-width: 90vw;
   overflow-x: auto;
   padding: 0.5rem;
-  max-width: min(100%, 40rem);
-  align-items: center;
-  scrollbar-width: thin;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.strip::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/WebKit (incl. mobile) */
 }
 
 .thumb {
-  position: relative;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 8px;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.5rem;
   overflow: hidden;
-  cursor: pointer;
-  flex-shrink: 0;
   border: 2px solid transparent;
+  cursor: pointer;
   padding: 0;
-  background: transparent;
+  flex-shrink: 0;
+  opacity: 0.5;
   transition:
-    border-color 150ms ease,
-    transform 150ms ease,
-    opacity 150ms ease;
-  opacity: 0.55;
-}
-
-.thumb:hover {
-  opacity: 1;
+    opacity 0.2s,
+    border 0.2s;
 }
 
 .thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  background: rgb(var(--color-neutral-700));
 }
 
 .thumbActive {
-  border-color: rgb(var(--color-primary));
   opacity: 1;
-  transform: scale(1.08);
-}
-
-@media (max-width: 768px) {
-  .previewTile {
-    width: 7rem;
-    height: 9rem;
-  }
-
-  .lightboxRow {
-    gap: 0.25rem;
-  }
-
-  .chevronBtn {
-    width: 2.25rem;
-    height: 2.25rem;
-  }
-
-  .expandedCard {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .expandedImg {
-    width: 11rem;
-    height: 14rem;
-    border-radius: 10px;
-    border: 1px solid rgba(var(--color-font-default), 0.25);
-    margin-bottom: -8rem;
-    z-index: 5;
-  }
-
-  .expandedDescriptionCard {
-    padding-top: 8rem;
-    padding-bottom: 3rem;
-    width: auto;
-    min-width: 250px;
-    max-width: 80vw;
-    height: auto;
-    border: 1px solid rgba(var(--color-font-default), 0.25);
-    border-radius: 10px;
-    box-sizing: content-box;
-  }
-
-  .expandedDescription {
-    margin: 0.5rem 1rem;
-  }
-
-  .expandedTitle,
-  .expandedSubtitle,
-  .expandedFullDescription {
-    text-align: center;
-  }
-
-  .iconRow {
-    left: unset;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    width: 100%;
-    box-sizing: border-box;
-    justify-content: center;
-  }
-
-  .strip {
-    gap: 0.25rem;
-  }
-
-  .thumb {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
+  border-color: rgb(var(--color-primary-600));
 }

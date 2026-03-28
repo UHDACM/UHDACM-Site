@@ -71,14 +71,14 @@ export function ProduceDateRangeText(dateStartStr: string, dateEndStr: string) {
  * @param event SiteEvent
  * @returns string
  */
-export function generateEventShareText(event: SiteEvent): string {
+export function generateEventShareText(event: SiteEvent, selfUrl: string): string {
   const dateRangeStr = ProduceDateRangeText(event.dateStart, event.dateEnd);
-  return `UHDACM Event: ${event.name}\n\nDate: ${dateRangeStr}\nLocation: ${event.location}\n\nDescription: ${event.descriptionShort}\n\n${process.env.NEXT_PUBLIC_SELF_URL}/events/${event.urlSlug}`;
+  return `UHDACM Event: ${event.name}\n\nDate: ${dateRangeStr}\nLocation: ${event.location}\n\nDescription: ${event.descriptionShort}\n\n${selfUrl}/events/${event.urlSlug}`;
 }
 
-export function generateGalleryShareText(galleryEvent: SiteEvent): string {
+export function generateGalleryShareText(galleryEvent: SiteEvent, selfUrl: string): string {
   const dateRangeStr = ProduceDateRangeText(galleryEvent.dateStart, galleryEvent.dateEnd);
-  return `UHDACM Gallery: ${galleryEvent.name}\n\nDate: ${dateRangeStr}\nLocation: ${galleryEvent.location}\n\nDescription: ${galleryEvent.descriptionShort}\n\n${process.env.NEXT_PUBLIC_SELF_URL}/galleries/${galleryEvent.urlSlug}`;
+  return `UHDACM Gallery: ${galleryEvent.name}\n\nDate: ${dateRangeStr}\nLocation: ${galleryEvent.location}\n\nDescription: ${galleryEvent.descriptionShort}\n\n${selfUrl}/galleries/${galleryEvent.urlSlug}`;
 }
 
 export function generateQnAShareText(QnA: QnA): string {

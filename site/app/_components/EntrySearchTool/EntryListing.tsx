@@ -164,16 +164,15 @@ export function EntryListing({
         </div>
       </div>
       <div>
-        <h5 className="H5" style={{ opacity: "0.75" }}>
-          {remainingEntrySet.size === 0 &&
-            `No ${entryTypePlural.toLowerCase()} found`}
-          {remainingEntrySet.size != 0 &&
-            `${remainingEntrySet.size} ${
+        {remainingEntrySet.size != 0 && (
+          <h5 className="H5" style={{ opacity: "0.75" }}>
+            {`${remainingEntrySet.size} ${
               remainingEntrySet.size == 1
                 ? `${entryTypeSingular.toLowerCase()} found`
                 : `${entryTypePlural.toLowerCase()} found`
             }`}
-        </h5>
+          </h5>
+        )}
       </div>
       <div>
         <div
@@ -186,6 +185,19 @@ export function EntryListing({
             // overflowY: remainingEntrySet.size != 0 ? "auto" : 'visible',
           }}
         >
+          {remainingEntrySet.size === 0 && (
+            <div className={styles.emptyState}>
+              <span className="H4">
+                No {entryTypePlural.toLowerCase()} found
+              </span>
+              <span
+                className="BodyRegular"
+                style={{ color: "rgb(var(--color-font-secondary))" }}
+              >
+                Try adjusting your search or picking a different date.
+              </span>
+            </div>
+          )}
           {entryList
             .sort((a, b) => {
               const diff =

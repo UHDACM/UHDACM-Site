@@ -21,13 +21,14 @@ export function GallerySearchTool({
   listingMode,
   defaultSortingMode,
 }: GallerySearchToolProps) {
+  const public_env = usePublicEnv();
   const entries: EntryTileProps[] = [];
   for (const galleryEvent of galleryEvents) {
     const entry = EventToEntry(galleryEvent);
     entry.CallToAction = (
       <div className="BodyLarge" style={{ display: "flex", gap: "0.5rem" }}>
         <ShareButton
-          copyText={generateGalleryShareText(galleryEvent)}
+          copyText={generateGalleryShareText(galleryEvent, public_env.NEXT_PUBLIC_SELF_URL)}
           replaceTextOnCopyString="Copied Invite"
         />
         <Button href={`/galleries/${galleryEvent.urlSlug}`}>

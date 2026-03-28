@@ -44,7 +44,7 @@
 }
 
 .empty {
-  color: rgb(var(--color-font-secondary));
+  /* color: rgb(var(--color-font-secondary)); */
   padding: 2rem 0;
   text-align: center;
 }

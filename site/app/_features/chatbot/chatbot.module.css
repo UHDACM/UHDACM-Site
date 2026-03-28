@@ -3,10 +3,10 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background-color: #f59e0b;
+  background-color: rgb(var(--color-font-primary));
   color: #ffffff;
-  border-radius: 50%;
-  padding: 16px;
+  border-radius: 999px;
+  padding: 12px 20px;
   border: none;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   cursor: pointer;
@@ -15,12 +15,49 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .toggleButton:hover {
   background-color: #f07800;
   transform: scale(1.05);
-  rotate: 15deg;
+}
+
+/* teaser prompt bubble above the launcher pill */
+.promptBubble {
+  position: fixed;
+  bottom: 84px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* max-width: 220px; */
+  text-align: right;
+  background-color: #202020;
+  color: rgba(var(--color-font-default), 1);
+  border: 1px solid rgba(var(--color-font-default), 0.25);
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  animation: slideUpFade 0.3s ease;
+}
+
+.promptBubbleClose {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-shrink: 0;
+  padding: 2px;
+  transition: opacity 0.2s;
+  color: rgba(var(--color-font-default), 1);
+}
+.promptBubbleClose:hover {
+  opacity: 0.5;
 }
 
 @keyframes slideUpFade {

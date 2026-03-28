@@ -23,6 +23,7 @@ import { generateEventShareText } from "@/app/_utils/types/cms/cmsTypeTools";
 import { isStrapiPicture } from "@shared/types/cms/CMSCheck";
 import { getDefaultIconForCMSButton } from "@/app/_utils/types/cms/cmsTypeToolsTsx";
 import GalleryGrid from "@/app/galleries/[galleryID]/_components/GalleryGrid";
+import { usePublicEnv } from "@/app/_context/PublicEnvContext/PublicEnvContext";
 
 const GALLERY_SECTION_ID = "event-gallery";
 
@@ -45,9 +46,10 @@ function ViewGalleryButton() {
 }
 
 function ShareEventButton({ event }: { event: SiteEvent }) {
+  const public_env = usePublicEnv();
   return (
     <ShareButton
-      copyText={generateEventShareText(event)}
+      copyText={generateEventShareText(event, public_env.NEXT_PUBLIC_SELF_URL)}
       replaceTextOnCopyString={"Copied Invite"}
     />
   );

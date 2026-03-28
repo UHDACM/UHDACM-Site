@@ -53,7 +53,6 @@
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
     background-color: rgb(var(--color-font-dark));
-    height: 100%;
     box-sizing: content-box;
     overflow: hidden;
     position: relative;
