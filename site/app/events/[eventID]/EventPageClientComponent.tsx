@@ -131,7 +131,25 @@ export default function EventPageClientComponent({
         position: "relative",
       }}
     >
-      <NavbarPadding />
+
+
+
+
+
+
+      {/* <NavbarPadding /> */}
+
+
+
+
+
+
+
+
+
+
+
+
       <MainHeroSection
         spanText="EVENT"
         title={event.name}
@@ -150,6 +168,7 @@ export default function EventPageClientComponent({
           </div>
         }
       />
+
       <div
         style={{
           display: "flex",
@@ -175,6 +194,9 @@ export default function EventPageClientComponent({
           body={event.location || "Location not specified"}
           bodyColor="rgb(var(--color-font-secondary))"
         />
+        <span style={{color: 'white'}}>
+          {JSON.stringify(event)}
+        </span>
         <EventDetails
           icon="people"
           header="Host"
@@ -185,6 +207,8 @@ export default function EventPageClientComponent({
           bodyColor="rgb(var(--color-font-accent))"
         />
       </div>
+
+
       <div className="SectionRoot">
         <div className="SectionInner">
           <div className={styles.eventDescription}>
@@ -197,6 +221,12 @@ export default function EventPageClientComponent({
           </div>
         </div>
       </div>
+
+
+
+
+
+
       {hasGallery && (
         <div
           id={GALLERY_SECTION_ID}
@@ -214,7 +244,15 @@ export default function EventPageClientComponent({
           <GalleryGrid media={media} />
         </div>
       )}
-      <CallToActionSection
+
+
+
+
+
+
+
+
+      {/* <CallToActionSection
         title={`Show up, Schedule, Share`}
         subtitle="Your next step is your best step. Be sure to make it count!"
         actionComponent={
@@ -242,7 +280,7 @@ export default function EventPageClientComponent({
             </Button>
           </div>
         }
-      />
+      /> */}
     </div>
   );
 }

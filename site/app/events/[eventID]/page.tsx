@@ -62,6 +62,7 @@ export default async function EventPage({
     }
   }
 
+
   return (
     <WrapInNavbarAndFooter>
       <EventPageClientComponent event={event} media={media} />
