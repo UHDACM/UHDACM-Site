@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_site_components_feature_cards",
+  "info": {
+    "displayName": "feature-card",
+    "icon": "grid"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "heart",
+        "target",
+        "code",
+        "users",
+        "calendar",
+        "people",
+        "clock"
+      ]
+    },
+    "color": {
+      "type": "enumeration",
+      "required": true,
+      "default": "primary",
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "background"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 24,
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": false
+    }
+  },
+  "config": {}
+}

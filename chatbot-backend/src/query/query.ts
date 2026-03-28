@@ -1,80 +1,11 @@
-import { ObjectUnknown } from "@shared/types/general/generalTypes";
-import { queryCollection } from "../context/context";
-import { handleQuestion } from "../langchain/langchain";
-import {
-  checkVectorDBEventMetadata,
-  checkVectorDBFeaturedEventMetadata,
-  checkVectorDBLeadershipMetadata,
-  checkVectorDBOrganizationMetadata,
-  checkVectorDBPageMetadata,
-  checkVectorDBPersonMetadata,
-  checkVectorDBQnAMetadata,
-  checkVectorDBSiteInfoMetadata,
-} from "@shared/types/vectorDB/vectorDBCheck";
-import {
-  VectorDBBaseMetadata,
-  VectorDBPageMetadataAction,
-} from "@shared/types/vectorDB/vectorDBTypes";
+import { queryAgent } from "../langchain/langchain";
+
+
+
 import { LogMessage } from "../log/log";
 import { QueryMessage, QueryResponse } from "@shared/types/query/queryTypes";
 import { contextMsgLimit } from "@shared/types/query/queryData";
 
-const produceDocumentObject = (
-  document: string,
-  metadata: VectorDBBaseMetadata,
-) => {
-  const documentObject: ObjectUnknown = {};
-  documentObject.content = document;
-
-  try {
-    checkVectorDBPageMetadata(metadata);
-    documentObject.url = metadata.url;
-    documentObject.actions = metadata.actions;
-    return documentObject;
-  } catch {}
-
-  try {
-    checkVectorDBEventMetadata(metadata);
-    documentObject.event = metadata.event;
-    return documentObject;
-  } catch {}
-
-  try {
-    checkVectorDBOrganizationMetadata(metadata);
-    return documentObject;
-  } catch {}
-
-  try {
-    checkVectorDBPersonMetadata(metadata);
-    return documentObject;
-  } catch {}
-
-  try {
-    checkVectorDBQnAMetadata(metadata);
-    documentObject.QnA = metadata.QnA;
-    return documentObject;
-  } catch {}
-
-  try {
-    checkVectorDBFeaturedEventMetadata(metadata);
-    documentObject.event = metadata.event;
-    return documentObject;
-  } catch {}
-
-  try {
-    checkVectorDBLeadershipMetadata(metadata);
-    documentObject.socials = metadata.socialUrls;
-    return documentObject;
-  } catch {}
-
-  try {
-    checkVectorDBSiteInfoMetadata(metadata);
-    documentObject.socials = metadata.socialUrls;
-    return documentObject;
-  } catch {}
-
-  return documentObject;
-};
 
 function checkQueryResponse(obj: unknown): asserts obj is QueryResponse {
   if (typeof obj !== "object" || obj === null) {
@@ -97,20 +28,8 @@ function checkQueryResponse(obj: unknown): asserts obj is QueryResponse {
 }
 
 export const processQuery = async (query: string, context?: QueryMessage[]) => {
-  // TODO: rework
-  const QueryResponse = await queryCollection(query);
-  let contextStr = "";
 
-  for (const [document, metadata] of QueryResponse) {
-    const documentObject = produceDocumentObject(document, metadata);
-    contextStr += `${metadata.collection}:${JSON.stringify(documentObject)}\n`;
-    /**
-     * page-home:{
-     *  content here
-     * }
-     */
-  }
-
+  // takes context and appends it to query
   let prevMsg = "";
   if (context) {
     prevMsg += "\n\n Previous messages: ";
@@ -130,10 +49,6 @@ export const processQuery = async (query: string, context?: QueryMessage[]) => {
   If the query cannot be answered using the provided information, you MUST say so.
 
   Today’s date is: ${new Date().toLocaleDateString()}.
-
-  ---
-  CONTEXT:
-  ${contextStr}
 
   ---
   CONVERSATION HISTORY:
@@ -173,7 +88,8 @@ export const processQuery = async (query: string, context?: QueryMessage[]) => {
     - "relevant_actions" to []
     - "quick_replies" to []
   `;
-  const response = await handleQuestion(prompt);
+
+  const response = await queryAgent(prompt);
 
   // if incorrect format, smaller model tries to fix issues
   // returns parsed obj if successful, default error otherwise
@@ -204,7 +120,7 @@ export const processQuery = async (query: string, context?: QueryMessage[]) => {
       }
       tries++;
       // console.log(tries, 'trying to fix issue', (e as Error).message);
-      currentResponse = await handleQuestion(
+      currentResponse = await queryAgent(
         `${currentResponse}\nFix Error, output only JSON: ${(e as Error).message}\n\nOutput like so: {"response": plain_string, "relevant_actions": [{label: string, href: string}, ...], "quick_replies": [{"label": "short-text", "value": "longer-text"}, (max 3)]}, include only relevant actions, keep hrefs as provided. If the most relevant action is to visit a url, create an action for that. Quick replies should be what the user is likely to ask next, label being 2-3 words, and value being descriptive enough for an answer to answer accurately. All properties must be present, none are optional.`,
         // "gemma-3-1b-it",
       );

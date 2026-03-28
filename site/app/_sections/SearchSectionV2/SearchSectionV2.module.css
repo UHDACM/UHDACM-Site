@@ -1,0 +1,41 @@
+.innerStyling {
+  padding: 0rem 4rem;
+  align-items: stretch;
+  min-height: 30rem;
+  margin: 4rem 0rem;
+  gap: 1.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .innerStyling {
+    padding: 0rem 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .innerStyling {
+    padding: 0rem 1rem;
+    margin: 3rem 0rem;
+    min-height: 24rem;
+  }
+}
+
+.headerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.headerTitle {
+  margin: 0;
+}
+
+.headerSubtitle {
+  margin: 0;
+  color: rgb(var(--color-font-secondary));
+  white-space: pre-line;
+}

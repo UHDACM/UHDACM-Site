@@ -9,7 +9,7 @@ input {
   width: 100%;
   background: rgb(var(--color-neutral-800));
   padding: 0.5rem 0.25rem 0.5rem 0.25rem;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
   border: none;
   outline: none;
   color: inherit;

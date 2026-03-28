@@ -18,7 +18,8 @@
         "site-sections.latest-qna",
         "site-sections.featured-event",
         "site-sections.search-section",
-        "site-sections.leadership-section"
+        "site-sections.leadership-section",
+        "site-sections.feature-card-section"
       ],
       "required": true
     }

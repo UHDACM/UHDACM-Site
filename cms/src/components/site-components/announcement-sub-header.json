@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_site_components_announcement_sub_headers",
+  "info": {
+    "displayName": "announcement-sub-header",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "calendar",
+        "clock",
+        "location-pin"
+      ]
+    }
+  },
+  "config": {}
+}

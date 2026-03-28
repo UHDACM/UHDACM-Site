@@ -1,9 +1,8 @@
 'use server'
 
-import PersonTile from "@/app/_components/PersonTile/PersonTile";
+import PersonTileCarousel from "@/app/_components/PersonTileCarousel/PersonTileCarousel";
 import { fetchCMS } from "@/app/_utils/cms";
-import { Person, SocialObj } from "@shared/types/cms/CMSTypes";
-import { TryGetImageFormatUrl } from "@/app/_utils/types/cms/cmsTypeTools";
+import { Person } from "@shared/types/cms/CMSTypes";
 import { isValidLeadership } from "@shared/types/cms/CMSCheck";
 import { isPerson } from "@shared/types/cms/CMSCheck";
 import { public_env_vars } from "@/app/_utils/public_env_vars";
@@ -39,32 +38,10 @@ export default async function LeadershipSection({ sectionID }: { sectionID?: str
         <h1 className={`H1`} style={{ whiteSpace: "pre-line", marginBottom: '0.5rem', textAlign: 'center' }}>
           Meet our Leadership
         </h1>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "0.5rem",
-          }}
-        >
-          {validPeople.map((person, idx) => (
-            <PersonTile
-              key={idx}
-              imgCoverOrContain="cover"
-              img={`${person.picture ? TryGetImageFormatUrl(person.picture, 'medium', public_env_vars.NEXT_PUBLIC_CMS_URL) : ''}`}
-              previewTitle={person.nameShort}
-              fullTitle={person.name}
-              previewSubTitle={person.roleShort}
-              fullSubtitle={person.role}
-              fullDescription={person.description}
-              socials={person.socials.map((social: SocialObj) => ({
-                icon: social.type,
-                href: social.url,
-              }))}
-            />
-          ))}
-        </div>
+        <PersonTileCarousel
+          people={validPeople}
+          cmsBaseUrl={public_env_vars.NEXT_PUBLIC_CMS_URL}
+        />
       </div>
     </div>
   );

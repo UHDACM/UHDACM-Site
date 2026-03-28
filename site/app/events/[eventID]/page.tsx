@@ -1,10 +1,11 @@
 import Button from "@/app/_components/Button/Button";
 
 import { fetchCMS } from "@/app/_utils/cms";
-import { isValidSiteEvent } from "@shared/types/cms/CMSCheck";
+import { isStrapiPicture, isValidSiteEvent } from "@shared/types/cms/CMSCheck";
 import Page404 from "@/app/not-found";
 import EventPageClientComponent from "./EventPageClientComponent";
 import { WrapInNavbarAndFooter } from "@/app/_utils/tsxServerTools";
+import { StrapiPicture } from "@shared/types/cms/CMSTypes";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -35,7 +36,9 @@ export default async function EventPage({
 }) {
   const { eventID } = await params;
   const res = await fetchCMS("events", {
-    populate: "*",
+    "populate[0]": "previewImage",
+    "populate[1]": "organizations",
+    "populate[2]": "gallery.media",
     "filters[urlSlug][$eq]": eventID,
   });
 
@@ -49,9 +52,19 @@ export default async function EventPage({
     return <EventPage404 />;
   }
 
+  const galleryMediaRaw = Array.isArray(event.gallery?.media)
+    ? event.gallery!.media
+    : [];
+  const media: StrapiPicture[] = [];
+  for (const pic of galleryMediaRaw) {
+    if (isStrapiPicture(pic)) {
+      media.push(pic);
+    }
+  }
+
   return (
     <WrapInNavbarAndFooter>
-      <EventPageClientComponent event={event} />;
+      <EventPageClientComponent event={event} media={media} />
     </WrapInNavbarAndFooter>
   );
 }

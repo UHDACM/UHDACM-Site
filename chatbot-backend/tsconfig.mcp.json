@@ -6,7 +6,6 @@
     "outDir": "./dist-mcp"
   },
   "include": [
-    "./src/MCPServer.ts",
     "../shared/src/**/*.ts"
   ]
 }

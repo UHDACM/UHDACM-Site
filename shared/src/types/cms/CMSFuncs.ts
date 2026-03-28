@@ -81,7 +81,9 @@ export const cmsPageFetchParams = {
   "populate[18]": "sections.leftComponent.floatingImages",
   "populate[19]": "sections.rightComponent.floatingImages",
   "populate[20]": "sections.leftComponent.floatingImages.images",
-  "populate[21]": "sections.rightComponent.floatingImages.images"
+  "populate[21]": "sections.rightComponent.floatingImages.images",
+  "populate[22]": "sections.cards",
+  "populate[23]": "sections.entries"
 } as const;
 
 // export function buildCMSFetchPageParams() {

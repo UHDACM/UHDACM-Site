@@ -42,7 +42,22 @@ import {
   SocialSite,
   SocialSites,
   SiteEvent,
+  SiteEventSummary,
   QnA,
+  QnASummary,
+  AnnouncementObj,
+  AnnouncementSubheaderItem,
+  AnnouncementColorThemes,
+  CMSAnnouncementIcons,
+  SiteSectionAnnouncement,
+  FeatureCardProps,
+  FeatureCardIcons,
+  FeatureCardColors,
+  SiteSectionFeatureCard,
+  CardSectionItem,
+  SiteSectionCardSection,
+  VerticalTimelineEntry,
+  SiteSectionVerticalTimeline,
 } from "./CMSTypes";
 
 export function isValidFeaturedEvent(obj: unknown): obj is FeaturedEvent {
@@ -143,6 +158,14 @@ export function isValidSiteSection(obj: unknown): obj is SiteSection {
       return isValidSiteSectionSearch(obj);
     case "site-sections.split-hero-section":
       return isValidSiteSectionSplitHero(obj);
+    case "site-sections.announcement":
+      return isValidSiteSectionAnnouncement(obj);
+    case "site-sections.feature-card-section":
+      return isValidSiteSectionFeatureCard(obj);
+    case "site-sections.card-section":
+      return isValidSiteSectionCardSection(obj);
+    case "site-sections.vertical-timeline":
+      return isValidSiteSectionVerticalTimeline(obj);
     default:
       return false;
   }
@@ -157,6 +180,21 @@ export function isValidSiteSectionLeadership(
 
   const { __component } = obj as SiteSectionLeadership;
   if (__component !== "site-sections.leadership-section") {
+    return false;
+  }
+
+  return true;
+}
+
+export function isValidSiteSectionAnnouncement(
+  obj: unknown,
+): obj is SiteSectionAnnouncement {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const { __component } = obj as SiteSectionAnnouncement;
+  if (__component !== "site-sections.announcement") {
     return false;
   }
 
@@ -586,7 +624,7 @@ export function isValidSiteEvent(event: any): event is SiteEvent {
   if (typeof id != "number") return false;
   if (typeof urlSlug !== "string") return false;
   if (typeof name !== "string") return false;
-  if (typeof previewImage !== "undefined" && !isStrapiPicture(previewImage))
+  if (previewImage && !isStrapiPicture(previewImage))
     return false;
   if (typeof dateStart !== "string") return false;
   if (typeof dateEnd !== "string") return false;
@@ -598,7 +636,43 @@ export function isValidSiteEvent(event: any): event is SiteEvent {
     (!Array.isArray(organizations) || !organizations.every(isOrganization))
   )
     return false;
-  if (gallery != undefined && typeof gallery != "object") return false;
+  if (gallery && typeof gallery != "object") return false;
+  if (!isValidISODate(dateStart)) return false;
+  if (!isValidISODate(dateEnd)) return false;
+  return true;
+}
+
+// Lighter validator for list/search views. Skips descriptionFull and
+// organizations (omitted from the payload via Strapi `fields`/`populate`).
+export function isValidSiteEventSummary(
+  event: any,
+): event is SiteEventSummary {
+  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+  const isValidISODate = (dateStr: string) =>
+    isoDateRegex.test(dateStr) && !isNaN(Date.parse(dateStr));
+
+  if (typeof event !== "object" || event === null) return false;
+  const {
+    id,
+    urlSlug,
+    name,
+    previewImage,
+    dateStart,
+    dateEnd,
+    descriptionShort,
+    location,
+    gallery,
+  } = event as SiteEventSummary;
+
+  if (typeof id !== "number") return false;
+  if (typeof urlSlug !== "string") return false;
+  if (typeof name !== "string") return false;
+  if (previewImage && !isStrapiPicture(previewImage)) return false;
+  if (typeof dateStart !== "string") return false;
+  if (typeof dateEnd !== "string") return false;
+  if (typeof descriptionShort !== "string") return false;
+  if (typeof location !== "string") return false;
+  if (gallery && typeof gallery !== "object") return false;
   if (!isValidISODate(dateStart)) return false;
   if (!isValidISODate(dateEnd)) return false;
   return true;
@@ -702,5 +776,105 @@ export function isValidQnA(obj: any): obj is QnA {
   if (typeof descriptionShort !== "string") return false;
   const date = new Date(uploadDate);
   if (isNaN(date.getTime())) return false;
+  return true;
+}
+
+// QnA has no list-vs-detail field split today; the summary validator is the
+// same shape. Exposed as a separate name for symmetry with the event side.
+export function isValidQnASummary(obj: any): obj is QnASummary {
+  return isValidQnA(obj);
+}
+
+function isValidAnnouncementSubheaderItem(obj: unknown): obj is AnnouncementSubheaderItem {
+  if (!obj || typeof obj !== "object") return false;
+  const { text, icon } = obj as AnnouncementSubheaderItem;
+  if (typeof text !== "string") return false;
+  if (icon !== undefined && !CMSAnnouncementIcons.includes(icon as any)) return false;
+  return true;
+}
+
+export function isValidSiteSectionFeatureCard(
+  obj: unknown,
+): obj is SiteSectionFeatureCard {
+  if (!obj || typeof obj !== "object") return false;
+  const { __component, cards, position } = obj as SiteSectionFeatureCard;
+  if (__component !== "site-sections.feature-card-section") return false;
+  if (!Array.isArray(cards)) return false;
+  if (!cards.every(isValidFeatureCard)) return false;
+  if (!["top", "center", "bottom"].includes(position)) return false;
+  return true;
+}
+
+export function isValidFeatureCard(obj: unknown): obj is FeatureCardProps {
+  if (!obj || typeof obj !== "object") return false;
+  const { icon, color, title, description } = obj as FeatureCardProps;
+  if (!FeatureCardIcons.includes(icon as any)) return false;
+  if (!FeatureCardColors.includes(color as any)) return false;
+  if (typeof title !== "string") return false;
+  if (typeof description !== "string") return false;
+  return true;
+}
+
+export function isValidCardSectionItem(obj: unknown): obj is CardSectionItem {
+  if (!obj || typeof obj !== "object") return false;
+  const { icon, title, subtitle, href } = obj as CardSectionItem;
+  if (!FeatureCardIcons.includes(icon as any)) return false;
+  if (typeof title !== "string") return false;
+  if (typeof subtitle !== "string") return false;
+  if (href && typeof href !== "string") return false;
+  return true;
+}
+
+export function isValidSiteSectionCardSection(
+  obj: unknown,
+): obj is SiteSectionCardSection {
+  if (!obj || typeof obj !== "object") return false;
+  const { __component, title, subtitle, cards } = obj as SiteSectionCardSection;
+  if (__component !== "site-sections.card-section") return false;
+  if (typeof title !== "string") return false;
+  if (subtitle !== undefined && typeof subtitle !== "string") return false;
+  if (!Array.isArray(cards)) return false;
+  if (!cards.every(isValidCardSectionItem)) {console.log('invalid card found'); return false;}
+  return true;
+}
+
+export function isValidVerticalTimelineEntry(obj: unknown): obj is VerticalTimelineEntry {
+  if (!obj || typeof obj !== "object") return false;
+  const { date, title, subtitle, description, href } = obj as VerticalTimelineEntry;
+  if (typeof date !== "string") return false;
+  if (typeof title !== "string") return false;
+  if (typeof subtitle !== "string") return false;
+  if (description && typeof description !== "string") return false;
+  if (href && typeof href !== "string") return false;
+  return true;
+}
+
+export function isValidSiteSectionVerticalTimeline(
+  obj: unknown,
+): obj is SiteSectionVerticalTimeline {
+  if (!obj || typeof obj !== "object") return false;
+  const { __component, title, subtitle, entries } = obj as SiteSectionVerticalTimeline;
+  if (__component !== "site-sections.vertical-timeline") return false;
+  if (typeof title !== "string") return false;
+  if (subtitle && typeof subtitle !== "string") return false;
+  if (!Array.isArray(entries)) return false;
+  if (!entries.every(isValidVerticalTimelineEntry)) {return false};
+  return true;
+}
+
+export function isValidAnnouncement(obj: unknown): obj is AnnouncementObj {
+  if (!obj || typeof obj !== "object") return false;
+  const { image, title, subheader, badge, body, buttons, colorTheme } = obj as AnnouncementObj;
+  if (!isStrapiPicture(image)) return false;
+  if (typeof title !== "string") return false;
+  if (subheader !== undefined) {
+    if (!Array.isArray(subheader)) return false;
+    if (!subheader.every(isValidAnnouncementSubheaderItem)) return false;
+  }
+  if (badge !== undefined && typeof badge !== "string") return false;
+  if (body !== undefined && typeof body !== "string") return false;
+  if (!Array.isArray(buttons)) return false;
+  if (!buttons.every(isValidCMSButton)) return false;
+  if (colorTheme !== undefined && !AnnouncementColorThemes.includes(colorTheme as any)) return false;
   return true;
 }

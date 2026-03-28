@@ -373,6 +373,34 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAnnouncementAnnouncement extends Struct.SingleTypeSchema {
+  collectionName: 'announcements';
+  info: {
+    displayName: 'announcement';
+    pluralName: 'announcements';
+    singularName: 'announcement';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    announcements: Schema.Attribute.Component<'types.announcement', true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::announcement.announcement'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   collectionName: 'events';
   info: {
@@ -437,7 +465,8 @@ export interface ApiFeaturedEventFeaturedEvent extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     previewImageHD: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
-    >;
+    > &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -567,6 +596,10 @@ export interface ApiPageAboutPageAbout extends Struct.SingleTypeSchema {
         'site-sections.featured-event',
         'site-sections.search-section',
         'site-sections.leadership-section',
+        'site-sections.feature-card-section',
+        'site-sections.card-section',
+        'site-sections.announcement',
+        'site-sections.vertical-timeline',
       ]
     > &
       Schema.Attribute.Required;
@@ -604,6 +637,7 @@ export interface ApiPageContactPageContact extends Struct.SingleTypeSchema {
         'site-sections.featured-event',
         'site-sections.search-section',
         'site-sections.leadership-section',
+        'site-sections.feature-card-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -641,6 +675,7 @@ export interface ApiPageEventsPageEvents extends Struct.SingleTypeSchema {
         'site-sections.featured-event',
         'site-sections.search-section',
         'site-sections.leadership-section',
+        'site-sections.feature-card-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -678,6 +713,7 @@ export interface ApiPageGalleriesPageGalleries extends Struct.SingleTypeSchema {
         'site-sections.leadership-section',
         'site-sections.latest-qna',
         'site-sections.featured-event',
+        'site-sections.feature-card-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -715,6 +751,10 @@ export interface ApiPageHomePageHome extends Struct.SingleTypeSchema {
         'site-sections.featured-event',
         'site-sections.search-section',
         'site-sections.leadership-section',
+        'site-sections.announcement',
+        'site-sections.feature-card-section',
+        'site-sections.card-section',
+        'site-sections.vertical-timeline',
       ]
     > &
       Schema.Attribute.Required;
@@ -752,6 +792,7 @@ export interface ApiPageJoinPageJoin extends Struct.SingleTypeSchema {
         'site-sections.featured-event',
         'site-sections.search-section',
         'site-sections.leadership-section',
+        'site-sections.feature-card-section',
       ]
     > &
       Schema.Attribute.Required;
@@ -1445,6 +1486,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::announcement.announcement': ApiAnnouncementAnnouncement;
       'api::event.event': ApiEventEvent;
       'api::featured-event.featured-event': ApiFeaturedEventFeaturedEvent;
       'api::gallery.gallery': ApiGalleryGallery;

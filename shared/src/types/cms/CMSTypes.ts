@@ -30,7 +30,7 @@ export type cmsCollectionSingular = (typeof cmsCollectionsSingular)[number];
 export type cmsCollectionPlural = (typeof cmsCollectionsPlural)[number];
 
 
-export const cmsSingleTypes = ["featured-event", "leadership", "site-info"] as const;
+export const cmsSingleTypes = ["featured-event", "leadership", "site-info", "announcement"] as const;
 export type cmsSingleType = (typeof cmsSingleTypes)[number];
 
 export const cmsSingleTypePages = [
@@ -63,6 +63,10 @@ const sectionCMSNames = [
   "site-sections.search-section",
   "site-sections.featured-event",
   "site-sections.latest-qna",
+  "site-sections.announcement",
+  "site-sections.feature-card-section",
+  "site-sections.card-section",
+  "site-sections.vertical-timeline",
 ] as const;
 
 export type cmsSectionName = (typeof sectionCMSNames)[number];
@@ -87,6 +91,18 @@ export interface SiteSectionLatestQnA extends SiteSection {
   __component: "site-sections.latest-qna";
   reverseOnDesktop: boolean
 }
+
+export interface SiteSectionAnnouncement extends SiteSection {
+  __component: "site-sections.announcement";
+};
+
+export const FeatureCardPositions = ['top', 'center', 'bottom'] as const;
+export type FeatureCardPosition = typeof FeatureCardPositions[number];
+export interface SiteSectionFeatureCard extends SiteSection {
+  __component: "site-sections.feature-card-section";
+  cards: FeatureCardProps[];
+  position: FeatureCardPosition;
+};
 
 const SearchSectionTypes = ["events", "galleries", "qnas"] as const;
 
@@ -232,6 +248,20 @@ export type SiteEvent = {
   organizations?: Organization[];
 };
 
+// Subset of SiteEvent used by list/search views — excludes heavy fields
+// (descriptionFull blocks, organizations) so we can fetch a slimmer payload.
+export type SiteEventSummary = Pick<
+  SiteEvent,
+  | "id"
+  | "urlSlug"
+  | "name"
+  | "previewImage"
+  | "dateStart"
+  | "dateEnd"
+  | "descriptionShort"
+  | "location"
+> & { gallery?: ObjectUnknown };
+
 export type SocialSite =
   | "linkedin"
   | "x"
@@ -312,4 +342,75 @@ export type QnA = {
   uploadDate: string,
   descriptionShort: string
 };
+
+// QnA is already lean enough for list/search views; alias for symmetry with
+// SiteEventSummary so callers can opt into the "summary" naming convention.
+export type QnASummary = QnA;
+
+
+export const CMSAnnouncementIcons = ['calendar', 'clock', 'location-pin'] as const;
+export type CMSAnnouncementIcon = typeof CMSAnnouncementIcons[number];
+
+export type AnnouncementSubheaderItem = {
+  text: string;
+  icon?: CMSAnnouncementIcon;
+};
+
+export const AnnouncementColorThemes = ['primary', 'secondary', 'accent', 'background'] as const;
+export type AnnouncementColorTheme = typeof AnnouncementColorThemes[number];
+
+export type AnnouncementObj = {
+  image: StrapiPicture;
+  title: string;
+  subheader?: AnnouncementSubheaderItem[];
+  badge?: string;
+  body?: string;
+  buttons: CMSButton[];
+  colorTheme?: AnnouncementColorTheme;
+};
+
+
+export const FeatureCardIcons = ['heart', 'target', 'code', 'users', 'calendar', 'people', 'clock'] as const;
+export type FeatureCardIcon = typeof FeatureCardIcons[number];
+
+export const FeatureCardColors = ['primary', 'secondary', 'accent', 'background'] as const;
+export type FeatureCardColor = typeof FeatureCardColors[number];
+
+export type FeatureCardProps = {
+  icon: FeatureCardIcon;
+  color: FeatureCardColor;
+  title: string;
+  description: string;
+};
+
+
+export type CardSectionItem = {
+  icon: FeatureCardIcon;
+  title: string;
+  subtitle: string;
+  href?: string;
+};
+
+export interface SiteSectionCardSection extends SiteSection {
+  __component: "site-sections.card-section";
+  title: string;
+  subtitle?: string;
+  cards: CardSectionItem[];
+}
+
+
+export type VerticalTimelineEntry = {
+  date: string;
+  title: string;
+  subtitle: string;
+  description?: string;
+  href?: string;
+};
+
+export interface SiteSectionVerticalTimeline extends SiteSection {
+  __component: "site-sections.vertical-timeline";
+  title: string;
+  subtitle?: string;
+  entries: VerticalTimelineEntry[];
+}
 

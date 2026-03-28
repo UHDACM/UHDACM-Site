@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_site_sections_feature_card_sections",
+  "info": {
+    "displayName": "feature-card-section",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "cards": {
+      "type": "component",
+      "component": "site-components.feature-card",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    },
+    "position": {
+      "type": "enumeration",
+      "required": true,
+      "default": "center",
+      "enum": [
+        "top",
+        "center",
+        "bottom"
+      ]
+    }
+  },
+  "config": {}
+}

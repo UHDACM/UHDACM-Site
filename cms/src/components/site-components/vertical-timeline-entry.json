@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_site_components_vertical_timeline_entries",
+  "info": {
+    "displayName": "vertical-timeline-entry",
+    "icon": "clock"
+  },
+  "options": {},
+  "attributes": {
+    "date": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "href": {
+      "type": "string"
+    }
+  }
+}

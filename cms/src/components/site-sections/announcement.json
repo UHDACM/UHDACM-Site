@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_site_sections_announcements",
+  "info": {
+    "displayName": "announcement",
+    "icon": "bell"
+  },
+  "options": {},
+  "attributes": {
+    "sectionID": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

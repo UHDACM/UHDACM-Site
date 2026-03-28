@@ -134,17 +134,37 @@ export default function PersonTile({
           src={img}
         />
       </div>
-      <PersonTileExpanded
-        t={fullTitle}
-        sT={fullSubtitle}
-        desc={fullDescription}
-        imgCoverOrContain={imgCoverOrContain}
-        setOpen={setOpen}
-        open={open}
-        socials={socials}
-        img={img}
-        onClose={onClose}
-      />
+      <Transition
+        transitionSpeedMS={400}
+        delayBefore={200}
+        hideOnToggleOff={false}
+        type="wipe"
+        direction={wipeDir}
+        fps={60}
+        toggle={open}
+        easing="inOutQuart"
+        forceStyle={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 1000,
+          pointerEvents: open ? "auto" : "none",
+        }}
+      >
+        <PersonTileExpanded
+          t={fullTitle}
+          sT={fullSubtitle}
+          desc={fullDescription}
+          imgCoverOrContain={imgCoverOrContain}
+          setOpen={setOpen}
+          open={open}
+          socials={socials}
+          img={img}
+          onClose={onClose}
+        />
+      </Transition>
     </>
   );
 }
@@ -218,41 +238,18 @@ function PersonTileExpanded({
         }}
       >
         <div className={"expandedImgAndCardContainer"}>
-          <Transition
-            transitionSpeedMS={300}
-            hideOnToggleOff={false}
-            type="wipe"
-            toggle={open}
-            delayBefore={200}
-            delayAfter={100}
-            fps={60}
-            direction={wipeDir}
-            easing="inOutQuart"
-            forceClass="imageShiftMobile"
-          >
-            <div style={style} className={"expandedImgContainer"}>
-              <img
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: imgCoverOrContain,
-                  position: "relative",
-                }}
-                src={img}
-              />
-            </div>
-          </Transition>
-          <Transition
-            transitionSpeedMS={400}
-            delayBefore={200}
-            hideOnToggleOff={false}
-            type="wipe"
-            direction={wipeDir}
-            fps={60}
-            toggle={open}
-            easing="inOutQuart"
-          >
-            <div className={"expandedDescriptionCard"}>
+          <div style={style} className={"expandedImgContainer imageShiftMobile"}>
+            <img
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: imgCoverOrContain,
+                position: "relative",
+              }}
+              src={img}
+            />
+          </div>
+          <div className={"expandedDescriptionCard"}>
               <div className={"expandedDescription"}>
                 <div
                   style={{
@@ -324,8 +321,7 @@ function PersonTileExpanded({
                 }}
               />
             </div>
-          </Transition>
-        </div>
+          </div>
       </div>
     </Transition>
   );

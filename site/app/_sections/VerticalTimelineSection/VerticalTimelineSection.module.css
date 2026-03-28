@@ -1,0 +1,272 @@
+/* ── @property for animated gradient ── */
+
+@property --timeline-gradient-opacity {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --timeline-gradient-spread {
+  syntax: '<percentage>';
+  initial-value: 70%;
+  inherits: false;
+}
+
+/* ── header ── */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.headerSubtitle {
+  color: rgb(var(--color-neutral-400));
+  max-width: 40rem;
+}
+
+/* ── timeline container ── */
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* center vertical line */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(var(--color-neutral-600), 0.2) 10%,
+    rgba(var(--color-neutral-600), 0.2) 90%,
+    transparent
+  );
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* ── entry row ── */
+
+.entry {
+  display: grid;
+  grid-template-columns: 1fr 2.5rem 1fr;
+  align-items: center;
+  gap: 0 1.5rem;
+  padding: 0.75rem 0;
+}
+
+.leftSlot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rightSlot {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* ── circle connector ── */
+
+.circleWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.circle {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background: rgb(var(--color-primary-500));
+  flex-shrink: 0;
+  transition: transform 200ms ease;
+}
+
+.entry:hover .circle {
+  transform: scale(1.2);
+}
+
+/* ── card ── */
+
+.card {
+  position: relative;
+  border: 1px solid rgba(var(--color-neutral-600), 0.35);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  width: 100%;
+  max-width: 22rem;
+  cursor: default;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border 250ms ease,
+    --timeline-gradient-opacity 350ms ease,
+    --timeline-gradient-spread 350ms ease;
+}
+
+.cardLinked {
+  cursor: pointer;
+}
+
+/* ── card gradient + hover by alternating color ── */
+
+.entry:nth-child(odd) .card {
+  background:
+    radial-gradient(circle at top left, rgba(var(--color-primary-600), var(--timeline-gradient-opacity)) 0%, transparent var(--timeline-gradient-spread)),
+    rgba(var(--color-neutral-900), 0.5);
+}
+
+.entry:nth-child(odd) .card:hover {
+  --timeline-gradient-opacity: 0.15;
+  --timeline-gradient-spread: 80%;
+  border: 1px solid rgba(var(--color-primary-500), 0.5);
+}
+
+.entry:nth-child(even) .card {
+  background:
+    radial-gradient(circle at top left, rgba(var(--color-secondary-600), var(--timeline-gradient-opacity)) 0%, transparent var(--timeline-gradient-spread)),
+    rgba(var(--color-neutral-900), 0.5);
+}
+
+.entry:nth-child(even) .card:hover {
+  --timeline-gradient-opacity: 0.15;
+  --timeline-gradient-spread: 80%;
+  border: 1px solid rgba(var(--color-secondary-500), 0.5);
+}
+
+/* ── card text ── */
+
+.entryDate {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.entry:nth-child(odd) .entryDate {
+  color: rgb(var(--color-primary-400));
+}
+
+.entry:nth-child(even) .entryDate {
+  color: rgb(var(--color-secondary-400));
+}
+
+.entryTitle {
+  color: rgb(var(--color-neutral-100));
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.entrySubtitle {
+  color: rgba(var(--color-neutral-400), 0.85);
+}
+
+/* ── hover-reveal description (desktop) ── */
+
+.expandable {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 500ms ease, opacity 380ms ease;
+}
+
+.card:hover .expandable {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.separator {
+  height: 1px;
+  background: rgba(var(--color-neutral-600), 0.4);
+  margin: 0.75rem 0 0.5rem;
+}
+
+.entryDescription {
+  color: rgba(var(--color-neutral-300), 0.8);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── link indicator ── */
+
+.linkIndicator {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  color: rgb(var(--color-neutral-400));
+  opacity: 0.45;
+  display: flex;
+  align-items: center;
+  transition: opacity 150ms ease, color 150ms ease;
+}
+
+.card:hover .linkIndicator {
+  opacity: 1;
+  color: rgb(var(--color-primary-400));
+}
+
+.card:hover .linkIndicatorInternal {
+  color: rgb(var(--color-secondary-400));
+}
+
+/* ── mobile (< 768px): scroll-proximity reveal, drop center line ── */
+
+@media (max-width: 767px) {
+  .timeline::before {
+    display: none;
+  }
+
+  .circleWrapper {
+    display: none;
+  }
+
+  .entry {
+    display: flex;
+    padding: 0.4rem 0;
+  }
+
+  .entryLeft {
+    justify-content: flex-start;
+  }
+
+  .entryRight {
+    justify-content: flex-end;
+  }
+
+  .leftSlot,
+  .rightSlot {
+    display: contents;
+  }
+
+  .card {
+    width: min(22rem, 100%);
+    max-width: unset;
+  }
+
+  /* disable hover reveal on touch devices */
+  .card:hover .expandable {
+    max-height: 0;
+    opacity: 0;
+  }
+
+  /* scroll-proximity reveal */
+  .card.cardActive .expandable {
+    max-height: 300px;
+    opacity: 1;
+  }
+
+  /* show link indicator when in view */
+  .card.cardActive .linkIndicator {
+    opacity: 1;
+  }
+}

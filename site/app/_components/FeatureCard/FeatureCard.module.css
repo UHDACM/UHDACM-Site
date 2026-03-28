@@ -1,0 +1,76 @@
+/*accent*/
+
+.primaryHover:hover  { background: rgba(var(--color-primary-500),   0.1);  }
+.primaryIconBg       { background: rgba(var(--color-primary-500),   0.15); }
+.primaryIconClr      { color:      rgb(var(--color-primary-500));          }
+.primaryCircle       { background: rgba(var(--color-primary-500),   0.03); }
+
+.secondaryHover:hover { background: rgba(var(--color-secondary-500), 0.1);  }
+.secondaryIconBg      { background: rgba(var(--color-secondary-500), 0.15); }
+.secondaryIconClr     { color:      rgb(var(--color-secondary-500));         }
+.secondaryCircle      { background: rgba(var(--color-secondary-500), 0.03); }
+
+.accentHover:hover   { background: rgba(var(--color-accent-500),    0.1);  }
+.accentIconBg        { background: rgba(var(--color-accent-500),    0.15); }
+.accentIconClr       { color:      rgb(var(--color-accent-500));           }
+.accentCircle        { background: rgba(var(--color-accent-500),    0.03); }
+
+.backgroundHover:hover { background: rgba(var(--color-neutral-700),  0.1);  }
+.backgroundIconBg      { background: rgba(var(--color-neutral-700),  0.15); }
+.backgroundIconClr     { color:      rgb(var(--color-neutral-300));         }
+.backgroundCircle      { background: rgba(var(--color-neutral-700),  0.03); }
+
+.card{
+    position:relative;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding:1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(var(--color-neutral-800),0.4);
+    cursor:pointer;
+    background: rgba(var(--color-neutral-900),0.6);
+    transition: all 0.5s;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.iconBox{
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 1rem;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.title{
+    color:white;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+}
+.description{
+    color:rgba(225,255,255,0.3);
+    font-size:0.75rem;
+}
+
+.CardRow{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:1.25rem;
+    justify-content: center;
+}
+
+@media (min-width:640px){
+    .CardRow{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media (min-width:1024px){
+    .CardRow{
+        grid-template-columns: repeat(3,1fr);
+    }
+}

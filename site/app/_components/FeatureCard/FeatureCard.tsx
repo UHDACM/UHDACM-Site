@@ -1,34 +1,43 @@
-import { LuHeart,LuTarget, LuCode, LuUsersRound } from "react-icons/lu";
-import styles from './featurecard.module.css'
+import { LuHeart, LuTarget, LuCode, LuUsersRound, LuUsers, LuCalendar, LuClock } from "react-icons/lu";
+import styles from './FeatureCard.module.css'
+import { FeatureCardProps } from "@shared/types/cms/CMSTypes";
 
 const icons = {
     heart: LuHeart,
     target: LuTarget,
     code: LuCode,
     users: LuUsersRound,
-}
-
-export type FeatureCardProps = {
-    icon: "heart" | "target" | "code"| "users";
-    color: "orange" | "blue" ; // for svg and hover
-    title: string;
-    description: string;
+    people: LuUsers,
+    calendar: LuCalendar,
+    clock: LuClock,
 }
 
 function FeatureCard({icon, color, title, description}: FeatureCardProps){
 
     const accent = {
-        orange: {
-            hover: styles.orangeHover,
-            iconBg: styles.orangeIconBg,
-            iconClr: styles.orangeIconClr,
-            circleClr: styles.orangeCircle
+        primary: {
+            hover: styles.primaryHover,
+            iconBg: styles.primaryIconBg,
+            iconClr: styles.primaryIconClr,
+            circleClr: styles.primaryCircle
         },
-        blue: {
-            hover: styles.blueHover,
-            iconBg: styles.blueIconBg,
-            iconClr: styles.blueIconClr,
-            circleClr: styles.blueCircle
+        secondary: {
+            hover: styles.secondaryHover,
+            iconBg: styles.secondaryIconBg,
+            iconClr: styles.secondaryIconClr,
+            circleClr: styles.secondaryCircle
+        },
+        accent: {
+            hover: styles.accentHover,
+            iconBg: styles.accentIconBg,
+            iconClr: styles.accentIconClr,
+            circleClr: styles.accentCircle
+        },
+        background: {
+            hover: styles.backgroundHover,
+            iconBg: styles.backgroundIconBg,
+            iconClr: styles.backgroundIconClr,
+            circleClr: styles.backgroundCircle
         },
     }
     const c = accent[color]
@@ -38,15 +47,11 @@ function FeatureCard({icon, color, title, description}: FeatureCardProps){
         <div 
             className={`${c.hover} ${styles.card}`}
         >
-            {/* top right circle*/}
-            <div className={` ${styles.circle} ${c.circleClr}`}>
-
-            </div>
 
             <div 
                 className={` ${styles.iconBox} ${c.iconBg} ${c.iconClr}`}
             >
-                <Icon size={20}/>
+                <Icon size={30}/>
             </div>
 
             <h1 className={styles.title} >
@@ -65,35 +70,35 @@ function FeatureCard({icon, color, title, description}: FeatureCardProps){
 export const cards: FeatureCardProps[] = [
     {
         icon: "target",
-        color: "orange",
+        color: "primary",
         title: "Skill Development",
         description: "Build technical skills through workshops, hackathons, and hands-on projects",
     },
     {
         icon: "code",
-        color: "blue",
+        color: "secondary",
         title: "Real Projects",
         description: "Work on meaningful projects that make a difference and build your portfolio.",
     },
     {
         icon: "users",
-        color: "orange",
+        color: "primary",
         title: "Community",
-        description: "Connect with like-minded students and build lasting professional relationships.", 
+        description: "Connect with like-minded students and build lasting professional relationships.",
     },
     {
         icon: "heart",
-        color: "blue",
+        color: "secondary",
         title: "Support",
         description: "Get mentorship and guidance from experienced members and industry professionals.",
     }
 
 ]
 
-export function FeatureCardRow(){
+export function FeatureCardRow({ cards: cardList = cards }: { cards?: FeatureCardProps[] }){
     return(
     <div className={styles.CardRow}>
-        {cards.map((card,index) => (
+        {cardList.map((card,index) => (
             <FeatureCard
                 key={index}
                 icon={card.icon}

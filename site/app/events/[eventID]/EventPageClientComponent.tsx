@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import Button from "@/app/_components/Button/Button";
 // handles date, strictly on client side.
 
@@ -9,6 +10,7 @@ import AddToCalendarButton from "@/app/_components/Button/Variants/AddToCalendar
 import StrapiRichTextRenderer from "@/app/_components/StrapiRichTextRenderer/StrapiRichTextRenderer";
 import {
   DefaultClock,
+  DefaultImageCollection,
   DefaultLocation,
   DefaultPeople,
 } from "@/app/_icons/Icons";
@@ -16,10 +18,31 @@ import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 import CallToActionSection from "@/app/_sections/CallToActionSection/CallToActionSection";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
-import { SiteEvent } from "@shared/types/cms/CMSTypes";
+import { SiteEvent, StrapiPicture } from "@shared/types/cms/CMSTypes";
 import { generateEventShareText } from "@/app/_utils/types/cms/cmsTypeTools";
 import { isStrapiPicture } from "@shared/types/cms/CMSCheck";
 import { getDefaultIconForCMSButton } from "@/app/_utils/types/cms/cmsTypeToolsTsx";
+import GalleryGrid from "@/app/galleries/[galleryID]/_components/GalleryGrid";
+
+const GALLERY_SECTION_ID = "event-gallery";
+
+function scrollToGallery() {
+  document
+    .getElementById(GALLERY_SECTION_ID)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function ViewGalleryButton() {
+  return (
+    <Button
+      onClick={scrollToGallery}
+      style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+    >
+      <span>View Gallery</span>
+      <DefaultImageCollection fontSize={"inherit"} />
+    </Button>
+  );
+}
 
 function ShareEventButton({ event }: { event: SiteEvent }) {
   return (
@@ -44,11 +67,21 @@ function CalendarButton({ event }: { event: SiteEvent }) {
 
 export default function EventPageClientComponent({
   event,
+  media,
 }: {
   event: SiteEvent;
+  media: StrapiPicture[];
 }) {
   const dateStart = new Date(event.dateStart);
   const dateEnd = new Date(event.dateEnd);
+
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  const eventEnded = hasMounted && dateEnd.getTime() < Date.now();
+  const showCalendar = !eventEnded;
+  const hasGallery = media.length > 0;
 
   // Format date as "MMM D, YYYY"
   const formatDate = (date: Date) =>
@@ -108,9 +141,10 @@ export default function EventPageClientComponent({
           ) : undefined
         }
         bottomContent={
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            <CalendarButton event={event} />
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            {showCalendar && <CalendarButton event={event} />}
             <ShareEventButton event={event} />
+            {hasGallery && <ViewGalleryButton />}
           </div>
         }
       />
@@ -161,6 +195,23 @@ export default function EventPageClientComponent({
           </div>
         </div>
       </div>
+      {hasGallery && (
+        <div
+          id={GALLERY_SECTION_ID}
+          style={{
+            scrollMarginTop: "5rem",
+            width: "100%",
+            marginTop: "4rem",
+          }}
+        >
+          <div className="SectionRoot">
+            <div className="SectionInner" style={{ alignItems: "center" }}>
+              <h1 className="H1">Gallery</h1>
+            </div>
+          </div>
+          <GalleryGrid media={media} />
+        </div>
+      )}
       <CallToActionSection
         title={`Show up, Schedule, Share`}
         subtitle="Your next step is your best step. Be sure to make it count!"
@@ -172,9 +223,10 @@ export default function EventPageClientComponent({
               flexDirection: "row",
               alignContent: "center",
               justifyContent: "center",
+              flexWrap: "wrap",
             }}
           >
-            <CalendarButton event={event} />
+            {showCalendar && <CalendarButton event={event} />}
             <ShareEventButton event={event} />
             <Button
               style={{

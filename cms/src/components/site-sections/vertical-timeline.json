@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_site_sections_vertical_timelines",
+  "info": {
+    "displayName": "vertical-timeline",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "entries": {
+      "type": "component",
+      "component": "site-components.vertical-timeline-entry",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

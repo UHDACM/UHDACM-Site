@@ -1,5 +1,19 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface SiteComponentsAnnouncementSubHeader
+  extends Struct.ComponentSchema {
+  collectionName: 'components_site_components_announcement_sub_headers';
+  info: {
+    displayName: 'announcement-sub-header';
+    icon: 'bulletList';
+  };
+  attributes: {
+    icon: Schema.Attribute.Enumeration<['calendar', 'clock', 'location-pin']> &
+      Schema.Attribute.Required;
+    text: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SiteComponentsButton extends Struct.ComponentSchema {
   collectionName: 'components_site_components_buttons';
   info: {
@@ -21,6 +35,49 @@ export interface SiteComponentsButton extends Struct.ComponentSchema {
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'_self'>;
     text: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SiteComponentsCard extends Struct.ComponentSchema {
+  collectionName: 'components_site_components_cards';
+  info: {
+    displayName: 'card-section-card';
+    icon: 'stack';
+  };
+  attributes: {
+    href: Schema.Attribute.Text;
+    icon: Schema.Attribute.Enumeration<
+      ['heart', 'target', 'code', 'users', 'calendar', 'people', 'clock']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'code'>;
+    subtitle: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SiteComponentsFeatureCard extends Struct.ComponentSchema {
+  collectionName: 'components_site_components_feature_cards';
+  info: {
+    displayName: 'feature-card';
+    icon: 'grid';
+  };
+  attributes: {
+    color: Schema.Attribute.Enumeration<
+      ['primary', 'secondary', 'accent', 'background']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'primary'>;
+    description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Enumeration<
+      ['heart', 'target', 'code', 'users', 'calendar', 'people', 'clock']
+    > &
+      Schema.Attribute.Required;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 24;
+      }>;
   };
 }
 
@@ -150,6 +207,75 @@ export interface SiteComponentsSplitHeroColumn extends Struct.ComponentSchema {
   };
 }
 
+export interface SiteComponentsVerticalTimelineEntry
+  extends Struct.ComponentSchema {
+  collectionName: 'components_site_components_vertical_timeline_entries';
+  info: {
+    displayName: 'vertical-timeline-entry';
+    icon: 'clock';
+  };
+  attributes: {
+    date: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    href: Schema.Attribute.String;
+    subtitle: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SiteSectionsAnnouncement extends Struct.ComponentSchema {
+  collectionName: 'components_site_sections_announcements';
+  info: {
+    displayName: 'announcement';
+    icon: 'bell';
+  };
+  attributes: {
+    sectionID: Schema.Attribute.String;
+  };
+}
+
+export interface SiteSectionsCardSection extends Struct.ComponentSchema {
+  collectionName: 'components_site_sections_card_sections';
+  info: {
+    displayName: 'card-section';
+    icon: 'apps';
+  };
+  attributes: {
+    cards: Schema.Attribute.Component<'site-components.card', true> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 4;
+          min: 1;
+        },
+        number
+      >;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SiteSectionsFeatureCardSection extends Struct.ComponentSchema {
+  collectionName: 'components_site_sections_feature_card_sections';
+  info: {
+    displayName: 'feature-card-section';
+    icon: 'apps';
+  };
+  attributes: {
+    cards: Schema.Attribute.Component<'site-components.feature-card', true> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
+    position: Schema.Attribute.Enumeration<['top', 'center', 'bottom']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'center'>;
+  };
+}
+
 export interface SiteSectionsFeaturedEvent extends Struct.ComponentSchema {
   collectionName: 'components_site_sections_featured_events';
   info: {
@@ -247,6 +373,44 @@ export interface SiteSectionsSplitHeroSection extends Struct.ComponentSchema {
   };
 }
 
+export interface SiteSectionsVerticalTimeline extends Struct.ComponentSchema {
+  collectionName: 'components_site_sections_vertical_timelines';
+  info: {
+    displayName: 'vertical-timeline';
+    icon: 'bulletList';
+  };
+  attributes: {
+    entries: Schema.Attribute.Component<
+      'site-components.vertical-timeline-entry',
+      true
+    >;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TypesAnnouncement extends Struct.ComponentSchema {
+  collectionName: 'components_types_announcements';
+  info: {
+    displayName: 'announcement';
+    icon: 'bell';
+  };
+  attributes: {
+    badge: Schema.Attribute.Text;
+    body: Schema.Attribute.Text;
+    buttons: Schema.Attribute.Component<'site-components.button', true>;
+    colorTheme: Schema.Attribute.Enumeration<
+      ['primary', 'secondary', 'accent', 'background']
+    >;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
+    subheader: Schema.Attribute.Component<
+      'site-components.announcement-sub-header',
+      true
+    >;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface TypesSocialLink extends Struct.ComponentSchema {
   collectionName: 'components_types_social_links';
   info: {
@@ -276,18 +440,27 @@ export interface TypesSocialLink extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'site-components.announcement-sub-header': SiteComponentsAnnouncementSubHeader;
       'site-components.button': SiteComponentsButton;
+      'site-components.card': SiteComponentsCard;
+      'site-components.feature-card': SiteComponentsFeatureCard;
       'site-components.floating-images': SiteComponentsFloatingImages;
       'site-components.iframe-form': SiteComponentsIframeForm;
       'site-components.image-collection': SiteComponentsImageCollection;
       'site-components.normal-hero-section': SiteComponentsNormalHeroSection;
       'site-components.single-image': SiteComponentsSingleImage;
       'site-components.split-hero-column': SiteComponentsSplitHeroColumn;
+      'site-components.vertical-timeline-entry': SiteComponentsVerticalTimelineEntry;
+      'site-sections.announcement': SiteSectionsAnnouncement;
+      'site-sections.card-section': SiteSectionsCardSection;
+      'site-sections.feature-card-section': SiteSectionsFeatureCardSection;
       'site-sections.featured-event': SiteSectionsFeaturedEvent;
       'site-sections.latest-qna': SiteSectionsLatestQna;
       'site-sections.leadership-section': SiteSectionsLeadershipSection;
       'site-sections.search-section': SiteSectionsSearchSection;
       'site-sections.split-hero-section': SiteSectionsSplitHeroSection;
+      'site-sections.vertical-timeline': SiteSectionsVerticalTimeline;
+      'types.announcement': TypesAnnouncement;
       'types.social-link': TypesSocialLink;
     }
   }

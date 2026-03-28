@@ -92,8 +92,16 @@ export function HeroTextBlock({
   );
 }
 
+// Gradient start/end stops per color family. toStop is the base; LENGTH_WEIGHT shifts it darker for longer words.
+const COLOR_CONFIG: Record<string, { family: string; fromStop: number; toStop: number }> = {
+  primary:   { family: "primary",   fromStop: 500, toStop: 600 },
+  secondary: { family: "secondary", fromStop: 400, toStop: 500 },
+  accent:    { family: "accent",    fromStop: 400, toStop: 500 },
+  neutral:   { family: "neutral",   fromStop: 100, toStop: 200 },
+};
 const LENGTH_WEIGHT = 0.06;
-function extractColorSpans(
+
+export function extractColorSpans(
   str: string,
   type?:
     | HeroTextBlockProps["headerType"]
@@ -101,75 +109,63 @@ function extractColorSpans(
     | "BodySmall"
     | "SubtitleRegular",
 ) {
-  let lastEndIndex = 0;
-  const strs: ReactNode[] = [];
-  for (let i = 0; i < str.length; i++) {
-    if (str.charAt(i) == "$" && str.charAt(i + 1) == "#") {
-      // find closing
-      let openIndex = i + 3;
-      let closeIndex = -1;
-      for (let j = openIndex; j < str.length; j++) {
-        if (str.charAt(j) == "$" && str.charAt(j + 1) == "#") {
-          closeIndex = j;
-          break;
-        }
+  // gets texts and applies color ${color}(text). e.g.: "${primary}(Yo!!!), Hello $(secondary){World}"
+  const result: ReactNode[] = [];
+  let lastIndex = 0;
+  let i = 0;
+
+  while (i < str.length) {
+    if (str[i] === "$" && str[i + 1] === "[") {
+      const nameStart = i + 2;
+      const nameEnd = str.indexOf("]", nameStart);
+      if (nameEnd === -1 || str[nameEnd + 1] !== "(") { i++; continue; }
+
+      const textStart = nameEnd + 2;
+      const textEnd = str.indexOf(")", textStart);
+      if (textEnd === -1) { i++; continue; }
+
+      // push plain text before this span
+      if (i > lastIndex) {
+        result.push(<span key={`t${i}`} className={type}>{str.substring(lastIndex, i)}</span>);
       }
 
-      if (closeIndex == -1) {
-        // not valid, no closing tag.
-        strs.push(<span key={i} className={type}>{str.substring(lastEndIndex)}</span>);
-        lastEndIndex = str.length;
-        break;
-      }
+      const colorName = str.substring(nameStart, nameEnd).toLowerCase().trim();
+      const spanText = str.substring(textStart, textEnd);
+      const config = COLOR_CONFIG[colorName];
 
-      // color code should be index after #
-      const colorCode = str.charAt(i + 2);
-      const spanText = str.substring(openIndex, closeIndex);
-      console.log(colorCode, spanText);
-
-      // How many stops to shift per character. Adjust to taste.
-      const stopShift = Math.min(4, Math.round(spanText.length * LENGTH_WEIGHT));
-
-      let gradientFrom = "";
-      let gradientTo = "";
-      if (colorCode == "P") {
-        gradientFrom = "--color-primary-500";
-        gradientTo = `--color-primary-${600 + stopShift * 100}`;
-      } else if (colorCode == "S") {
-        gradientFrom = "--color-secondary-400";
-        gradientTo = `--color-secondary-${500 + stopShift * 100}`;
-      } else if (colorCode == "N") {
-        gradientFrom = "--color-neutral-100";
-        gradientTo = `--color-neutral-${200 + stopShift * 100}`;
+      if (config) {
+        const stopShift = Math.min(4, Math.round(spanText.length * LENGTH_WEIGHT));
+        const fromVar = `--color-${config.family}-${config.fromStop}`;
+        const toVar = `--color-${config.family}-${config.toStop + stopShift * 100}`;
+        result.push(
+          <span
+            key={i}
+            className={type}
+            style={{
+              background: `linear-gradient(to right, rgba(var(${fromVar}), 1), rgba(var(${toVar}), 1))`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              display: "inline-block",
+              color: "transparent",
+            }}
+          >
+            {spanText}
+          </span>
+        );
       } else {
-        // aint jack to do here, error.
-        continue;
+        result.push(<span key={i} className={type}>{spanText}</span>);
       }
 
-      // color code present, add everything before this point
-      // add it
-      strs.push(
-        <span
-          className={type}
-          style={{
-            background: `linear-gradient(to right, rgba(var(${gradientFrom}), 1), rgba(var(${gradientTo}), 1))`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            display: "inline-block",
-            color: "transparent",
-            // color: "rgb(var(--color-primary-200))",
-          }}
-          key={i}
-        >
-          {spanText}
-        </span>
-      );
-      lastEndIndex = closeIndex + 2;
+      lastIndex = textEnd + 1;
+      i = lastIndex;
+    } else {
+      i++;
     }
   }
-  strs.push(<span key={'end'} className={type}>{str.substring(lastEndIndex)}</span>);
-  return strs;
+
+  result.push(<span key="end" className={type}>{str.substring(lastIndex)}</span>);
+  return result;
 }
 
 

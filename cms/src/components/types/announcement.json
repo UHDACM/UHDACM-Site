@@ -1,0 +1,49 @@
+{
+  "collectionName": "components_types_announcements",
+  "info": {
+    "displayName": "announcement",
+    "icon": "bell"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subheader": {
+      "type": "component",
+      "component": "site-components.announcement-sub-header",
+      "repeatable": true
+    },
+    "badge": {
+      "type": "text"
+    },
+    "body": {
+      "type": "text"
+    },
+    "buttons": {
+      "type": "component",
+      "component": "site-components.button",
+      "repeatable": true
+    },
+    "colorTheme": {
+      "type": "enumeration",
+      "enum": [
+        "primary",
+        "secondary",
+        "accent",
+        "background"
+      ]
+    }
+  },
+  "config": {}
+}
