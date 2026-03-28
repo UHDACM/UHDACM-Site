@@ -1,35 +1,12 @@
 import { queryAgent } from "../langchain/langchain";
-
-
-
 import { LogMessage } from "../log/log";
 import { QueryMessage, QueryResponse } from "@shared/types/query/queryTypes";
 import { contextMsgLimit } from "@shared/types/query/queryData";
 
-
-function checkQueryResponse(obj: unknown): asserts obj is QueryResponse {
-  if (typeof obj !== "object" || obj === null) {
-    throw new Error("Invalid input: must be a non-null object");
-  }
-  const { response, relevant_actions } = obj as QueryResponse;
-  if (typeof response !== "string") {
-    throw new Error("Invalid response: must be a string");
-  }
-  if (!Array.isArray(relevant_actions)) {
-    throw new Error("Invalid relevant_actions: must be an array");
-  }
-  for (const action of relevant_actions) {
-    if (typeof action.label !== "string" || typeof action.href !== "string") {
-      throw new Error(
-        "Invalid relevant_actions: each action must have a string label and href",
-      );
-    }
-  }
-}
-
-export const processQuery = async (query: string, context?: QueryMessage[]) => {
-
-  // takes context and appends it to query
+export const processQuery = async (
+  query: string,
+  context?: QueryMessage[],
+): Promise<QueryResponse> => {
   let prevMsg = "";
   if (context) {
     prevMsg += "\n\n Previous messages: ";
@@ -42,101 +19,41 @@ export const processQuery = async (query: string, context?: QueryMessage[]) => {
   }
 
   const prompt = `
-  You are a user-facing assistant.
+You are a user-facing assistant for UHD ACM.
 
-  Answer the user's query using ONLY the information provided below.
-  Do NOT use prior knowledge.
-  If the query cannot be answered using the provided information, you MUST say so.
+Answer the user's query using the search tool when needed. Do NOT use prior knowledge.
+If the query cannot be answered from the provided information, say so plainly in the response.
 
-  Today’s date is: ${new Date().toLocaleDateString()}.
+Fields:
+- response: the answer text. Markdown is allowed inside this string.
+- relevant_actions: links directly useful to the answer. Use only hrefs returned by the search tool — never invent URLs. Leave empty if none apply. If the user asks about an event, gallery, etc., include a link action when one is available in context.
+- quick_replies: up to 3 likely follow-up questions. label is 2–3 words; value is a fully-phrased follow-up query. Leave empty if none apply.
 
-  ---
-  CONVERSATION HISTORY:
-  ${prevMsg}
+Do not mention tools or internal mechanisms to the user.
 
-  ---
-  USER QUERY:
-  ${query}
+Today's date is: ${new Date().toLocaleDateString()}.
 
-  ---
-  RESPONSE RULES:
-  - Output MUST be valid JSON only. No markdown, no extra text.
-  - All top-level properties MUST be present.
-  - Arrays may be empty if no items are appropriate.
-  - Do NOT invent links, or facts.
-  - You may invent actions (not links) if it is convenient for the user.
-  - Use markdown.
-  - If they ask about an event, gallery, etc., provide a link action.
-  - Do not mention MCP tools.
+---
+CONVERSATION HISTORY:
+${prevMsg}
 
-  JSON SCHEMA:
-  {
-    "response": "string",
-    "relevant_actions": [
-      { "label": "string", "href": "string" }
-    ],
-    "quick_replies": [
-      { "label": "2–3 word label", "value": "descriptive follow-up query" }
-    ]
+---
+USER QUERY:
+${query}
+`;
+
+  try {
+    return await queryAgent(prompt);
+  } catch (e) {
+    await LogMessage(`Failed to generate response`, {
+      function: "processQuery",
+      query,
+      error: (e as Error).message,
+    });
+    return {
+      response: "Failed to generate response",
+      relevant_actions: [],
+      quick_replies: [],
+    };
   }
-
-  GUIDANCE:
-  - "relevant_actions" should only include actions directly useful to the response. Leave empty if none apply.
-  - "quick_replies" should reflect likely next questions the user would ask. Maximum of 3. Leave empty if none apply.
-  - If the query cannot be answered from the provided context, set:
-    - "response" to a brief explanation that the information is unavailable
-    - "relevant_actions" to []
-    - "quick_replies" to []
-  `;
-
-  const response = await queryAgent(prompt);
-
-  // if incorrect format, smaller model tries to fix issues
-  // returns parsed obj if successful, default error otherwise
-  let tries = 0;
-  let currentResponse = response;
-  // console.log('first res', currentResponse);
-  while (true) {
-    try {
-      let cleanedResponse = currentResponse.trim();
-      if (cleanedResponse.startsWith("```json")) {
-        cleanedResponse = cleanedResponse.slice(7, -3).trim();
-      } else if (cleanedResponse.startsWith("```")) {
-        cleanedResponse = cleanedResponse.slice(3, -3).trim();
-      }
-      const obj: unknown = JSON.parse(cleanedResponse);
-      checkQueryResponse(obj);
-      return obj;
-    } catch (e) {
-      console.warn(e);
-      await LogMessage(`Failed to generate response`, {
-        function: "processQuery",
-        lastResponse: currentResponse,
-        error: (e as Error).message,
-        try: tries,
-      });
-      if (tries >= 3) {
-        break;
-      }
-      tries++;
-      // console.log(tries, 'trying to fix issue', (e as Error).message);
-      currentResponse = await queryAgent(
-        `${currentResponse}\nFix Error, output only JSON: ${(e as Error).message}\n\nOutput like so: {"response": plain_string, "relevant_actions": [{label: string, href: string}, ...], "quick_replies": [{"label": "short-text", "value": "longer-text"}, (max 3)]}, include only relevant actions, keep hrefs as provided. If the most relevant action is to visit a url, create an action for that. Quick replies should be what the user is likely to ask next, label being 2-3 words, and value being descriptive enough for an answer to answer accurately. All properties must be present, none are optional.`,
-        // "gemma-3-1b-it",
-      );
-    }
-  }
-
-  await LogMessage(`Failed to generate response`, {
-    function: "processQuery",
-    query: query,
-    lastResponse: currentResponse,
-  });
-
-  const res: QueryResponse = {
-    response: "Failed to generate response",
-    relevant_actions: [],
-    quick_replies: [],
-  };
-  return res;
 };

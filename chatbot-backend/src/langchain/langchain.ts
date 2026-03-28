@@ -63,9 +63,28 @@ function shouldRotateKey(err: unknown): boolean {
 }
 
 
-import { createAgent, ReactAgent, tool } from "langchain";
+import { createAgent, ReactAgent, tool, toolStrategy } from "langchain";
 import { initChatModel } from "langchain";
 import { queryCollection } from "../context/context";
+
+const ActionSchema = z.object({
+  label: z.string(),
+  href: z.string(),
+});
+
+const QuickReplySchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
+export const QueryResponseSchema = z.object({
+  response: z.string(),
+  relevant_actions: z.array(ActionSchema),
+  quick_replies: z.array(QuickReplySchema).max(3),
+});
+
+export type QueryResponseT = z.infer<typeof QueryResponseSchema>;
+
 let agent: ReactAgent | undefined = undefined;
 async function initializeAgent() {
   // TODO: I said "screw it" and just used the first API key available.
@@ -90,7 +109,7 @@ async function initializeAgent() {
     },
     {
       name: "search",
-      description: "Search for information related to University of Houston Downtown - Association for Computing Machinery (UHD ACM) ",
+      description: "Search for information related to University of Houston Downtown - Association for Computing Machinery (UHD ACM). Only use if current information is not enough to answer user's inquiry.",
       schema: z.object({
         query: z.string().describe("Semantic search query input"),
       }),
@@ -100,6 +119,7 @@ async function initializeAgent() {
   agent = createAgent({
     model: model,
     tools: [search],
+    responseFormat: toolStrategy(QueryResponseSchema),
   });
 }
 initializeAgent();
@@ -119,7 +139,7 @@ async function waitForAgent() {
   console.log('done waiting');
 }
 
-export async function queryAgent(question: string): Promise<string> {
+export async function queryAgent(question: string): Promise<QueryResponseT> {
   let lastErr: unknown = null;
   await waitForAgent();
   for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
@@ -130,10 +150,10 @@ export async function queryAgent(question: string): Promise<string> {
       const response = await agent!.invoke({
         messages: [["human", question]],
       });
-      
-      return JSON.stringify(response.messages[response.messages.length - 1].content);
+
+      return response.structuredResponse as QueryResponseT;
     } catch (err: unknown) {
-      console.error(err);
+      console.error('ebe', err);
       lastErr = err;
       if (!shouldRotateKey(err)) {
         await LogMessage((err as Error).message, {
