@@ -137,7 +137,7 @@ export default function EventPageClientComponent({
 
 
 
-      {/* <NavbarPadding /> */}
+      <NavbarPadding />
 
 
 
