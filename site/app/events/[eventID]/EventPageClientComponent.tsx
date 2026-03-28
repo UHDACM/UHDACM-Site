@@ -112,13 +112,13 @@ export default function EventPageClientComponent({
 
   let subheader = "";
   if (!sameDay) {
-    subheader = `${formatDate(dateStart)} - ${formatDate(dateEnd)}`;
+    subheader = `${formatDate(dateStart)}\n${formatDate(dateEnd)}`;
   } else if (!sameTime) {
-    subheader = `${formatDate(dateStart)}, ${formatTime(
-      dateStart
+    subheader = `${formatDate(dateStart)}\n${formatTime(
+      dateStart,
     )} - ${formatTime(dateEnd)}`;
   } else {
-    subheader = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
+    subheader = `${formatDate(dateStart)}\n${formatTime(dateStart)}`;
   }
 
   return (
@@ -131,25 +131,6 @@ export default function EventPageClientComponent({
         position: "relative",
       }}
     >
-
-
-
-
-
-
-      {/* <NavbarPadding /> */}
-
-
-
-
-
-
-
-
-
-
-
-
       <MainHeroSection
         spanText="EVENT"
         title={event.name}
@@ -194,9 +175,6 @@ export default function EventPageClientComponent({
           body={event.location || "Location not specified"}
           bodyColor="rgb(var(--color-font-secondary))"
         />
-        <span style={{color: 'white'}}>
-          {JSON.stringify(event)}
-        </span>
         <EventDetails
           icon="people"
           header="Host"
@@ -208,12 +186,17 @@ export default function EventPageClientComponent({
         />
       </div>
 
-
       <div className="SectionRoot">
         <div className="SectionInner">
           <div className={styles.eventDescription}>
             <h1 className="H1">Event Description</h1>
-            <div style={{ display: "flex", flexDirection: "column", maxWidth: '100%' }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                maxWidth: "100%",
+              }}
+            >
               {event.descriptionFull && (
                 <StrapiRichTextRenderer content={event.descriptionFull} />
               )}
@@ -221,11 +204,6 @@ export default function EventPageClientComponent({
           </div>
         </div>
       </div>
-
-
-
-
-
 
       {hasGallery && (
         <div
@@ -244,13 +222,6 @@ export default function EventPageClientComponent({
           <GalleryGrid media={media} />
         </div>
       )}
-
-
-
-
-
-
-
 
       <CallToActionSection
         title={`Show up, Schedule, Share`}

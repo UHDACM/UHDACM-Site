@@ -6,6 +6,7 @@ import Page404 from "@/app/not-found";
 import EventPageClientComponent from "./EventPageClientComponent";
 import { WrapInNavbarAndFooter } from "@/app/_utils/tsxServerTools";
 import { StrapiPicture } from "@shared/types/cms/CMSTypes";
+import { NavbarPadding } from "@/app/_pageRenderer/PageRenderer";
 
 type EventPageParams = Promise<{
   eventID: string;
@@ -65,6 +66,7 @@ export default async function EventPage({
 
   return (
     <WrapInNavbarAndFooter>
+      <NavbarPadding />
       <EventPageClientComponent event={event} media={media} />
     </WrapInNavbarAndFooter>
   );
