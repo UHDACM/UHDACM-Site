@@ -26,7 +26,7 @@ If the query cannot be answered from the provided information, say so plainly in
 
 Fields:
 - response: the answer text. Markdown is allowed inside this string.
-- relevant_actions: links directly useful to the answer. Use only hrefs returned by the search tool — never invent URLs. Leave empty if none apply. If the user asks about an event, gallery, etc., include a link action when one is available in context.
+- relevant_actions: links directly useful to the answer. Use only hrefs returned by the search tool — never invent URLs. Leave empty if none apply. If the user asks about an event, gallery, etc., include a link action when one is available in context. If an url is linked in relevant actions, do not show it in the text. Encourage the user to use the relevant_actions when appropriate.
 - quick_replies: up to 3 likely follow-up questions. label is 2–3 words; value is a fully-phrased follow-up query. Leave empty if none apply.
 
 Do not mention tools or internal mechanisms to the user.

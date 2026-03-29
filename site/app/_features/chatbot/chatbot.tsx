@@ -423,7 +423,8 @@ What are you looking for today?`,
 
   // quickreplies
   const [inputValue, setInputValue] = useState("");
-  const isButtonDisabled = inputValue.trim() === "" || isLoading;
+  const isButtonDisabled =
+    inputValue.trim() === "" || isLoading || authenticated != true;
 
   const handleOpening = () => {
     posthog.capture("opened_chatbot", {
@@ -508,11 +509,19 @@ What are you looking for today?`,
       {!isOpen && (
         <>
           {showPrompt && (
-            <div className={styles.promptBubble}>
+            <div
+              className={styles.promptBubble}
+              onClick={handleOpening}
+              role="button"
+              tabIndex={0}
+            >
               <span className="BodyLarge">Got questions? Just ask!</span>
               <button
                 className={styles.promptBubbleClose}
-                onClick={dismissPrompt}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dismissPrompt();
+                }}
                 aria-label="Dismiss"
               >
                 <MdOutlineClose size={16} />
@@ -546,6 +555,7 @@ What are you looking for today?`,
           </div>
 
           {/*body */}
+          <div className={styles.messagesArea}>
           <div className={styles.messagesContainer}>
             <div className={styles.messagesContent}>
               <div className={styles.greetingBlock}>
@@ -640,40 +650,33 @@ What are you looking for today?`,
             </div>
           </div>
 
+          {/* turnstile pinned to the bottom of the messages area */}
+          {authenticated != true && (
+            <div className={styles.turnstileWrapper} ref={turnstileRef} />
+          )}
+          </div>
+
           {/* input area*/}
           <div className={styles.inputArea}>
-            {authenticated == true && (
-              <div className={styles.inputWrapper}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  placeholder="Ask me anything"
-                  className={styles.chatInput}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyUp={handleEnterPress}
-                  // onKeyPress={}
-                />
-                <button
-                  className={styles.sendButton}
-                  onClick={handleSendClick}
-                  disabled={isButtonDisabled}
-                >
-                  <LuSend style={{ width: "100%", height: "100%" }} />
-                </button>
-              </div>
-            )}
-            {authenticated != true && (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                ref={turnstileRef}
+            <div className={styles.inputWrapper}>
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Ask me anything"
+                className={styles.chatInput}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyUp={handleEnterPress}
+                // onKeyPress={}
               />
-            )}
+              <button
+                className={styles.sendButton}
+                onClick={handleSendClick}
+                disabled={isButtonDisabled}
+              >
+                <LuSend style={{ width: "100%", height: "100%" }} />
+              </button>
+            </div>
           </div>
 
           {/* quick replies */}

@@ -43,7 +43,19 @@
   padding: 10px 14px;
   font-size: 0.9rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  animation: slideUpFade 0.3s ease;
+  cursor: pointer;
+  animation: slideInFromTop 1.5s ease-in-out;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-100vh - 84px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .promptBubbleClose {
@@ -148,6 +160,12 @@
 }
 
 /* messages content */
+.messagesArea {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
 .messagesContainer {
   flex: 1;
   overflow-y: auto;
@@ -334,6 +352,18 @@
   50% {
     transform: scale(1);
   }
+}
+
+/* turnstile pinned to the bottom of the messages area, above the input */
+.turnstileWrapper {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .inputArea {
