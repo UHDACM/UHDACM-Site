@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { LuHeart, LuTarget, LuCode, LuUsersRound, LuUsers, LuCalendar, LuClock } from "react-icons/lu";
 import styles from "./CardSection.module.css";
 import { CardSectionItem, SiteSectionCardSection } from "@shared/types/cms/CMSTypes";
-import { extractColorSpans } from "../SplitHeroSection/HeroTextBlock/HeroTextBlock";
+import { extractRichText } from "../SplitHeroSection/HeroTextBlock/HeroTextBlock";
 
 const icons = {
   heart: LuHeart,
@@ -35,8 +35,8 @@ function CardItem({
         <Icon size={22} />
       </div>
       <div className={styles.cardContent}>
-        <span className={`${styles.cardTitle} H5`}>{title}</span>
-        <span className={`${styles.cardSubtitle} BodySmall`}>{subtitle}</span>
+        <span className={`${styles.cardTitle} H4`}>{extractRichText(title, "H4")}</span>
+        <span className={`${styles.cardSubtitle} BodyRegular`}>{extractRichText(subtitle, "BodyRegular")}</span>
       </div>
     </>
   );
@@ -94,11 +94,11 @@ export default function CardSection({ title, subtitle, cards, sectionID }: CardS
       <div className="SectionInner">
         <div className={styles.header}>
           <div className="H2" style={{ textAlign: "center" }}>
-            {extractColorSpans(title, "H2")}
+            {extractRichText(title, "H2")}
           </div>
           {subtitle && (
             <div className={`SubtitleRegular ${styles.subtitle}`}>
-              {subtitle}
+              {extractRichText(subtitle, "SubtitleRegular")}
             </div>
           )}
         </div>

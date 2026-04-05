@@ -24,6 +24,10 @@ type ChatRequestBody = {
 app.use(express.json());
 app.use(cookieParser());
 
+
+LogMessage('online');
+
+
 // health check endpoint
 app.get("/health_check", (_, res) => {
   res.send({ online: true });
@@ -122,7 +126,14 @@ async function rateLimitMiddleware(
   next: NextFunction,
 ) {
   console.log('rating...', JSON.stringify(req.cookies, null, 2));
-  const token = req.cookies?.auth_token as string | undefined;
+  // Prefer the Authorization: Bearer header (works on browsers that block
+  // third-party cookies, e.g. Samsung Internet / iOS Safari). Fall back to the
+  // auth_token cookie for browsers that still send it (desktop).
+  const authHeader = req.headers.authorization;
+  const bearer = authHeader?.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : undefined;
+  const token = bearer ?? (req.cookies?.auth_token as string | undefined);
 
   if (!token) {
     res.status(401).json({ error: "Missing auth token cookie" });
@@ -309,7 +320,10 @@ app.post("/auth", async (req: Request, res: Response) => {
     path: "/"
   });
 
-  res.json({ success: true });
+  // Also return the token in the body so the client can send it via the
+  // Authorization header (cookie is dropped on browsers that block
+  // third-party cookies).
+  res.json({ success: true, token: authToken });
 });
 
 app.listen(PORT, () => {

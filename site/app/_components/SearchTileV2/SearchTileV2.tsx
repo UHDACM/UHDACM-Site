@@ -17,6 +17,7 @@ import {
   LuUsersRound,
 } from "react-icons/lu";
 import styles from "./SearchTileV2.module.css";
+import { extractRichText } from "@/app/_sections/SplitHeroSection/HeroTextBlock/HeroTextBlock";
 
 export type SearchTileMetaIcon =
   | "calendar"
@@ -160,7 +161,7 @@ const SearchTileV2: React.FC<SearchTileV2Props> = ({
         )}
       </div>
       <div className={styles.content}>
-        <h3 className={`H5 ${styles.title}`}>{title}</h3>
+        <h3 className={`H5 ${styles.title}`}>{extractRichText(title, "H5")}</h3>
         {meta && meta.length > 0 && (
           <div className={`BodySmall ${styles.metaRow}`}>
             {meta.map((m, i) => {
@@ -181,7 +182,7 @@ const SearchTileV2: React.FC<SearchTileV2Props> = ({
           </div>
         )}
         {subtitle && (
-          <p className={`BodyRegular ${styles.subtitle}`}>{subtitle}</p>
+          <p className={`BodyRegular ${styles.subtitle}`}>{extractRichText(subtitle, "BodyRegular")}</p>
         )}
         <div className={`BodySmall ${styles.ctaRow}`}>
           <span className={styles.ctaLabel}>

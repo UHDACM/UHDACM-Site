@@ -12,7 +12,7 @@ export const createTicketForCollection = async (
   cmsCollection: cmsCollectionSingular | cmsSingleType | cmsSingleTypePage,
 ) => {
   // possibly unprocessed collection, should fetch from cms.
-  console.log(cmsCollection, "empty collection, should process");
+  console.log(cmsCollection, "processing collection...");
   const existingCollectionTicket = await DBGet("ticket", [
     ["collection", "==", cmsCollection],
   ]);

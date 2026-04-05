@@ -58,6 +58,8 @@ const SplitHeroSection: React.FC<SplitHeroSectionProps> = ({
   let leftComp = SplitHeroColumnToComponent(leftComponent);
   let rightComp = SplitHeroColumnToComponent(rightComponent);
 
+  const onlySingleColumn = centerIfPossible && (!!leftComp !== !!rightComp);
+
   if (!centerIfPossible) {
     if (!leftComp) {
       leftComp = <div style={{ flex: 1 }} />;
@@ -72,7 +74,9 @@ const SplitHeroSection: React.FC<SplitHeroSectionProps> = ({
       <div
         className={`SectionInner ${styles.heroInner} ${
           reverseOnDesktop ? styles.reverseOnDesktop : ""
-        } ${reverseOnMobile ? styles.reverseOnMobile : ""}`}
+        } ${reverseOnMobile ? styles.reverseOnMobile : ""} ${
+          onlySingleColumn ? styles.singleColumn : ""
+        }`}
       >
         {leftComp}
         {rightComp}

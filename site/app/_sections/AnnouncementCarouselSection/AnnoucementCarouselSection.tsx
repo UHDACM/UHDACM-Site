@@ -1,6 +1,5 @@
 import AnnouncementCarousel from "@/app/_components/AnnouncementCarousel/AnnouncementCarousel";
 import styles from "./AnnouncementCarouselSection.module.css";
-import Button from "@/app/_components/Button/Button";
 import { fetchCMS } from "@/app/_utils/cms";
 import {
   isValidAnnouncement,

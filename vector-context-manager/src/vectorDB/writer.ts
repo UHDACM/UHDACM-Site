@@ -1,39 +1,42 @@
 import { ChromaClient, CloudClient, Collection } from "chromadb";
 import { env_vars } from "../env/envVars";
 import {
+  AnnouncementObj,
   cmsCollectionsSingular,
   cmsSingleTypePages,
   cmsSingleTypes,
   QnA,
   SiteEvent,
   SiteSection,
-  SplitHeroColumn,
-  StrapiPicture,
+  SplitHeroColumn
 } from "@shared/types/cms/CMSTypes";
 import { DBCreate, DBDeleteWithID, DBGet, DBSetWithID } from "../db/db";
 import { DBTicket } from "@shared/types/ticket/ticketTypes";
 import { checkDBTicket } from "@shared/types/ticket/ticketCheck";
 import {
   buildCMSFetchURL,
-  cmsPageFetchParams,
-  TryGetImageFormatPath,
+  cmsPageFetchParams
 } from "@shared/types/cms/CMSFuncs";
 import {
   isCMSCollectionSingular,
   isCMSSingleType,
   isCMSSingleTypePage,
-  isStrapiPicture,
+  isValidAnnouncement,
   isValidFeaturedEvent,
   isValidLeadership,
   isValidQnA,
   isValidSiteEvent,
   isValidSiteInfo,
   isValidSiteSection,
+  isValidSiteSectionAnnouncement,
+  isValidSiteSectionCardSection,
+  isValidSiteSectionFeatureCard,
   isValidSiteSectionFeaturedEvent,
   isValidSiteSectionLatestQnA,
   isValidSiteSectionLeadership,
   isValidSiteSectionSearch,
   isValidSiteSectionSplitHero,
+  isValidSiteSectionVerticalTimeline,
   isValidSplitHeroColumnFloatingImages,
   isValidSplitHeroColumnForm,
   isValidSplitHeroColumnImageCollection,
@@ -43,7 +46,7 @@ import {
 } from "@shared/types/cms/CMSCheck";
 import { createTicketForCollection } from "./tools";
 import {
-  PartialSiteEvent,
+  VectorDBAnnouncementMetadata,
   VectorDBBaseMetadata,
   VectorDBFeaturedEventMetadata,
   VectorDBPageMetadata,
@@ -92,7 +95,7 @@ class VectorDBWriter {
       throw new Error(err);
     }
     this.state = "idle";
-    this.healthCheck();
+    // this.healthCheck();
   }
 
   private async healthCheck() {
@@ -413,6 +416,41 @@ class VectorDBWriter {
               url: pageURL,
             };
             collectionDataMetadataArray.push([sectionData, pageMetaData]);
+          } else if (isValidSiteSectionAnnouncement(section)) {
+            // nothign to add here
+          } else if (isValidSiteSectionCardSection(section)) {
+            const pageMetaData: VectorDBPageMetadata = {
+              url:
+                pageURL + `${section.sectionID ? "#" + section.sectionID : ""}`,
+              collection: collection,
+              // actions: [],
+            };
+            collectionDataMetadataArray.push([
+              `${section.cards.map((card) => `${card.title} ${card.subtitle}`).join(' | ')}`,
+              pageMetaData,
+            ]);
+          } else if (isValidSiteSectionFeatureCard(section)) {
+            const pageMetaData: VectorDBPageMetadata = {
+              url:
+                pageURL + `${section.sectionID ? "#" + section.sectionID : ""}`,
+              collection: collection,
+              // actions: [],
+            };
+            collectionDataMetadataArray.push([
+              `${section.cards.map((card) => `${card.title} ${card.description}`).join(' | ')}`,
+              pageMetaData,
+            ]);
+          } else if (isValidSiteSectionVerticalTimeline(section)) {
+            const pageMetaData: VectorDBPageMetadata = {
+              url:
+                pageURL + `${section.sectionID ? "#" + section.sectionID : ""}`,
+              collection: collection,
+              // actions: [],
+            };
+            collectionDataMetadataArray.push([
+              `${section.title} | ${section.subtitle}\n${section.entries.map((entry) => `date: ${entry.date} | ${entry.title} ${entry.subtitle} ${entry.description}`).join(' | ')}`,
+              pageMetaData,
+            ]);
           } else {
             LogMessage("Ticket: Unhandled section", {
               file: "writer.ts",
@@ -567,6 +605,42 @@ class VectorDBWriter {
           collectionDataMetadataArray.push([
             `UHD ACM Social-Media: ${data.socials ? data.socials.map((s) => s.type) : "none"}`,
             siteInfoMetaData,
+          ]);
+        }
+      } else if (collection == 'announcement') {
+        const { url } = buildCMSFetchURL(`${env_vars.CMS_URL}`, "announcement", {
+          "populate[announcements][populate]": "*"
+        });
+
+        const res = await (
+          await fetch(`${url}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${env_vars.CMS_API_TOKEN}`,
+            },
+          })
+        ).json();
+
+        const validAnnouncements: AnnouncementObj[] = [];
+        if (res) {
+          // console.log('announcementRaw', url, '\n', res);
+          const announcementRaw = res.data.announcements;
+          for (const announcement of announcementRaw) {
+            if (isValidAnnouncement(announcement)) {
+              validAnnouncements.push(announcement);
+            }
+          }
+        }
+
+        for (const announcement of validAnnouncements) {
+          const AnnouncementMetaData: VectorDBAnnouncementMetadata = {
+            Announcement: announcement,
+            collection: collection,
+          };
+          collectionDataMetadataArray.push([
+            `Announcement: "${announcement.title}" - ${announcement.subheader} - ${announcement.body}`,
+            AnnouncementMetaData
           ]);
         }
       }

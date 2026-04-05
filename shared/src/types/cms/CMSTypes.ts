@@ -16,14 +16,14 @@ export const cmsCollectionsSingular = [
   "gallery",
   "organization",
   "person",
-  "qna",
+  "qna"
 ] as const;
 export const cmsCollectionsPlural = [
   "events",
   "galleries",
   "organizations",
   "people",
-  "qnas",
+  "qnas"
 ] as const;
 
 export type cmsCollectionSingular = (typeof cmsCollectionsSingular)[number];

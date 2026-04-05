@@ -1,4 +1,4 @@
-import { cmsSingleTypePage, QnA, SiteEvent } from "../cms/CMSTypes";
+import { AnnouncementObj, cmsSingleTypePage, QnA, SiteEvent } from "../cms/CMSTypes";
 import { DBTicket } from "../ticket/ticketTypes";
 
 
@@ -76,6 +76,11 @@ export interface VectorDBLeadershipMetadata extends VectorDBBaseMetadata {
 // "site-info"
 export interface VectorDBSiteInfoMetadata extends VectorDBBaseMetadata {
   socialUrls?: string[],
+};
+
+// "announcement"
+export interface VectorDBAnnouncementMetadata extends VectorDBBaseMetadata {
+  Announcement: AnnouncementObj
 };
 
 export interface SafeMetadata {

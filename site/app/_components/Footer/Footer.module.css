@@ -10,7 +10,7 @@
 .footerInner {
   justify-content: start;
   align-items: start;
-  margin: 0rem 4.5rem;
+  padding: 0rem 3.5rem;
   flex-direction: column;
 }
 

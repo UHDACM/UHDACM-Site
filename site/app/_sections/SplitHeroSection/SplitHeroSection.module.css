@@ -23,6 +23,11 @@
   flex-direction: row-reverse;
 }
 
+:global(.SectionInner).singleColumn {
+  width: 100%;
+  max-width: min(45rem, var(--page-max-width));
+}
+
 @media (max-width: 768px) {
   :global(.SectionRoot).heroSection {
     height: auto;

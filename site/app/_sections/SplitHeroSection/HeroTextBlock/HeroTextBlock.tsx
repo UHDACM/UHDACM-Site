@@ -24,15 +24,7 @@ export function HeroTextBlock({
       | "BodySmall"
       | "SubtitleRegular",
   ): ReactNode {
-    if (!text) return null;
-    const lines = text.split("\\n");
-    return lines.map((line, idx) => (
-      <Fragment key={idx}>
-        {extractColorSpans(line, type)}
-        {/* {line} */}
-        {idx < lines.length - 1 && <br />}
-      </Fragment>
-    ));
+    return extractRichText(text, type);
   }
 
   const preheaderNode = toNode(preheader, "BodySmall");
@@ -101,12 +93,13 @@ const COLOR_CONFIG: Record<string, { family: string; fromStop: number; toStop: n
 };
 const LENGTH_WEIGHT = 0.06;
 
-export function extractColorSpans(
+function extractColorSpans(
   str: string,
   type?:
     | HeroTextBlockProps["headerType"]
     | "Title"
     | "BodySmall"
+    | "BodyRegular"
     | "SubtitleRegular",
 ) {
   // gets texts and applies color ${color}(text). e.g.: "${primary}(Yo!!!), Hello $(secondary){World}"
@@ -166,6 +159,31 @@ export function extractColorSpans(
 
   result.push(<span key="end" className={type}>{str.substring(lastIndex)}</span>);
   return result;
+}
+
+// Renders text with `\n` markers as line breaks AND `$[color](text)` spans, the
+// same handling SplitHeroSection uses for its text. Reuse for any CMS-authored
+// rich text field that should honor author line breaks.
+export function extractRichText(
+  str?: string,
+  type?:
+    | HeroTextBlockProps["headerType"]
+    | "Title"
+    | "BodySmall"
+    | "BodyRegular"
+    | "SubtitleRegular",
+): ReactNode {
+  if (!str) return null;
+  // Break on both the literal "\n" marker an author may type AND real newline
+  // characters (e.g. pressing Enter in a CMS textarea).
+  const NEWLINE = String.fromCharCode(10);
+  const lines = str.split(/\\n/g).join(NEWLINE).split(NEWLINE);
+  return lines.map((line, idx) => (
+    <Fragment key={idx}>
+      {extractColorSpans(line, type)}
+      {idx < lines.length - 1 && <br />}
+    </Fragment>
+  ));
 }
 
 

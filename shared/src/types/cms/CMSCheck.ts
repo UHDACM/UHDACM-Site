@@ -99,24 +99,22 @@ export function isValidLeadership(obj: unknown): obj is Leadership {
 export function isCMSCollectionSingular(
   value: any,
 ): value is cmsCollectionSingular {
-  return ["event", "gallery", "organization", "person", "qna"].includes(value);
+  return cmsCollectionsSingular.includes(value);
 }
 
 export function isCMSCollectionPlural(
   value: any,
 ): value is cmsCollectionPlural {
-  return ["events", "galleries", "organizations", "people", "qnas"].includes(
-    value,
-  );
+  return cmsCollectionsPlural.includes(value);
 }
 
 export function cmsCollectionSingularToPlural(
   singular: cmsCollectionSingular,
 ): cmsCollectionPlural | undefined {
-  const singulars = ["event", "gallery", "organization", "person", "qna"];
-  const plurals = ["events", "galleries", "organizations", "people", "qnas"];
-  const index = singulars.indexOf(singular);
-  return index !== -1 ? (plurals[index] as cmsCollectionPlural) : undefined;
+  const index = cmsCollectionsSingular.indexOf(singular);
+  return index !== -1
+    ? (cmsCollectionsPlural[index] as cmsCollectionPlural)
+    : undefined;
 }
 
 export function cmsCollectionPluralToSingular(

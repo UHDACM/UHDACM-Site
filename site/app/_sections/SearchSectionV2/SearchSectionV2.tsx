@@ -14,7 +14,7 @@ import {
   isUpcoming,
 } from "@/app/_utils/dateRelative";
 import { public_env_vars } from "@/app/_utils/public_env_vars";
-import { extractColorSpans } from "../SplitHeroSection/HeroTextBlock/HeroTextBlock";
+import { extractRichText } from "../SplitHeroSection/HeroTextBlock/HeroTextBlock";
 import SearchSectionV2Client, {
   SearchSectionV2Item,
 } from "./SearchSectionV2Client";
@@ -91,12 +91,12 @@ export default async function SearchSectionV2({
             <div className={styles.headerBlock}>
               {title && (
                 <h1 className={`H3 ${styles.headerTitle}`}>
-                  {extractColorSpans(title, "H3")}
+                  {extractRichText(title, "H3")}
                 </h1>
               )}
               {subtitle && (
                 <div className={`SubtitleRegular ${styles.headerSubtitle}`}>
-                  {extractColorSpans(subtitle, "SubtitleRegular")}
+                  {extractRichText(subtitle, "SubtitleRegular")}
                 </div>
               )}
             </div>

@@ -207,7 +207,7 @@ export default function EventPageClientComponent({
 
       {hasGallery && (
         <div
-          id={GALLERY_SECTION_ID}
+          id={'gallery'}
           style={{
             scrollMarginTop: "5rem",
             width: "100%",

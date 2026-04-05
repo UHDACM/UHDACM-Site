@@ -35,6 +35,11 @@ const logoPNG = "/Logo.png";
 // teaser is closed. once "true", the teaser never appears again.
 const PROMPT_SEEN_KEY = "uhdacm_chat_prompt_seen";
 
+// localStorage key holding the auth JWT. Sent via the Authorization header so
+// auth works on browsers that block third-party cookies (Samsung Internet, iOS
+// Safari). Token is a short-lived (1h) turnstile/rate-limit token, not a credential.
+const AUTH_TOKEN_KEY = "uhdacm_chat_auth_token";
+
 declare global {
   interface Window {
     turnstile?: {
@@ -141,6 +146,29 @@ What are you looking for today?`,
   >(undefined);
   const turnstileRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
+
+  // auth JWT, mirrored in localStorage so it survives reloads (until it expires).
+  // sent on /chat + /auth-check requests via the Authorization header.
+  const authTokenRef = useRef<string | null>(null);
+  const getAuthToken = (): string | null => {
+    if (authTokenRef.current) return authTokenRef.current;
+    const stored = localStorage.getItem(AUTH_TOKEN_KEY);
+    authTokenRef.current = stored;
+    return stored;
+  };
+  const storeAuthToken = (token: string) => {
+    authTokenRef.current = token;
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+  };
+  // builds request headers, adding Authorization when we have a token
+  const authHeaders = (): Record<string, string> => {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    const token = getAuthToken();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
+  };
   useEffect(() => {
     // sends quick request to backend to check auth status
     if (authenticated != undefined) return;
@@ -200,10 +228,14 @@ What are you looking for today?`,
                 },
               },
             );
-            const data = (await res.json()) as { error?: string };
+            const data = (await res.json()) as {
+              error?: string;
+              token?: string;
+            };
             console.log("auth daa", data);
             if (res.ok) {
               console.log("authenticaed");
+              if (data.token) storeAuthToken(data.token);
               setAuthenticated(true);
             } else {
               alert(data.error ?? "Authentication failed");
@@ -229,9 +261,7 @@ What are you looking for today?`,
           await fetch(public_env.NEXT_PUBLIC_CHATBOT_ENDPOINT + "/chat", {
             method: "POST",
             credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: authHeaders(),
             body: JSON.stringify({
               cookieAuthCheck: true,
             }),
@@ -301,9 +331,7 @@ What are you looking for today?`,
         {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: authHeaders(),
           body: JSON.stringify({
             query: message,
             context: context,
@@ -414,11 +442,31 @@ What are you looking for today?`,
     sendMessage(inputValue);
   };
 
-  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (isButtonDisabled) return;
-    if (e.key === "Enter") {
-      (e.preventDefault(), sendMessage(inputValue));
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key !== "Enter") return;
+
+    // Ctrl+Enter / Shift+Enter -> insert a newline (don't send)
+    if (e.ctrlKey || e.shiftKey) {
+      if (e.shiftKey) return; // textarea inserts the newline natively
+      // Ctrl+Enter: bare textareas don't insert a newline by default,
+      // so do it manually at the caret position.
+      e.preventDefault();
+      const ta = inputRef.current;
+      if (!ta) return;
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const next = inputValue.slice(0, start) + "\n" + inputValue.slice(end);
+      setInputValue(next);
+      requestAnimationFrame(() => {
+        ta.selectionStart = ta.selectionEnd = start + 1;
+      });
+      return;
     }
+
+    // plain Enter -> send
+    e.preventDefault();
+    if (isButtonDisabled) return;
+    sendMessage(inputValue);
   };
 
   // quickreplies
@@ -465,7 +513,15 @@ What are you looking for today?`,
     }
   };
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // auto-grow the textarea to fit its content (capped by CSS max-height)
+  useEffect(() => {
+    const ta = inputRef.current;
+    if (!ta) return;
+    ta.style.height = "auto";
+    ta.style.height = `${ta.scrollHeight}px`;
+  }, [inputValue]);
   // quickreplies button handlr
   const handleQuickreply = (text: string) => {
     setInputValue(text);
@@ -659,15 +715,14 @@ What are you looking for today?`,
           {/* input area*/}
           <div className={styles.inputArea}>
             <div className={styles.inputWrapper}>
-              <input
+              <textarea
                 ref={inputRef}
-                type="text"
+                rows={1}
                 placeholder="Ask me anything"
                 className={styles.chatInput}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyUp={handleEnterPress}
-                // onKeyPress={}
+                onKeyDown={handleKeyDown}
               />
               <button
                 className={styles.sendButton}

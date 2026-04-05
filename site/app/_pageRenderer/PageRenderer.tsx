@@ -39,6 +39,7 @@ export default async function PageRenderer({ lostMessage, page }: { lostMessage?
       }}
     >
       <NavbarPadding />
+      <NavbarPadding />
       <SectionsRenderer sections={sections} />
       <NavbarPadding />
     </div>

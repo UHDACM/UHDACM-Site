@@ -48,29 +48,32 @@
 .title{
     color:white;
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1.6rem;
     margin-bottom: 0.5rem;
 }
 .description{
     color:rgba(225,255,255,0.3);
-    font-size:0.75rem;
+    font-size:1rem;
 }
 
 .CardRow{
-    display:grid;
-    grid-template-columns: 1fr;
+    width: 100%;
+    display:flex;
+    flex-wrap: wrap;
     gap:1.25rem;
     justify-content: center;
 }
 
-@media (min-width:640px){
-    .CardRow{
-        grid-template-columns: repeat(2,1fr);
-    }
+/* mobile: cards take full width */
+.card{
+    flex: 1 1 100%;
+    max-width: 100%;
 }
 
-@media (min-width:1024px){
-    .CardRow{
-        grid-template-columns: repeat(3,1fr);
+/* desktop: cards flex but cap at 18rem, stay on one line */
+@media (min-width:640px){
+    .card{
+        flex: 1 1 0;
+        max-width: 18rem;
     }
 }

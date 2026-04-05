@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { SiteSectionVerticalTimeline, VerticalTimelineEntry } from "@shared/types/cms/CMSTypes";
-import { extractColorSpans } from "../SplitHeroSection/HeroTextBlock/HeroTextBlock";
+import { extractRichText } from "../SplitHeroSection/HeroTextBlock/HeroTextBlock";
 import { LuExternalLink, LuLink } from "react-icons/lu";
 import Link from "next/link";
 import styles from "./VerticalTimelineSection.module.css";
@@ -40,13 +40,13 @@ function TimelineEntry({ entry, index }: { entry: VerticalTimelineEntry; index: 
   const cardClass = `${styles.card} ${entry.href ? styles.cardLinked : ""} ${isActive ? styles.cardActive : ""}`;
   const cardContent = (
     <>
-      <span className={`BodySmall ${styles.entryDate}`}>{entry.date}</span>
-      <div className={`H5 ${styles.entryTitle}`}>{extractColorSpans(entry.title, "H5")}</div>
-      <div className={`BodySmall ${styles.entrySubtitle}`}>{entry.subtitle}</div>
+      <span className={`BodyRegular ${styles.entryDate}`}>{entry.date}</span>
+      <div className={`H5 ${styles.entryTitle}`}>{extractRichText(entry.title, "H5")}</div>
+      <div className={`BodyRegular ${styles.entrySubtitle}`}>{extractRichText(entry.subtitle, "BodyRegular")}</div>
       {entry.description && (
         <div className={styles.expandable}>
           <div className={styles.separator} />
-          <p className={`BodySmall ${styles.entryDescription}`}>{entry.description}</p>
+          <p className={`BodyRegular ${styles.entryDescription}`}>{extractRichText(entry.description, "BodyRegular")}</p>
         </div>
       )}
       {entry.href && (
@@ -93,10 +93,10 @@ export default function VerticalTimelineSection({ sectionID, title, subtitle, en
       <div className="SectionInner">
         <div className={styles.header}>
           <div className="H2" style={{ textAlign: "center" }}>
-            {extractColorSpans(title, "H2")}
+            {extractRichText(title, "H2")}
           </div>
           {subtitle && (
-            <div className={`SubtitleRegular ${styles.headerSubtitle}`}>{subtitle}</div>
+            <div className={`SubtitleRegular ${styles.headerSubtitle}`}>{extractRichText(subtitle, "SubtitleRegular")}</div>
           )}
         </div>
         <div className={styles.timeline}>
