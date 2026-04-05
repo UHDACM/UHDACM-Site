@@ -2,7 +2,6 @@ import "dotenv/config";
 import { env_vars } from "../tools/env/envVars";
 import { LogMessage } from "../log/log";
 import { z } from "zod";
-import { sleep } from "@shared/tools";
 
 const API_KEYS = env_vars.AI_APIKEYS;
 let keyIndex = 0;
@@ -64,96 +63,148 @@ function shouldRotateKey(err: unknown): boolean {
 
 
 import { createAgent, ReactAgent, tool, toolStrategy } from "langchain";
-import { initChatModel } from "langchain";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { queryCollection } from "../context/context";
 
 const ActionSchema = z.object({
-  label: z.string(),
-  href: z.string(),
+  label: z.string().describe("Short, human-readable link label (2-4 words)."),
+  href: z
+    .string()
+    .describe("A URL taken verbatim from a search result — never invented."),
 });
 
 const QuickReplySchema = z.object({
-  label: z.string(),
-  value: z.string(),
+  label: z.string().describe("Button text, 2-3 words."),
+  value: z.string().describe("The fully-phrased follow-up question to send."),
 });
 
 export const QueryResponseSchema = z.object({
-  response: z.string(),
-  relevant_actions: z.array(ActionSchema),
-  quick_replies: z.array(QuickReplySchema).max(3),
+  response: z
+    .string()
+    .describe(
+      "The natural-language answer for the user (Markdown allowed). Must NOT contain raw search/tool output, JSON, \"collection:\" prefixes (e.g. \"page-home:\"), or raw URLs. Keep it short.",
+    ),
+  relevant_actions: z
+    .array(ActionSchema)
+    .max(3)
+    .describe(
+      "Up to 3 links directly useful to the answer, using ONLY hrefs from search results. Empty if none apply.",
+    ),
+  quick_replies: z
+    .array(QuickReplySchema)
+    .max(3)
+    .describe("Up to 3 likely follow-up questions. Empty if none apply."),
 });
 
 export type QueryResponseT = z.infer<typeof QueryResponseSchema>;
 
-let agent: ReactAgent | undefined = undefined;
-async function initializeAgent() {
-  // TODO: I said "screw it" and just used the first API key available.
-  process.env.GOOGLE_API_KEY = env_vars.AI_APIKEYS[0];
-  const model = await initChatModel(`google-genai:${env_vars.AI_MODEL}`);
+// UHD ACM assistant behavior. Lives as a SYSTEM prompt (pinned above tool
+// output) so a weak model can't bury it under raw search results and start
+// echoing them back. Static — per-request data (date, history, query) is put in
+// the human message built by processQuery.
+const systemPrompt = `You are a user-facing assistant for UHD ACM (University of Houston-Downtown, Association for Computing Machinery).
 
-  const search = tool(
+TOOL USE:
+- Use the "search" tool ONLY for questions about UHD ACM: events, how to join / membership, people / leadership, the organization, or website content.
+- For greetings, small talk, arithmetic, or anything unrelated to UHD ACM, answer directly and do NOT search.
+- Search at most once unless the first result clearly lacks what you need.
+
+ANSWERING:
+- Never invent UHD ACM facts — rely only on search results for those. For general knowledge (math, greetings, etc.) answer normally.
+- Search results are REFERENCE MATERIAL. NEVER output them verbatim. Never put JSON, "collection:" prefixes (e.g. "page-home:"), or raw URLs into the response text — write a short, natural-language answer.
+- If the query cannot be answered from the available information, say so plainly.
+- Do not mention tools or internal mechanisms. Keep responses short.
+- Put the answer ONLY in the response field. Never list your quick_replies or action links inside the response text (e.g. do not write "Quick replies: ...").
+
+OUTPUT FIELDS:
+- response: the answer text (Markdown allowed). Natural language only — no raw tool output.
+- relevant_actions: up to 3 links directly useful to the answer, using ONLY hrefs returned by the search tool. If a URL is included here, don't repeat it in the response text.
+- quick_replies: up to 3 likely follow-up questions.`;
+
+// The vector DB was populated by vector-context-manager using its own frontend
+// URL (e.g. https://test.uhdacm.org in the test env, https://uhdacm.org /
+// https://www.uhdacm.org in prod), which may differ from the frontend actually
+// serving this backend. Normalize any baked-in uhdacm.org origin to this
+// backend's FRONTEND_ADDRESS, keeping the path intact.
+const FRONTEND_ORIGIN = env_vars.FRONTEND_ADDRESS.replace(/\/+$/, "");
+
+// Matches the origin only (scheme + optional www./test. + uhdacm.org). The
+// negative lookahead (?![\w.-]) stops the match at a path/query/end boundary so
+// a lookalike host such as uhdacm.org.evil.com is never rewritten.
+const UHDACM_URL_RE = /https?:\/\/(?:www\.|test\.)?uhdacm\.org(?![\w.-])/gi;
+
+function rewriteFrontendUrls(text: string): string {
+  return text.replace(UHDACM_URL_RE, FRONTEND_ORIGIN);
+}
+
+function buildSearchTool() {
+  return tool(
     async ({ query }) => {
-      console.log('querying', query);
+      console.log("querying", query);
       const QueryResponse = await queryCollection(query);
-      let contextStr = "";
+      if (QueryResponse.length === 0) {
+        return "No matching UHD ACM sources were found.";
+      }
+      // Label the payload as reference material so the model summarizes it
+      // instead of echoing it into the response.
+      let contextStr =
+        "SOURCES (reference only — summarize in your own words, do not output verbatim):\n";
       for (const [document, metadata] of QueryResponse) {
         const documentObject = produceDocumentObject(document, metadata);
         contextStr += `${metadata.collection}:${JSON.stringify(documentObject)}\n`;
-        /**
-         * page-home:{
-         *  content here
-         * }
-         */
       }
-      return contextStr
+      // Swap any uhdacm.org origin (structured fields AND URLs embedded in the
+      // document text) for the frontend that is actually serving this backend.
+      return rewriteFrontendUrls(contextStr);
     },
     {
       name: "search",
-      description: "Search for information related to University of Houston Downtown - Association for Computing Machinery (UHD ACM). Only use if current information is not enough to answer user's inquiry.",
+      description:
+        "Search for information about University of Houston-Downtown, Association for Computing Machinery (UHD ACM): events, membership, people, and site content. Do NOT use for greetings, math, or topics unrelated to UHD ACM.",
       schema: z.object({
         query: z.string().describe("Semantic search query input"),
       }),
     },
   );
+}
 
-  agent = createAgent({
-    model: model,
-    tools: [search],
+// Build a fresh agent bound to a specific API key. Called at startup and again
+// on key rotation — rebuilding is what actually swaps the key, since the model
+// captures its key at construction time.
+function buildAgent(apiKey: string): ReactAgent {
+  const model = new ChatGoogleGenerativeAI({
+    model: env_vars.AI_MODEL,
+    apiKey,
+    temperature: env_vars.AI_TEMPERATURE,
+    maxOutputTokens: env_vars.AI_MAX_OUTPUT_TOKENS,
+    thinkingConfig: { thinkingBudget: env_vars.AI_THINKING_BUDGET },
+  });
+
+  return createAgent({
+    model,
+    tools: [buildSearchTool()],
+    systemPrompt,
+    // Gemini's native structured output (providerStrategy) rejects the $schema /
+    // additionalProperties keys zod emits, so use toolStrategy (function-calling
+    // based) which Gemini tolerates. Correctness comes from systemPrompt + field
+    // descriptions + labeled tool output, not the strategy.
     responseFormat: toolStrategy(QueryResponseSchema),
   });
 }
-initializeAgent();
 
-const max_wait = 2000;
-async function waitForAgent() {
-  let waitTime = 0;
-  while (waitTime < max_wait) {
-    console.log('waiting for agent');
-    if (!agent) {
-      await sleep(300);
-      waitTime += 300;
-    } else {
-      break;
-    }
-  }
-  console.log('done waiting');
-}
+let agent: ReactAgent = buildAgent(getCurrentKey());
 
 export async function queryAgent(question: string): Promise<QueryResponseT> {
   let lastErr: unknown = null;
-  await waitForAgent();
   for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
-    // needs to be set here, langchain agent uses GOOGLE_API_KEY env
     try {
-      console.log("attempt", attempt);
-
-      const response = await agent!.invoke({
+      const response = await agent.invoke({
         messages: [["human", question]],
       });
 
       return response.structuredResponse as QueryResponseT;
     } catch (err: unknown) {
-      console.error('ebe', err);
+      console.error("ebe", err);
       lastErr = err;
       if (!shouldRotateKey(err)) {
         await LogMessage((err as Error).message, {
@@ -161,7 +212,8 @@ export async function queryAgent(question: string): Promise<QueryResponseT> {
         });
         throw err instanceof Error ? err : new Error(getErrorMessage(err));
       }
-      advanceKey();
+      // rotate to the next key AND rebuild the agent so the new key takes effect
+      agent = buildAgent(advanceKey());
     }
   }
   throw new Error(
