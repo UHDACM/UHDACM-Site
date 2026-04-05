@@ -625,6 +625,7 @@ class VectorDBWriter {
         const validAnnouncements: AnnouncementObj[] = [];
         if (res) {
           // console.log('announcementRaw', url, '\n', res);
+          console.log('prefetch');
           const announcementRaw = res.data.announcements;
           for (const announcement of announcementRaw) {
             if (isValidAnnouncement(announcement)) {
@@ -632,6 +633,7 @@ class VectorDBWriter {
             }
           }
         }
+        console.log('fetched');
 
         for (const announcement of validAnnouncements) {
           const AnnouncementMetaData: VectorDBAnnouncementMetadata = {
@@ -643,6 +645,7 @@ class VectorDBWriter {
             AnnouncementMetaData
           ]);
         }
+        console.log('fetched2');
       }
     } else if (isCMSCollectionSingular(collection)) {
       if (collection == "event") {
