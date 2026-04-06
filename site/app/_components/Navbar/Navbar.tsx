@@ -9,6 +9,7 @@ import { DefaultClose, DefaultMenu } from "@/app/_icons/Icons";
 import { useBodyOverflowY } from "@/app/_features/body/useSetBodyOverflowY";
 import Transition from "../Transition/Transition";
 import Logo from "../Logo/Logo";
+import useAnalytics from "@/app/_hooks/useAnalytics";
 
 export default function Navbar({ logoURL }: { logoURL?: string }) {
   const [scrolled, setScrolled] = useState(false);
@@ -32,6 +33,7 @@ export default function Navbar({ logoURL }: { logoURL?: string }) {
 function NavbarMobile({ logoURL, scrolled }: { logoURL?: string; scrolled: boolean }) {
   const [active, setActive] = useState(false);
   const { disableOverflowY, enableOverflowY } = useBodyOverflowY();
+  const { posthog } = useAnalytics();
 
   const handleSetActive = (value: boolean) => {
     setActive(value);
@@ -110,7 +112,14 @@ function NavbarMobile({ logoURL, scrolled }: { logoURL?: string; scrolled: boole
               key={entry.path}
               href={entry.path}
               className={`H1 ${styles.navButton}`}
-              onClick={() => handleSetActive(false)}
+              onClick={() => {
+                posthog?.capture("nav_link_click", {
+                  label: entry.title,
+                  href: entry.path,
+                  location: "mobile",
+                });
+                handleSetActive(false);
+              }}
             >
               {entry.title}
             </Link>
@@ -122,6 +131,7 @@ function NavbarMobile({ logoURL, scrolled }: { logoURL?: string; scrolled: boole
 }
 
 function NavbarDesktop({ logoURL, scrolled }: { logoURL?: string; scrolled: boolean }) {
+  const { posthog } = useAnalytics();
   return (
     <nav
       className={`${styles.Navbar} ${scrolled ? styles.scrolled : ""} ${
@@ -135,13 +145,27 @@ function NavbarDesktop({ logoURL, scrolled }: { logoURL?: string; scrolled: bool
             key={entry.path}
             href={entry.path}
             className={`BodyLargeHeavy ${styles.navButton}`}
+            onClick={() =>
+              posthog?.capture("nav_link_click", {
+                label: entry.title,
+                href: entry.path,
+                location: "desktop",
+              })
+            }
           >
             {entry.title}
           </Link>
         ))}
       </div>
       <div className={styles.joinButton}>
-        <Button href="/join">Join the Club</Button>
+        <Button
+          href="/join"
+          onClick={() =>
+            posthog?.capture("join_cta_click", { location: "navbar" })
+          }
+        >
+          Join the Club
+        </Button>
       </div>
     </nav>
   );

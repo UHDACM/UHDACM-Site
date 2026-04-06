@@ -625,7 +625,6 @@ class VectorDBWriter {
         const validAnnouncements: AnnouncementObj[] = [];
         if (res) {
           // console.log('announcementRaw', url, '\n', res);
-          console.log('prefetch');
           const announcementRaw = res.data.announcements;
           for (const announcement of announcementRaw) {
             if (isValidAnnouncement(announcement)) {

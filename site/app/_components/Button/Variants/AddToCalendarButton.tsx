@@ -9,6 +9,7 @@ import {
 import Button from "../Button";
 import { useState } from "react";
 import { buildICS, CalendarLinkGoogle, CalendarLinkOutlook, CalendarPayload, downloadICS } from "@/app/_utils/tools";
+import useAnalytics from "@/app/_hooks/useAnalytics";
 
 type CalendarOption = "Google" | "Outlook" | "Apple" | "Other";
 
@@ -18,6 +19,7 @@ interface AddToCalendarButtonProps extends CalendarPayload {
 };
 export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarButtonProps) {
   const [active, setActive] = useState<boolean>(false);
+  const { posthog } = useAnalytics();
 
   const date = new Date(AddToCalendarProps.start);
   if (isNaN(date.getTime())) {
@@ -26,6 +28,10 @@ export default function AddToCalendarButton(AddToCalendarProps: AddToCalendarBut
 
   const handleAddToCalendar = (calendar: CalendarOption) => {
     setActive(false);
+    posthog?.capture("add_to_calendar_click", {
+      calendar,
+      title: AddToCalendarProps.title,
+    });
     if (calendar === "Google") {
       const link = CalendarLinkGoogle(AddToCalendarProps);
       if (!link) {

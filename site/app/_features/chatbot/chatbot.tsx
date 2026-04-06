@@ -15,12 +15,12 @@ import { QueryResponse } from "@shared/types/query/queryTypes";
 import { contextMsgLimit } from "@shared/types/query/queryData";
 
 import Link from "next/link";
-import { usePostHog } from "posthog-js/react";
 import ChatbotMarkdownRenderer from "./chatbot-markdown-renderer";
 import {
   rateLimitHourError,
   rateLimitMinuteError,
 } from "@shared/types/rate_limiting/rateLimitingData";
+import useAnalytics from "@/app/_hooks/useAnalytics";
 
 // temporary, seeing how to format msgs (CSS) + scrolling to bottom
 interface QueryMessage extends QueryResponse {
@@ -57,7 +57,7 @@ declare global {
 }
 
 export default function Chat() {
-  const posthog = usePostHog();
+  const { posthog } = useAnalytics();
 
   const dispatch = useDispatch();
   const public_env = usePublicEnv();
@@ -399,7 +399,7 @@ What are you looking for today?`,
       resQuickReps.push(...query_response.quick_replies);
     } catch (error) {
       console.error("cb", error);
-      posthog.captureException("send_message_error", {
+      posthog?.captureException("send_message_error", {
         msg: message,
         error: (error as Error).message,
       });
@@ -424,7 +424,7 @@ What are you looking for today?`,
       //     setIsLoading(false);
       // }, 2000)
     } finally {
-      posthog.capture("sent_message", {
+      posthog?.capture("sent_message", {
         query: message,
         prev_msg: messages[messages.length - 1].response,
         response: resMsg,
@@ -475,7 +475,7 @@ What are you looking for today?`,
     inputValue.trim() === "" || isLoading || authenticated != true;
 
   const handleOpening = () => {
-    posthog.capture("opened_chatbot", {
+    posthog?.capture("opened_chatbot", {
       href: window.location.href,
     });
     dismissPrompt();
@@ -483,7 +483,7 @@ What are you looking for today?`,
     setIsOpen(true);
   };
   const handleClosing = () => {
-    posthog.capture("closed_chatbot", {
+    posthog?.capture("closed_chatbot", {
       href: window.location.href,
     });
     setIsClosing(true);
@@ -651,7 +651,7 @@ What are you looking for today?`,
                           <Link
                             onClick={() => {
                               // tells posthog
-                              posthog.capture("clicked_action", {
+                              posthog?.capture("clicked_action", {
                                 action: action,
                                 action_msg: messages[msgIndex].response,
                               });
@@ -764,7 +764,7 @@ What are you looking for today?`,
                           <button
                             className={styles.quickRepliesButtons}
                             onClick={() => {
-                              posthog.capture("clicked_quick_reply", {
+                              posthog?.capture("clicked_quick_reply", {
                                 prev_msg:
                                   messages[messages.length - 1].response,
                                 quick_reply: quick_reply,

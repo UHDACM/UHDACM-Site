@@ -11,6 +11,7 @@ import { PostHogProvider } from "./_utils/posthog_provider";
 import "./_utils/env_var_checker";
 import { public_env_vars } from "./_utils/public_env_vars";
 import { PublicEnvProvider } from "./_context/PublicEnvContext/PublicEnvContext";
+import { ConsentProvider } from "./_context/ConcentContext/ConsentContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,12 +48,14 @@ export default function RootLayout({
       <PublicEnvProvider env={public_env_vars}>
         <AuthWrapper>
           <PostHogProvider>
-            <ReduxProvider>
-              {/* <Analytics /> */}
-              <Body className={`${inter.variable} antialiased`}>
-                {children}
-              </Body>
-            </ReduxProvider>
+            <ConsentProvider>
+              <ReduxProvider>
+                {/* <Analytics /> */}
+                <Body className={`${inter.variable} antialiased`}>
+                  {children}
+                </Body>
+              </ReduxProvider>
+            </ConsentProvider>
           </PostHogProvider>
         </AuthWrapper>
       </PublicEnvProvider>

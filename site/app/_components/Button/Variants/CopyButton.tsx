@@ -12,7 +12,8 @@ export default function CopyButton({
   children,
   copyTimeout,
   onCopyStyle,
-  style
+  style,
+  onCopy,
 }: {
   copyText: string;
   replaceTextOnCopy?: ReactNode;
@@ -20,6 +21,7 @@ export default function CopyButton({
   copyTimeout?: number;
   onCopyStyle?: React.CSSProperties;
   style?: React.CSSProperties;
+  onCopy?: () => void;
 }) {
   const [copied, setCopied] = useState(false);
   const lastCopy = useRef(-1);
@@ -32,6 +34,7 @@ export default function CopyButton({
     lastCopy.current = Date.now();
     navigator.clipboard.writeText(copyText).then(() => {
       setCopied(true);
+      onCopy?.();
       setTimeout(() => {
         setCopied(false);
       }, timeoutLength);

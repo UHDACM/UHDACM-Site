@@ -1,7 +1,11 @@
+"use client";
+
 import { DefaultShareOutline } from "@/app/_icons/Icons";
 import CopyButton from "../Variants/CopyButton";
+import useAnalytics from "@/app/_hooks/useAnalytics";
 
 export default function ShareButton({ copyText, replaceTextOnCopyString }: { copyText: string; replaceTextOnCopyString: string; }) {
+  const { posthog } = useAnalytics();
   return (
     <CopyButton
       style={{
@@ -13,6 +17,7 @@ export default function ShareButton({ copyText, replaceTextOnCopyString }: { cop
       }}
       copyText={copyText}
       replaceTextOnCopy={replaceTextOnCopyString}
+      onCopy={() => posthog?.capture("share_click", { url: copyText })}
     >
       <div
         style={{

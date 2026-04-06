@@ -23,6 +23,13 @@ export const env_vars = {
 
   CHROMA_DB_COLLECTION_NAME: pe.CHROMA_DB_COLLECTION_NAME!,
   AI_MODEL: pe.AI_MODEL!,
+
+  // model generation params (all optional, sensible defaults).
+  // AI_THINKING_BUDGET=0 disables Gemini "thinking" (biggest latency win on
+  // flash / flash-lite). Raise it if you switch to a model that needs thinking.
+  AI_TEMPERATURE: Number(pe.AI_TEMPERATURE ?? "0.3"),
+  AI_MAX_OUTPUT_TOKENS: Number(pe.AI_MAX_OUTPUT_TOKENS ?? "2048"),
+  AI_THINKING_BUDGET: Number(pe.AI_THINKING_BUDGET ?? "0"),
   AI_APIKEYS: (() => {
     const RAW_KEYS: string = pe.GOOGLE_API_KEYS!;
 
@@ -98,4 +105,13 @@ if (!env_vars.CHROMA_IS_CLOUD && isNaN(env_vars.CHROMA_DB_PORT)) {
 }
 if (isNaN(env_vars.PORT)) {
   throw new Error(`env_vars PORT is NaN`);
+}
+if (isNaN(env_vars.AI_TEMPERATURE)) {
+  throw new Error(`env_vars AI_TEMPERATURE is NaN`);
+}
+if (isNaN(env_vars.AI_MAX_OUTPUT_TOKENS)) {
+  throw new Error(`env_vars AI_MAX_OUTPUT_TOKENS is NaN`);
+}
+if (isNaN(env_vars.AI_THINKING_BUDGET)) {
+  throw new Error(`env_vars AI_THINKING_BUDGET is NaN`);
 }
