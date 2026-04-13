@@ -95,7 +95,7 @@ class VectorDBWriter {
       throw new Error(err);
     }
     this.state = "idle";
-    // this.healthCheck();
+    this.healthCheck();
   }
 
   private async healthCheck() {
