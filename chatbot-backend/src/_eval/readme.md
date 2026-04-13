@@ -6,6 +6,45 @@ invocation — the same path production takes (`processQuery` → `buildHumanMes
 → agent → `search` tool → vector DB) — graded on what the agent *did*, not just
 what it said.
 
+## What this is, in one pass
+
+A **golden** is one test case: a user query, optional chat history, and a set of
+expectations. Running the suite plays each golden through the real agent against
+the real vector DB, then grades the result three ways:
+
+| Layer | Cost | Catches |
+|---|---|---|
+| **Invariants** (`invariants.ts`) | free, deterministic | raw tool output or bare URLs leaking into the answer, **fabricated links**, schema limits |
+| **Deterministic asserts** (`tests.ts`) | free | did it search at all; did the search query contain the right words |
+| **LLM judge rubrics** | quota-limited | did the answer, links, and quick replies actually satisfy the case |
+
+The judge is a separate LLM scoring a written rubric — necessary because "did it
+answer helpfully" has no regex, but it is the expensive and least reliable layer,
+which is why the free layers carry as much as they can.
+
+Two properties make this suite different from a normal test suite, and both bite
+if you forget them:
+
+1. **It runs against the live corpus.** Nothing is written, but a CMS edit can
+   make a case fail without a single line of code changing.
+2. **Both the agent and the judge are non-deterministic.** The same golden can
+   pass and fail on consecutive runs. When a case flips, suspect an ambiguously
+   worded rubric before you suspect the agent — a rubric the judge can read two
+   ways will grade two ways.
+
+### Reading a failure
+
+Work outward from the cheapest signal:
+
+1. **An invariant failed** → almost certainly a real bug. These are deterministic.
+2. **`tool-query` / `lookup-decision` failed** → the agent searched wrong, or not
+   at all. Real behavior change.
+3. **`tool-output` failed** → what came back from the vector DB was wrong. Run
+   `npm run eval:probe -- <golden-id>` — usually corpus drift, not the agent.
+4. **`answer-text` / `actions` / `quick-replies` failed** → read the judge's
+   stated reason before concluding anything. Check whether the rubric is
+   unambiguous, and whether the case reproduces across two runs.
+
 ## Running
 
 ```bash
@@ -160,7 +199,37 @@ reports it as a `note:` rather than a `SHORT PAGE` warning.
    explaining the choice.
 3. Run `npm run eval:probe -- <your-id>` and confirm the retrieved documents
    match what the golden assumes.
-4. Run `npm run eval -- --filter-pattern <your-id>`.
+4. Run `npm run eval -- --filter-pattern <your-id>` — **twice**. A rubric that
+   grades differently on two identical runs is ambiguous, not flaky.
+
+### Writing a rubric the judge cannot read two ways
+
+The judge follows the rubric literally, so any wording it can resolve more than
+one way becomes a coin flip that looks exactly like an agent regression. A real
+example from this suite:
+
+```
+At least one of: her social (label = the social's name)
+                 AND the leadership page (label = 'more leadership').
+```
+
+Two defects. "At least one of" is OR but is joined with **AND**, so the judge had
+to guess which it meant; and `label = the social's name` reads as strict
+equality, so the agent's `"Fatima Tanvir's LinkedIn"` was accepted on one run and
+rejected on the next with the opposite justification. Rewritten to state the
+either/or explicitly and to name both acceptable label forms, the same three
+goldens then passed 6/6 across two runs.
+
+So:
+
+- Use **either/or** or **all of** — never "at least one of ... AND".
+- If a near-miss form is acceptable, **say so with an example**. Prefer "a label
+  naming the platform, e.g. 'LinkedIn' or 'Fatima's LinkedIn'" over "label = the
+  social's name".
+- Describe what the user should get, not an exact string, unless the exact string
+  genuinely matters.
+- Keep one rubric to one claim. Bundled claims fail without telling you which
+  half broke.
 
 ## Files
 
