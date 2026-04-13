@@ -562,9 +562,10 @@ class VectorDBWriter {
           for (const person of people) {
             const personMetaData: VectorDBPersonMetadata = {
               collection: collection,
+              socials: person.socials
             };
             collectionDataMetadataArray.push([
-              `${person.role}: ${person.name}, desc: ${person.description}.`,
+              `${person.name}: ${person.role} | ${person.description}.`,
               personMetaData,
             ]);
           }
