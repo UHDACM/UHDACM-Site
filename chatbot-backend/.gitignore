@@ -3,3 +3,7 @@ dist
 
 .env
 chroma
+
+# promptfoo eval artifacts
+.promptfoo
+src/_eval/output

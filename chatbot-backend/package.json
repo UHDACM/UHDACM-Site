@@ -9,7 +9,10 @@
     "test": "vitest",
     "chroma-server": "chroma run",
     "ingestTest": "nodemon --exec ts-node -r tsconfig-paths/register ./src/context/ingester.ts",
-    "test-queryAgent": "nodemon --exec ts-node -r tsconfig-paths/register ./src/langchain/test-queryAgent.ts"
+    "test-queryAgent": "nodemon --exec ts-node -r tsconfig-paths/register ./src/langchain/test-queryAgent.ts",
+    "eval": "ts-node -r tsconfig-paths/register ./src/_eval/run.ts --no-cache -j 1",
+    "eval:view": "promptfoo view",
+    "eval:probe": "ts-node -r tsconfig-paths/register ./src/_eval/probe.ts"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -17,6 +20,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "nodemon": "^3.1.11",
+    "promptfoo": "^0.120.19",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",

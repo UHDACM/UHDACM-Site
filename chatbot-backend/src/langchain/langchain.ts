@@ -65,6 +65,13 @@ function shouldRotateKey(err: unknown): boolean {
 import { createAgent, ReactAgent, tool, toolStrategy } from "langchain";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { queryCollection } from "../context/context";
+import {
+  CorpusFilter,
+  EvalStore,
+  ToolCallRecord,
+  getEvalStore,
+  runWithEvalStore,
+} from "../tools/evalContext";
 
 const ActionSchema = z.object({
   label: z.string().describe("Short, human-readable link label (2-4 words)."),
@@ -141,9 +148,28 @@ function buildSearchTool() {
   return tool(
     async ({ query }) => {
       console.log("querying", query);
-      const QueryResponse = await queryCollection(query);
+      // Present only under the eval harness (see tools/evalContext.ts). Carries
+      // the corpus filter in, and collects the trace on the way out.
+      const store = getEvalStore();
+      const startedAt = Date.now();
+
+      const QueryResponse = await queryCollection(query, store?.filter);
+
+      const record = (output: string) => {
+        if (!store) return output;
+        store.toolCalls.push({
+          name: "search",
+          query,
+          output,
+          ms: Date.now() - startedAt,
+          docIds: QueryResponse.map(([, , id]) => id),
+          collections: QueryResponse.map(([, metadata]) => metadata.collection),
+        });
+        return output;
+      };
+
       if (QueryResponse.length === 0) {
-        return "No matching UHD ACM sources were found.";
+        return record("No matching UHD ACM sources were found.");
       }
       // Label the payload as reference material so the model summarizes it
       // instead of echoing it into the response.
@@ -155,7 +181,8 @@ function buildSearchTool() {
       }
       // Swap any uhdacm.org origin (structured fields AND URLs embedded in the
       // document text) for the frontend that is actually serving this backend.
-      return rewriteFrontendUrls(contextStr);
+      // Recorded post-rewrite so the trace shows exactly what the model saw.
+      return record(rewriteFrontendUrls(contextStr));
     },
     {
       name: "search",
@@ -194,18 +221,61 @@ function buildAgent(apiKey: string): ReactAgent {
 
 let agent: ReactAgent = buildAgent(getCurrentKey());
 
-export async function queryAgent(question: string): Promise<QueryResponseT> {
+// Everything the eval harness needs to grade a single agent invocation. Only
+// ever built when EVAL_MODE is on — see queryAgentTraced.
+export interface AgentTrace {
+  toolCalls: ToolCallRecord[];
+  toolCallCount: number;
+  /** Total invoke attempts, including ones that failed and rotated the key. */
+  attempts: number;
+  keyRotations: number;
+  latencyMs: number;
+  model: string;
+  /** Corpus filter that was in effect, echoed back for the report. */
+  filter?: CorpusFilter;
+  tokenUsage?: { prompt: number; completion: number; total: number };
+  /** Messages from attempts that failed and were retried. */
+  errors: string[];
+  /** Raw LangGraph message state, for eyeballing in the promptfoo viewer. */
+  messages: unknown[];
+}
+
+interface InvokeResult {
+  result: QueryResponseT;
+  messages: unknown[];
+  attempts: number;
+  keyRotations: number;
+  latencyMs: number;
+  errors: string[];
+}
+
+// The retry / key-rotation loop. Unchanged in behavior from before — it now
+// also keeps `response.messages` (previously discarded) and counts attempts, so
+// a caller that wants observability can have it without a second code path.
+async function invokeAgent(question: string): Promise<InvokeResult> {
   let lastErr: unknown = null;
+  const errors: string[] = [];
+  const startedAt = Date.now();
+  let keyRotations = 0;
+
   for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
     try {
       const response = await agent.invoke({
         messages: [["human", question]],
       });
 
-      return response.structuredResponse as QueryResponseT;
+      return {
+        result: response.structuredResponse as QueryResponseT,
+        messages: response.messages ?? [],
+        attempts: attempt + 1,
+        keyRotations,
+        latencyMs: Date.now() - startedAt,
+        errors,
+      };
     } catch (err: unknown) {
       console.error("ebe", err);
       lastErr = err;
+      errors.push(getErrorMessage(err));
       if (!shouldRotateKey(err)) {
         await LogMessage((err as Error).message, {
           function: "queryAgent",
@@ -214,11 +284,84 @@ export async function queryAgent(question: string): Promise<QueryResponseT> {
       }
       // rotate to the next key AND rebuild the agent so the new key takes effect
       agent = buildAgent(advanceKey());
+      keyRotations += 1;
     }
   }
   throw new Error(
     `All API keys failed. Last error: ${getErrorMessage(lastErr)}`,
   );
+}
+
+export async function queryAgent(question: string): Promise<QueryResponseT> {
+  return (await invokeAgent(question)).result;
+}
+
+// Sums usage_metadata across the AI messages now that they are retained.
+function sumTokenUsage(messages: unknown[]): AgentTrace["tokenUsage"] {
+  let prompt = 0;
+  let completion = 0;
+  let seen = false;
+  for (const msg of messages) {
+    const usage = (msg as { usage_metadata?: Record<string, number> })
+      ?.usage_metadata;
+    if (!usage) continue;
+    seen = true;
+    prompt += usage.input_tokens ?? 0;
+    completion += usage.output_tokens ?? 0;
+  }
+  if (!seen) return undefined;
+  return { prompt, completion, total: prompt + completion };
+}
+
+// Eval-only entry point. Runs the same agent through the same path as
+// queryAgent, but inside an eval store so the search tool records what it
+// queried and what came back. Refuses to run in production.
+export async function queryAgentTraced(
+  question: string,
+  opts: { filter?: CorpusFilter; timeoutMs?: number } = {},
+): Promise<{ result: QueryResponseT; trace: AgentTrace }> {
+  if (!env_vars.EVAL_MODE) {
+    throw new Error(
+      "queryAgentTraced requires EVAL_MODE=true. Tracing is disabled in production.",
+    );
+  }
+
+  const store: EvalStore = { filter: opts.filter, toolCalls: [] };
+
+  // Calls to the Gemini endpoint occasionally hang open instead of erroring,
+  // which with the eval's serialized concurrency stalls an entire run behind one
+  // socket. Bound it here rather than in invokeAgent so production behavior is
+  // untouched. The message says "timed out" deliberately: shouldRotateKey treats
+  // that as transient, so the existing retry loop rotates the key and tries
+  // again instead of failing the case outright.
+  const timeoutMs = opts.timeoutMs ?? 120_000;
+  const invoked = await runWithEvalStore(store, () =>
+    Promise.race([
+      invokeAgent(question),
+      new Promise<never>((_, reject) =>
+        setTimeout(
+          () => reject(new Error(`agent invocation timed out after ${timeoutMs}ms`)),
+          timeoutMs,
+        ).unref(),
+      ),
+    ]),
+  );
+
+  return {
+    result: invoked.result,
+    trace: {
+      toolCalls: store.toolCalls,
+      toolCallCount: store.toolCalls.length,
+      attempts: invoked.attempts,
+      keyRotations: invoked.keyRotations,
+      latencyMs: invoked.latencyMs,
+      model: env_vars.AI_MODEL,
+      filter: opts.filter,
+      tokenUsage: sumTokenUsage(invoked.messages),
+      errors: invoked.errors,
+      messages: invoked.messages,
+    },
+  };
 }
 
 import { VectorDBBaseMetadata } from "@shared/types/vectorDB/vectorDBTypes.js";
@@ -233,7 +376,7 @@ import {
   checkVectorDBQnAMetadata,
   checkVectorDBSiteInfoMetadata,
 } from "@shared/types/vectorDB/vectorDBCheck";
-const produceDocumentObject = (
+export const produceDocumentObject = (
   document: string,
   metadata: VectorDBBaseMetadata,
 ) => {

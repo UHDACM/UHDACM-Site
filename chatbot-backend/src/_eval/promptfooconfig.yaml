@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: UHD ACM chatbot agent eval
+
+# The provider builds the real prompt itself (same path as production:
+# processQuery -> buildHumanMessage -> agent). This passthrough exists only
+# because promptfoo requires a prompt; its value is not used.
+prompts:
+  - '{{query}}'
+
+providers:
+  - id: file://./provider.ts
+    label: agent-gemini-2.5-flash
+
+# One test per golden, with assertions derived from each golden's grading specs.
+tests: file://./tests.ts
+
+defaultTest:
+  options:
+    # Judged by a pro-tier model rather than the gemini-2.5-flash system under
+    # test, so the judge is not grading its own output class.
+    # (gemini-2.5-pro is listed by the API but 404s for this account:
+    # "no longer available to new users".)
+    provider: google:gemini-3.1-pro-preview
+
+    # The provider returns an object, but promptfoo hands assertions a JSON
+    # string. Without this, every per-assertion transform below (output.response,
+    # output.trace...) silently reads undefined and the rubrics grade nothing.
+    transform: 'typeof output === "string" ? JSON.parse(output) : output'
+
+  # Deterministic invariants applied to every case. No judge calls, no cost, and
+  # they cover what a rubric cannot check reliably.
+  assert:
+    - type: javascript
+      value: file://./invariants.ts:noRawToolOutput
+      metric: no-raw-output
+    - type: javascript
+      value: file://./invariants.ts:noRawUrlInResponse
+      metric: no-raw-url
+    - type: javascript
+      value: file://./invariants.ts:actionsAreGrounded
+      metric: grounded-links
+    - type: javascript
+      value: file://./invariants.ts:respectsSchemaLimits
+      metric: schema-limits

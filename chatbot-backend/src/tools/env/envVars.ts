@@ -49,6 +49,10 @@ export const env_vars = {
   COLLECTOR_SOURCE_SECRET: pe.COLLECTOR_SOURCE_SECRET!,
   COLLECTOR_INGESTING_HOST: pe.COLLECTOR_INGESTING_HOST!,
 
+  // Eval harness switch. Off in production: when false, queryAgentTraced throws
+  // and no trace is ever built, so the prod request path is untouched.
+  EVAL_MODE: pe.EVAL_MODE == "true",
+
   AUTH_COOKIE_REQUIRED: pe.AUTH_COOKIE_REQUIRED == "true",
   AUTH_COOKIE_JWT_SECRET: pe.AUTH_COOKIE_JWT_SECRET!,
   AUTH_COOKIE_TURNSTILE_SECRET: pe.AUTH_COOKIE_TURNSTILE_SECRET!
