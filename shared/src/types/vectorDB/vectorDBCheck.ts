@@ -1,3 +1,4 @@
+import { isValidSocialObj } from "../cms/CMSCheck";
 import {
   VectorDBBaseMetadata,
   VectorDBPageMetadata,
@@ -124,9 +125,18 @@ export function checkVectorDBPersonMetadata(
 ): asserts param is VectorDBPersonMetadata {
   if (!isObject(param))
     throw new Error("VectorDBPersonMetadata: param is not an object");
-  const { collection } = param as VectorDBPersonMetadata;
+  const { collection, socials } = param as VectorDBPersonMetadata;
   if (typeof collection !== "string")
     throw new Error("VectorDBPersonMetadata: collection must be a string");
+
+  for (const social of socials) {
+    if (!isValidSocialObj(social)) {
+      throw new Error(
+        "VectorDBPersonMetadata: social is not a valid social " +
+          JSON.stringify(social),
+      );
+    }
+  }
 }
 
 export function checkVectorDBQnAMetadata(

@@ -1,4 +1,4 @@
-import { AnnouncementObj, cmsSingleTypePage, QnA, SiteEvent } from "../cms/CMSTypes";
+import { AnnouncementObj, cmsSingleTypePage, QnA, SiteEvent, SocialObj } from "../cms/CMSTypes";
 import { DBTicket } from "../ticket/ticketTypes";
 
 
@@ -55,7 +55,9 @@ export interface PartialSiteEvent {
 export interface VectorDBOrganizationMetadata extends VectorDBBaseMetadata {}
 
 // "person" (skipped, person is not publically accessible, but "leadership" is.)
-export interface VectorDBPersonMetadata extends VectorDBBaseMetadata {};
+export interface VectorDBPersonMetadata extends VectorDBBaseMetadata {
+  socials: SocialObj[]
+};
 
 // "qna"
 export interface VectorDBQnAMetadata extends VectorDBBaseMetadata {
