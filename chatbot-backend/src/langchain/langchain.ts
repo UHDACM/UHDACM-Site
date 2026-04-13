@@ -95,12 +95,14 @@ export const QueryResponseSchema = z.object({
     .array(ActionSchema)
     .max(3)
     .describe(
-      "Up to 3 links directly useful to the answer, using ONLY hrefs from search results. Empty if none apply.",
+      "Up to 3 links useful to the answer. Every href must be copied verbatim from a search result — never construct or guess one. If the specific thing asked about was not found, link the most relevant broader page that appears in the results; if nothing relevant appears, leave empty.",
     ),
   quick_replies: z
     .array(QuickReplySchema)
     .max(3)
-    .describe("Up to 3 likely follow-up questions. Empty if none apply."),
+    .describe(
+      "Up to 3 likely follow-up questions about UHD ACM. Offer these on every answer, including 'not found' and off-topic ones.",
+    ),
 });
 
 export type QueryResponseT = z.infer<typeof QueryResponseSchema>;
@@ -119,14 +121,14 @@ TOOL USE:
 ANSWERING:
 - Never invent UHD ACM facts — rely only on search results for those. For general knowledge (math, greetings, etc.) answer normally.
 - Search results are REFERENCE MATERIAL. NEVER output them verbatim. Never put JSON, "collection:" prefixes (e.g. "page-home:"), or raw URLs into the response text — write a short, natural-language answer.
-- If the query cannot be answered from the available information, say so plainly.
+- If the query cannot be answered from the available information, say so plainly — then still give the user somewhere to go, via relevant_actions and quick_replies. A dead end with no next step is a bad answer.
 - Do not mention tools or internal mechanisms. Keep responses short.
 - Put the answer ONLY in the response field. Never list your quick_replies or action links inside the response text (e.g. do not write "Quick replies: ...").
 
 OUTPUT FIELDS:
 - response: the answer text (Markdown allowed). Natural language only — no raw tool output.
-- relevant_actions: up to 3 links directly useful to the answer, using ONLY hrefs returned by the search tool. If a URL is included here, don't repeat it in the response text.
-- quick_replies: up to 3 likely follow-up questions.`;
+- relevant_actions: up to 3 links useful to the answer. Every href MUST be copied character-for-character from a search result. Never construct, complete, or guess a URL — if the page you would like to link to is not present in the results, emit no link for it. A plausible-looking invented URL (e.g. building "/leadership" from the site root) is a bug, not a helpful fallback. Within that limit: when you searched but could not find the specific thing asked about, link the most relevant broader page that IS present in the results. If nothing relevant is present, leave this empty. If a URL is included here, don't repeat it in the response text.
+- quick_replies: up to 3 likely follow-up questions about UHD ACM. Offer them on every answer, including when the answer was "not found" and when the question was off-topic — they need no search results, so there is nothing to ground and no reason to omit them.`;
 
 // The vector DB was populated by vector-context-manager using its own frontend
 // URL (e.g. https://test.uhdacm.org in the test env, https://uhdacm.org /
@@ -143,6 +145,11 @@ const UHDACM_URL_RE = /https?:\/\/(?:www\.|test\.)?uhdacm\.org(?![\w.-])/gi;
 function rewriteFrontendUrls(text: string): string {
   return text.replace(UHDACM_URL_RE, FRONTEND_ORIGIN);
 }
+
+// Shared so groundActions can tell a real search result apart from the
+// structured-response tool message. Changing this in one place only would
+// silently turn link grounding into a no-op.
+const SEARCH_TOOL_NAME = "search";
 
 function buildSearchTool() {
   return tool(
@@ -185,7 +192,7 @@ function buildSearchTool() {
       return record(rewriteFrontendUrls(contextStr));
     },
     {
-      name: "search",
+      name: SEARCH_TOOL_NAME,
       description:
         "Search for information about University of Houston-Downtown, Association for Computing Machinery (UHD ACM): events, membership, people, and site content. Do NOT use for greetings, math, or topics unrelated to UHD ACM.",
       schema: z.object({
@@ -249,6 +256,72 @@ interface InvokeResult {
   errors: string[];
 }
 
+// Concatenated content of every SEARCH tool result in an agent run — the only
+// legitimate source of hrefs.
+//
+// Must match on the tool name, not just role "tool". responseFormat uses
+// toolStrategy, so the model's own structured answer comes back as a tool
+// message too — including the very relevant_actions being checked. Counting it
+// as a source makes any href trivially "grounded" and the check a no-op.
+function toolOutputsFrom(messages: unknown[]): string {
+  const parts: string[] = [];
+  for (const m of messages) {
+    const msg = m as {
+      getType?: () => string;
+      _getType?: () => string;
+      name?: string;
+      content?: unknown;
+    };
+    // LangChain exposes the role as getType() on newer versions and _getType()
+    // on older ones; check both rather than pin to one.
+    if ((msg.getType?.() ?? msg._getType?.()) !== "tool") continue;
+    if (msg.name !== SEARCH_TOOL_NAME) continue;
+    parts.push(
+      typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content),
+    );
+  }
+  return parts.join("\n");
+}
+
+/**
+ * Drops any action link the model invented.
+ *
+ * The system prompt forbids constructing URLs, but the model still does it
+ * occasionally — observed roughly 1 in 9 "not found" answers fabricating
+ * https://uhdacm.org/leadership, a page that does not exist on the site. A user
+ * following that link gets a 404, so instructions alone are not enough: the
+ * eval's `actionsAreGrounded` invariant caught this, and production needs the
+ * same guarantee rather than just a test for it.
+ *
+ * Applied inside invokeAgent so queryAgent and queryAgentTraced are covered by
+ * one code path and cannot drift.
+ */
+function groundActions(
+  result: QueryResponseT,
+  messages: unknown[],
+): QueryResponseT {
+  const actions = result?.relevant_actions ?? [];
+  if (!actions.length) return result;
+
+  const sources = toolOutputsFrom(messages);
+  // No search ran, so there is nothing to ground against. Leave the model's
+  // answer alone rather than stripping every link on an unsearched question.
+  if (!sources) return result;
+
+  const grounded = actions.filter((a) => sources.includes(a.href));
+  if (grounded.length === actions.length) return result;
+
+  const dropped = actions
+    .filter((a) => !sources.includes(a.href))
+    .map((a) => a.href);
+  void LogMessage(`dropped fabricated action link(s): ${dropped.join(", ")}`, {
+    function: "invokeAgent",
+    hint: "groundActions",
+  });
+
+  return { ...result, relevant_actions: grounded };
+}
+
 // The retry / key-rotation loop. Unchanged in behavior from before — it now
 // also keeps `response.messages` (previously discarded) and counts attempts, so
 // a caller that wants observability can have it without a second code path.
@@ -264,9 +337,13 @@ async function invokeAgent(question: string): Promise<InvokeResult> {
         messages: [["human", question]],
       });
 
+      const messages = response.messages ?? [];
       return {
-        result: response.structuredResponse as QueryResponseT,
-        messages: response.messages ?? [],
+        result: groundActions(
+          response.structuredResponse as QueryResponseT,
+          messages,
+        ),
+        messages,
         attempts: attempt + 1,
         keyRotations,
         latencyMs: Date.now() - startedAt,

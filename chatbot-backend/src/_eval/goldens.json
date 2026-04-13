@@ -31,7 +31,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the about page, where leadership lives. Do not expect a /leadership link — no such page exists, so one would be fabricated."
           },
           "quick_replies": {
             "grading": "judge",
@@ -70,7 +70,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains a link to the leadership page."
+            "rubric": "PASS if either: (a) there are no actions at all, or (b) every action's href appears verbatim in the search results. An empty list is fully acceptable — the site has no /leadership page, and the results for this query contain no general UHD ACM page worth linking, so there is often nothing groundable to offer. FAIL only if an href does not appear in the search results — above all an invented /leadership URL, which is the specific failure this checks for."
           },
           "quick_replies": {
             "grading": "judge",
@@ -110,7 +110,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the about page, where leadership lives. Do not expect a /leadership link — no such page exists, so one would be fabricated."
           },
           "quick_replies": {
             "grading": "judge",
@@ -150,7 +150,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains a link to the leadership page."
+            "rubric": "PASS if either: (a) there are no actions at all, or (b) every action's href appears verbatim in the search results. An empty list is fully acceptable — the site has no /leadership page, and the results for this query contain no general UHD ACM page worth linking, so there is often nothing groundable to offer. FAIL only if an href does not appear in the search results — above all an invented /leadership URL, which is the specific failure this checks for."
           },
           "quick_replies": {
             "grading": "judge",
@@ -195,7 +195,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the about page, where leadership lives. Do not expect a /leadership link — no such page exists, so one would be fabricated."
           },
           "quick_replies": {
             "grading": "judge",
@@ -240,7 +240,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains a link to the leadership page."
+            "rubric": "PASS if either: (a) there are no actions at all, or (b) every action's href appears verbatim in the search results. An empty list is fully acceptable — the site has no /leadership page, and the results for this query contain no general UHD ACM page worth linking, so there is often nothing groundable to offer. FAIL only if an href does not appear in the search results — above all an invented /leadership URL, which is the specific failure this checks for."
           },
           "quick_replies": {
             "grading": "judge",
@@ -280,7 +280,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to the president's social profile whose label names the platform, where both 'LinkedIn' and 'Junda Yin's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to the president's social profile whose label names the platform, where both 'LinkedIn' and 'Junda Yin's LinkedIn' are acceptable labels; or (b) a link to the about page, where leadership lives. Do not expect a /leadership link — no such page exists, so one would be fabricated."
           },
           "quick_replies": {
             "grading": "judge",
@@ -320,7 +320,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains a link to the leadership page."
+            "rubric": "PASS if either: (a) there are no actions at all, or (b) every action's href appears verbatim in the search results. An empty list is fully acceptable — the site has no /leadership page, and the results for this query contain no general UHD ACM page worth linking, so there is often nothing groundable to offer. FAIL only if an href does not appear in the search results — above all an invented /leadership URL, which is the specific failure this checks for."
           },
           "quick_replies": {
             "grading": "judge",

@@ -32,6 +32,19 @@ if you forget them:
    worded rubric before you suspect the agent — a rubric the judge can read two
    ways will grade two ways.
 
+   Measured: two full runs with **no code change between them** flipped 4 of ~89
+   judged assertions, in both directions, across unrelated goldens — roughly
+   **5% churn**. Consequences:
+
+   - The headline pass rate is **not** a precise measurement. Do not read a few
+     points of movement as a regression or an improvement.
+   - To decide whether one case genuinely changed, re-run *that case* a couple of
+     times before and after. That is cheap and conclusive; a single full-suite
+     delta is neither.
+   - The free layers do not drift. `invariant` and `tool-query` have held at
+     0 failures across every run, which is exactly why they are worth keeping
+     deterministic.
+
 ### Reading a failure
 
 Work outward from the cheapest signal:
