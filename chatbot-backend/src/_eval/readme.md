@@ -10,27 +10,61 @@ what it said.
 
 ```bash
 nvm use 22                # node 18 will not build this project
-npm run eval              # all 22 goldens
+npm run eval              # all 22 goldens, ~6 min
+npm run eval:fast         # deterministic checks only — seconds, no judge calls
 npm run eval:view         # open the web report
 npm run eval -- --filter-pattern leadership_present_fatima   # single case
+npm run eval:pro          # grade with the pro tier (see quota below)
 ```
+
+| Script | Judge | Use |
+|---|---|---|
+| `eval` | flash | the normal full run |
+| `eval:fast` | none | iterating; grades strictly less, never a sign-off |
+| `eval:cached` | flash | re-runs reuse cached responses — **including the agent's**, so it will not pick up a code change |
+| `eval:pro` | pro | final sign-off, quota permitting |
 
 `npm run eval` goes through `run.ts`, which forces `EVAL_MODE=true` and derives
 `GOOGLE_API_KEY` (the judge's key) from the existing `GOOGLE_API_KEYS` list, so
 no secret has to be duplicated in `.env` and tracing can never be left on by
 accident during a normal `npm run dev`.
 
-The judge is `google:gemini-3.1-pro-preview` — a pro-tier model, deliberately not
-the `gemini-2.5-flash` system under test, so it is not grading its own output
-class. (`gemini-2.5-pro` is listed by the API but 404s for this account:
-"no longer available to new users".)
+The judge is `google:gemini-flash-latest`, deliberately not the
+`gemini-2.5-flash` system under test, so it is not grading its own output class
+— a different generation preserves that separation. (`gemini-2.5-pro` is listed
+by the API but 404s for this account: "no longer available to new users".)
 
 Both `-j 1` and `PROMPTFOO_ASSERTIONS_MAX_CONCURRENCY=1` are deliberate. The
 Gemini endpoint drops connections past roughly two in flight from here, and
 promptfoo grades a case's assertions in parallel — so a case with five rubrics
 would lose some judge calls to `fetch failed`, which shows up as an assertion
 failure rather than an infrastructure one. Serializing removes that false signal;
-a full run takes roughly 15 minutes.
+a full run takes roughly **6 minutes**.
+
+## Judge quota — the thing that governs a run
+
+A full suite issues **~91 judge calls** (4–5 rubrics × 22 goldens, serialized).
+
+Every **pro-tier** model on this project shares a **250 requests/day/project/model**
+cap — under three full runs a day. Exceeding it does not fail cleanly: every call
+returns 429 instantly, promptfoo retries into the 180s per-test ceiling, and the
+run reports `Evaluation timed out` on every case with the real cause invisible.
+One such run burned 66 minutes (22 × 180s) and graded nothing.
+
+`run.ts` now guards this from both ends:
+
+- a **preflight** call per key in `GOOGLE_API_KEYS` before the suite starts, which
+  aborts in seconds naming the model and reset time, and selects the first key
+  that is not exhausted;
+- a **mid-run watch** on the child's output that aborts on the first quota error
+  rather than letting the rest of the suite decay into timeouts.
+
+The cap is per project per model, so extra keys in `GOOGLE_API_KEYS` only add
+headroom when they come from **different projects** — several keys on one project
+share a single pool.
+
+Flash-tier judging has ample headroom, which is why it is the default. Reach for
+`eval:pro` only for a sign-off run.
 
 ## What gets graded
 
@@ -139,7 +173,7 @@ reports it as a `note:` rather than a `SHORT PAGE` warning.
 | `invariants.ts` | deterministic checks applied to every case |
 | `provider.ts` | promptfoo provider — one call == one agent invocation |
 | `probe.ts` | calibration tool, no LLM calls |
-| `run.ts` | launcher; sets `EVAL_MODE`, the judge key, and concurrency limits |
+| `run.ts` | launcher; sets `EVAL_MODE`, picks a judge key with quota, sets concurrency limits, aborts on quota exhaustion |
 | `providerOutput.ts` | output shape + the parse that keeps assertions honest |
 | `promptfooconfig.yaml` | wiring |
 

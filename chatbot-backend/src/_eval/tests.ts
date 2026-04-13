@@ -19,6 +19,15 @@ import { GradingSpec, loadGoldens } from "./types";
 const TOOL_QUERIES = "output.trace.toolCalls.map(c => c.query).join('\\n')";
 const TOOL_OUTPUTS = "output.trace.toolCalls.map(c => c.output).join('\\n---\\n')";
 
+// EVAL_FAST drops every judge assertion, leaving only the checks that make no
+// LLM call at all (containsAll, lookupUsage, and the invariants in
+// promptfooconfig.yaml). Runs in seconds and spends no judge quota, which
+// matters because the judge is capped per day — see readme.md.
+//
+// It grades strictly less than a full run: use it while iterating, never as a
+// sign-off.
+const FAST = process.env.EVAL_FAST === "true";
+
 // A judge assertion pointed at one slice of the output.
 function judge(spec: GradingSpec, transform: string, metric: string) {
   return {
@@ -118,7 +127,11 @@ function assertionsFor(golden: ReturnType<typeof loadGoldens>[number]) {
     );
   }
 
-  return asserts;
+  // Filtered at the end rather than skipped at each push, so the two modes
+  // cannot drift apart as rubrics are added.
+  return FAST
+    ? asserts.filter((a) => (a as { type?: string }).type !== "llm-rubric")
+    : asserts;
 }
 
 module.exports = async function generateTests() {

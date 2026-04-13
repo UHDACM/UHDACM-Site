@@ -16,11 +16,18 @@ tests: file://./tests.ts
 
 defaultTest:
   options:
-    # Judged by a pro-tier model rather than the gemini-2.5-flash system under
-    # test, so the judge is not grading its own output class.
+    # The judge must not be the gemini-2.5-flash system under test, or it grades
+    # its own output class. gemini-flash-latest is a different generation, so
+    # that separation holds without the pro tier's 250 requests/day/project cap
+    # — one full suite is ~91 judge calls, so pro-tier grading collapses into
+    # timeouts after roughly two runs in a day.
+    #
+    # run.ts passes --grader explicitly and is the source of truth; this value
+    # is the fallback for invoking promptfoo directly. `npm run eval:pro` grades
+    # with the pro tier for a final sign-off when quota allows.
     # (gemini-2.5-pro is listed by the API but 404s for this account:
-    # "no longer available to new users".)
-    provider: google:gemini-3.1-pro-preview
+    # "no longer available to new users". Verified still true.)
+    provider: google:gemini-flash-latest
 
     # The provider returns an object, but promptfoo hands assertions a JSON
     # string. Without this, every per-assertion transform below (output.response,

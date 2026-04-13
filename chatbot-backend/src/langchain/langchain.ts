@@ -402,7 +402,10 @@ export const produceDocumentObject = (
   } catch {}
 
   try {
+    // The `leadership` collection is written with the person shape
+    // (writer.ts), so this is the branch that carries per-person socials.
     checkVectorDBPersonMetadata(metadata);
+    documentObject.socials = metadata.socials;
     return documentObject;
   } catch {}
 

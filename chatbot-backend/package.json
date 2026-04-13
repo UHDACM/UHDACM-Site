@@ -11,6 +11,9 @@
     "ingestTest": "nodemon --exec ts-node -r tsconfig-paths/register ./src/context/ingester.ts",
     "test-queryAgent": "nodemon --exec ts-node -r tsconfig-paths/register ./src/langchain/test-queryAgent.ts",
     "eval": "ts-node -r tsconfig-paths/register ./src/_eval/run.ts --no-cache -j 1",
+    "eval:fast": "EVAL_FAST=true ts-node -r tsconfig-paths/register ./src/_eval/run.ts --no-cache -j 1",
+    "eval:cached": "ts-node -r tsconfig-paths/register ./src/_eval/run.ts -j 1",
+    "eval:pro": "ts-node -r tsconfig-paths/register ./src/_eval/run.ts --no-cache -j 1 --grader google:gemini-3.1-pro-preview",
     "eval:view": "promptfoo view",
     "eval:probe": "ts-node -r tsconfig-paths/register ./src/_eval/probe.ts"
   },

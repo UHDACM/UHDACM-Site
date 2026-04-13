@@ -114,9 +114,12 @@ export function checkVectorDBOrganizationMetadata(
   if (!isObject(param))
     throw new Error("VectorDBOrganizationMetadata: param is not an object");
   const { collection } = param as VectorDBOrganizationMetadata;
-  if (typeof collection !== "string")
+  // Must match the collection by name, not just "has a collection string".
+  // produceDocumentObject dispatches by trying these checks in order, so a
+  // check that accepts any metadata swallows every collection listed after it.
+  if (collection !== "organization")
     throw new Error(
-      "VectorDBOrganizationMetadata: collection must be a string",
+      'VectorDBOrganizationMetadata: collection must be "organization"',
     );
 }
 
@@ -128,6 +131,11 @@ export function checkVectorDBPersonMetadata(
   const { collection, socials } = param as VectorDBPersonMetadata;
   if (typeof collection !== "string")
     throw new Error("VectorDBPersonMetadata: collection must be a string");
+  // Guarded: an unguarded for..of over an absent `socials` throws a TypeError
+  // rather than a validation error, which reads as a crash instead of "this
+  // metadata is a different shape".
+  if (!Array.isArray(socials))
+    throw new Error("VectorDBPersonMetadata: socials must be an array");
 
   for (const social of socials) {
     if (!isValidSocialObj(social)) {

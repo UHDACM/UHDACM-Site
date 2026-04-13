@@ -31,7 +31,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "At least one of: her social (label = the social's name) AND the leadership page (label = 'more leadership')."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
           },
           "quick_replies": {
             "grading": "judge",
@@ -110,7 +110,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "At least one of: her social (label = the social's name) AND the leadership page (label = 'more leadership')."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
           },
           "quick_replies": {
             "grading": "judge",
@@ -195,7 +195,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "At least one of: her social (label = the social's name) AND the leadership page (label = 'more leadership')."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to her social profile whose label names the platform, where both 'LinkedIn' and 'Fatima Tanvir's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
           },
           "quick_replies": {
             "grading": "judge",
@@ -280,7 +280,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "At least one of: the president's social (label = the social's name) AND the leadership page (label = 'more leadership')."
+            "rubric": "Contains at least one of the following — either alone is sufficient: (a) a link to the president's social profile whose label names the platform, where both 'LinkedIn' and 'Junda Yin's LinkedIn' are acceptable labels; or (b) a link to the leadership page whose label points at more leadership info."
           },
           "quick_replies": {
             "grading": "judge",
