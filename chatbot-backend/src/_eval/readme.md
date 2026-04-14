@@ -14,7 +14,7 @@ the real vector DB, then grades the result three ways:
 
 | Layer | Cost | Catches |
 |---|---|---|
-| **Invariants** (`invariants.ts`) | free, deterministic | raw tool output or bare URLs leaking into the answer, **fabricated links**, schema limits |
+| **Invariants** (`invariants.ts`) | free, deterministic | raw tool output or bare URLs leaking into the answer, **fabricated links**, unrenderable markdown, schema limits |
 | **Deterministic asserts** (`tests.ts`) | free | did it search at all; did the search query contain the right words |
 | **LLM judge rubrics** | quota-limited | did the answer, links, and quick replies actually satisfy the case |
 
@@ -95,7 +95,8 @@ a full run takes roughly **6 minutes**.
 
 ## Judge quota — the thing that governs a run
 
-A full suite issues **~91 judge calls** (4–5 rubrics × 22 goldens, serialized).
+A full suite issues **~113 judge calls** (5–6 rubrics × 22 goldens, serialized) —
+`formatting` added one per golden.
 
 Every **pro-tier** model on this project shares a **250 requests/day/project/model**
 cap — under three full runs a day. Exceeding it does not fail cleanly: every call
@@ -127,17 +128,53 @@ Per golden, derived from its grading specs (see `tests.ts`):
 | `should_use_lookup` | did the agent call the search tool at all |
 | `lookup.tool_query` | what it searched for (`contain` = substrings, `judge` = rubric) |
 | `lookup.tool_output` | what the vector DB handed back |
-| `response.answer.main_text` | the user-facing answer |
+| `response.answer.main_text` | the user-facing answer — *what* it says |
+| `response.answer.formatting` | the same text — *how it reads* (see House style) |
 | `response.answer.actions_min` | `relevant_actions` |
 | `response.answer.quick_replies` | `quick_replies` |
 
-Plus four deterministic invariants on every case (`invariants.ts`), which are
+`main_text` and `formatting` grade the same string under separate metrics on
+purpose: "right answer, unreadable" and "wrong answer" are different bugs and
+should not fail as one number.
+
+Plus six deterministic invariants on every case (`invariants.ts`), which are
 free and catch what a judge is unreliable at:
 
 - no raw tool output in the answer (JSON, `page-home:` prefixes, the `SOURCES` header)
 - no raw URL in the answer — links belong in `relevant_actions`
 - **no fabricated links** — every `href` must appear verbatim in a search result
+- **no markdown the bubble cannot render** — headings, numbered lists, tables,
+  task lists, strikethrough, code blocks, inline `[label](href)` links
+- answer under 900 characters — a wall of text in a ~250px bubble
 - `relevant_actions` / `quick_replies` within the schema's max of 3
+
+## House style
+
+The answer is rendered by `react-markdown` with **no `remark-gfm`** and no rehype
+plugins (`site/app/_features/chatbot/chatbot-markdown-renderer.tsx`), into a bubble
+roughly 250px wide (24rem panel × 65% `max-width`). So only three things are allowed,
+and `rendersInSupportedMarkdown` enforces the rest deterministically:
+
+| Allowed | Why the rest is not |
+|---|---|
+| `**bold**` — names, roles, event titles, dates | — |
+| `*italic*` | — |
+| `- ` bullet lists, when listing 3+ things | — |
+| ~~headings~~ | styled, but 1.1–1.3rem dominates a two-sentence answer |
+| ~~numbered lists~~ | `.md ol` has no CSS — renders with no indent at all |
+| ~~tables, task lists, strikethrough~~ | GFM: not parsed, reach the user as literal characters |
+| ~~code blocks~~ | overflow the bubble horizontally |
+| ~~inline `[label](href)` links~~ | `globals.css` strips underline and color from every `<a>`, so they are invisible as links; links belong in `relevant_actions` |
+
+**Do not write a rubric that asks for a table or numbered steps** — the invariant will
+fail the answer no matter how good it is. If numbered steps become worth having (the
+"how to join" answer is genuinely sequential), the fix is one CSS rule mirroring the
+existing `.md ul`, plus dropping that entry from `UNSUPPORTED_MARKDOWN`.
+
+The matching instructions live in the `FORMATTING:` section of `systemPrompt` in
+`../langchain/langchain.ts`, and are summarized again in the `response` field's
+`.describe()` — `toolStrategy` passes field descriptions to the model, so if you change
+one, change both.
 
 ## How "absent" cases work
 
@@ -207,7 +244,10 @@ reports it as a `note:` rather than a `SHORT PAGE` warning.
 
 1. Add the case to `goldens.json` (the outer value is an array *of arrays*;
    `loadGoldens` flattens it). `types.ts` validates the shape and fails loudly on
-   a malformed entry rather than silently contributing zero assertions.
+   a malformed entry rather than silently contributing zero assertions. Give it a
+   `formatting` spec alongside `main_text` — copy the one from the nearest existing
+   case of the same shape (person lookup, enumerable answer, or not-found) rather
+   than writing a fourth variant.
 2. If it is an "absent" case, add a profile to `absence.ts` with a `note`
    explaining the choice.
 3. Run `npm run eval:probe -- <your-id>` and confirm the retrieved documents

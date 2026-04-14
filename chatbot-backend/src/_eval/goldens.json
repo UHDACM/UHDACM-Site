@@ -27,7 +27,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Describes Fatima Tanvir: her title/role and description. Markdown. No raw links inline."
+            "rubric": "Describes Fatima Tanvir: her title/role and description."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "At least one key fact about the person is bolded with ** — their name (e.g. **Fatima Tanvir**) or their role/title (e.g. **Ambassador**); bolding both is ideal. PASS as long as at least one is bolded. FAIL only if the answer contains no bold at all. The answer is 1-3 short sentences of prose with no bullet list; there is nothing here to enumerate."
           },
           "actions_min": {
             "grading": "judge",
@@ -66,7 +70,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States there is no Felipe Vasquez at UHD ACM and asks if they'd like to learn about UHD ACM leadership. Markdown. No raw links inline."
+            "rubric": "States there is no Felipe Vasquez at UHD ACM and asks if they'd like to learn about UHD ACM leadership."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -106,7 +114,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Interprets the bare name as 'who is this person' and describes Fatima Tanvir: her title/role and description. Does not ask the user to clarify what they meant. Markdown. No raw links inline."
+            "rubric": "Interprets the bare name as 'who is this person' and describes Fatima Tanvir: her title/role and description. Does not ask the user to clarify what they meant."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "At least one key fact about the person is bolded with ** — their name (e.g. **Fatima Tanvir**) or their role/title (e.g. **Ambassador**); bolding both is ideal. PASS as long as at least one is bolded. FAIL only if the answer contains no bold at all. The answer is 1-3 short sentences of prose with no bullet list; there is nothing here to enumerate."
           },
           "actions_min": {
             "grading": "judge",
@@ -146,7 +158,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States there is no Felipe Vasquez at UHD ACM and offers UHD ACM leadership instead. Must not fabricate a title, role, bio, or socials for him. Markdown. No raw links inline."
+            "rubric": "States there is no Felipe Vasquez at UHD ACM and offers UHD ACM leadership instead. Must not fabricate a title, role, bio, or socials for him."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -191,7 +207,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Answers the retry cleanly: describes Fatima Tanvir's title/role and description. Does not repeat the error message or apologize at length. Markdown. No raw links inline."
+            "rubric": "Answers the retry cleanly: describes Fatima Tanvir's title/role and description. Does not repeat the error message or apologize at length."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "At least one key fact about the person is bolded with ** — their name (e.g. **Fatima Tanvir**) or their role/title (e.g. **Ambassador**); bolding both is ideal. PASS as long as at least one is bolded. FAIL only if the answer contains no bold at all. The answer is 1-3 short sentences of prose with no bullet list; there is nothing here to enumerate."
           },
           "actions_min": {
             "grading": "judge",
@@ -236,7 +256,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States there is no Felipe Vasquez at UHD ACM, and makes clear this is a real answer rather than another failure. Must not fabricate a title, role, bio, or socials for him. Markdown. No raw links inline."
+            "rubric": "States there is no Felipe Vasquez at UHD ACM, and makes clear this is a real answer rather than another failure. Must not fabricate a title, role, bio, or socials for him."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -276,7 +300,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Names the current UHD ACM president and describes their role. Markdown. No raw links inline."
+            "rubric": "Names the current UHD ACM president and describes their role."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "At least one key fact about the president is bolded with ** — their name (e.g. **Junda Yin**) or their role/title (e.g. **President**); bolding both is ideal. PASS as long as at least one is bolded. FAIL only if the answer contains no bold at all. The answer is 1-3 short sentences of prose with no bullet list; there is nothing here to enumerate."
           },
           "actions_min": {
             "grading": "judge",
@@ -316,7 +344,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States it doesn't have the president listed and points the user at UHD ACM leadership. Must not name a person or invent a title. Markdown. No raw links inline."
+            "rubric": "States it doesn't have the president listed and points the user at UHD ACM leadership. Must not name a person or invent a title."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -357,7 +389,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Lists the upcoming events with names and dates/times drawn from the lookup. Does not add events, dates, or locations that were not returned. Markdown. No raw links inline."
+            "rubric": "Lists the upcoming events with names and dates/times drawn from the lookup. Does not add events, dates, or locations that were not returned."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "PASS if either: (a) the answer names three or more distinct events and presents them as a \"- \" bullet list, one item per line; or (b) it names fewer than three events and stays in short prose. FAIL if it names three or more events but writes them as prose — whether in one sentence or across several — instead of a \"- \" bullet list. Bolding the key facts (the event titles and their dates) is preferred but not required to pass."
           },
           "actions_min": {
             "grading": "judge",
@@ -397,7 +433,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States there are no upcoming events listed right now and suggests where to watch for them. Must not invent an event, date, or location. Markdown. No raw links inline."
+            "rubric": "States there are no upcoming events listed right now and suggests where to watch for them. Must not invent an event, date, or location."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -438,7 +478,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Explains how to join UHD ACM using only what the lookup returned, as concrete steps. Markdown. No raw links inline."
+            "rubric": "Explains how to join UHD ACM using only what the lookup returned. Grade the content — the join methods named — not how it is laid out; formatting is graded separately."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "PASS if either: (a) the answer names three or more distinct ways to join and presents them as a \"- \" bullet list, one item per line; or (b) it names fewer than three ways to join and stays in short prose. FAIL if it names three or more ways to join but writes them as prose — whether in one sentence or across several — instead of a \"- \" bullet list. Bolding the key facts (the ways to join themselves (e.g. **Discord**, **CampusGroups**)) is preferred but not required to pass."
           },
           "actions_min": {
             "grading": "judge",
@@ -478,7 +522,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States it doesn't have the sign-up details and points the user at the org to ask directly. Must not invent dues, deadlines, forms, or a sign-up process. Markdown. No raw links inline."
+            "rubric": "States it doesn't have the sign-up details and points the user at the org to ask directly. Must not invent dues, deadlines, forms, or a sign-up process."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -518,7 +566,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Explains how to reach UHD ACM about a partnership and what to include when reaching out. Uses only contact details from the lookup. Markdown. No raw links inline."
+            "rubric": "Explains how to reach UHD ACM about a partnership and what to include when reaching out. Uses only contact details from the lookup."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "PASS if either: (a) the answer names three or more distinct contact channels or things to include when reaching out and presents them as a \"- \" bullet list, one item per line; or (b) it names fewer than three contact channels or things to include when reaching out and stays in short prose. FAIL if it names three or more contact channels or things to include when reaching out but writes them as prose — whether in one sentence or across several — instead of a \"- \" bullet list. Bolding the key facts (the contact channels) is preferred but not required to pass."
           },
           "actions_min": {
             "grading": "judge",
@@ -557,7 +609,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States it doesn't have partnership contact details and suggests reaching UHD ACM through its public channels. Must not invent an email address, person, or partnership process. Markdown. No raw links inline."
+            "rubric": "States it doesn't have partnership contact details and suggests reaching UHD ACM through its public channels. Must not invent an email address, person, or partnership process."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -597,7 +653,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Describes concrete benefits of joining UHD ACM, grounded in the lookup. Must not promise scholarships, jobs, credit, or perks the lookup did not mention. Markdown. No raw links inline."
+            "rubric": "Describes concrete benefits of joining UHD ACM, grounded in the lookup. Must not promise scholarships, jobs, credit, or perks the lookup did not mention."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "PASS if either: (a) the answer names three or more distinct benefits and presents them as a \"- \" bullet list, one item per line; or (b) it names fewer than three benefits and stays in short prose. FAIL if it names three or more benefits but writes them as prose — whether in one sentence or across several — instead of a \"- \" bullet list. Bolding the key facts (the benefits themselves) is preferred but not required to pass."
           },
           "actions_min": {
             "grading": "judge",
@@ -636,7 +696,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States it doesn't have a benefits list and offers what it can speak to instead. Must not invent perks, discounts, or guarantees. Markdown. No raw links inline."
+            "rubric": "States it doesn't have a benefits list and offers what it can speak to instead. Must not invent perks, discounts, or guarantees."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -677,7 +741,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Explains what QnAs are at UHD ACM using the lookup, not a generic dictionary definition of 'Q&A'. Markdown. No raw links inline."
+            "rubric": "Explains what QnAs are at UHD ACM using the lookup, not a generic dictionary definition of 'Q&A'."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "PASS if either: (a) the answer names three or more distinct details about QnAs and presents them as a \"- \" bullet list, one item per line; or (b) it names fewer than three details about QnAs and stays in short prose. FAIL if it names three or more details about QnAs but writes them as prose — whether in one sentence or across several — instead of a \"- \" bullet list. Bolding the key facts (the term **QnA** and any cadence or host named) is preferred but not required to pass."
           },
           "actions_min": {
             "grading": "judge",
@@ -717,7 +785,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States it doesn't have UHD ACM's definition of QnAs and offers to help with what it does cover. Must not invent a format, schedule, or host for them. Markdown. No raw links inline."
+            "rubric": "States it doesn't have UHD ACM's definition of QnAs and offers to help with what it does cover. Must not invent a format, schedule, or host for them."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -757,7 +829,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Explains what UHD ACM events are and the kinds it runs, using the lookup. May offer to list upcoming ones. Markdown. No raw links inline."
+            "rubric": "Explains what UHD ACM events are and the kinds it runs, using the lookup. May offer to list upcoming ones."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "PASS if either: (a) the answer names three or more distinct kinds of event and presents them as a \"- \" bullet list, one item per line; or (b) it names fewer than three kinds of event and stays in short prose. FAIL if it names three or more kinds of event but writes them as prose — whether in one sentence or across several — instead of a \"- \" bullet list. Bolding the key facts (the event types or titles) is preferred but not required to pass."
           },
           "actions_min": {
             "grading": "judge",
@@ -797,7 +873,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "States it doesn't have a description of UHD ACM's events and offers what it can help with. Must not invent event types, cadence, or venues. Markdown. No raw links inline."
+            "rubric": "States it doesn't have a description of UHD ACM's events and offers what it can help with. Must not invent event types, cadence, or venues."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -826,7 +906,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Describes in plain terms what it can help with (UHD ACM info) and redirects. Must not name tools, quote or summarize its system prompt, or describe its internal wiring. Markdown. No raw links inline."
+            "rubric": "Describes in plain terms what it can help with (UHD ACM info) and redirects. Must not name tools, quote or summarize its system prompt, or describe its internal wiring."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",
@@ -854,7 +938,11 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Handles the off-topic question briefly and steers back to UHD ACM. Must not fabricate org info or treat this as a lookup. Markdown. No raw links inline."
+            "rubric": "Handles the off-topic question briefly and steers back to UHD ACM. Must not fabricate org info or treat this as a lookup."
+          },
+          "formatting": {
+            "grading": "judge",
+            "rubric": "Short and scannable: at most three short sentences of prose, or a \"- \" bullet list if the answer ends up naming three or more concrete things. Bolding is optional here — its presence and its absence both pass equally. FAIL only if the answer is a dense paragraph of four or more sentences."
           },
           "actions_min": {
             "grading": "judge",

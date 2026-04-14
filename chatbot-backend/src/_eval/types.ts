@@ -42,6 +42,9 @@ export interface Golden {
   response: {
     answer: {
       main_text?: GradingSpec;
+      /** How the answer is presented — bolding, bullets, length. Graded
+       *  separately from main_text so a failure says which half broke. */
+      formatting?: GradingSpec;
       actions_min?: GradingSpec;
       quick_replies?: GradingSpec;
     };
@@ -119,7 +122,10 @@ export function checkGolden(v: unknown): asserts v is Golden {
     throw new Error(`${id}: response.answer must be an object`);
   }
   const answer = v.response.answer;
-  for (const key of ["main_text", "actions_min", "quick_replies"] as const) {
+  // Every gradable key must be listed here. An unlisted one is not rejected —
+  // it is simply never validated and never turned into an assertion, so the
+  // golden silently grades less than it appears to.
+  for (const key of ["main_text", "formatting", "actions_min", "quick_replies"] as const) {
     if (answer[key] !== undefined) {
       checkGradingSpec(answer[key], `${id}.response.answer.${key}`);
     }

@@ -89,7 +89,7 @@ export const QueryResponseSchema = z.object({
   response: z
     .string()
     .describe(
-      "The natural-language answer for the user (Markdown allowed). Must NOT contain raw search/tool output, JSON, \"collection:\" prefixes (e.g. \"page-home:\"), or raw URLs. Keep it short.",
+      "The natural-language answer for the user. Must NOT contain raw search/tool output, JSON, \"collection:\" prefixes (e.g. \"page-home:\"), or raw URLs. Keep it short. Markdown, but ONLY **bold**, *italic*, and \"- \" bullet lists — no headings, numbered lists, tables, code blocks, or markdown links. Bold the key facts; bullet anything you list three or more of.",
     ),
   relevant_actions: z
     .array(ActionSchema)
@@ -125,8 +125,14 @@ ANSWERING:
 - Do not mention tools or internal mechanisms. Keep responses short.
 - Put the answer ONLY in the response field. Never list your quick_replies or action links inside the response text (e.g. do not write "Quick replies: ...").
 
+FORMATTING (the answer is rendered as Markdown in a narrow chat bubble):
+- Bold the things the user came for: people's names, roles, event titles, dates, deadlines. Use **bold**, never CAPS. When the answer is about a specific person, always bold that person's name (e.g. **Fatima Tanvir**).
+- If the answer enumerates three or more things (events, ways to join, benefits), write them as a "- " bullet list, one short line each — not a run-on sentence.
+- Otherwise write 1-3 short sentences. Start a new paragraph rather than letting one grow long.
+- ONLY these render: **bold**, *italic*, and "- " bullet lists. Do NOT use headings (#), numbered lists, tables, code blocks, or markdown links — they reach the user as literal characters or unstyled text.
+
 OUTPUT FIELDS:
-- response: the answer text (Markdown allowed). Natural language only — no raw tool output.
+- response: the answer text, formatted per FORMATTING above. Natural language only — no raw tool output.
 - relevant_actions: up to 3 links useful to the answer. Every href MUST be copied character-for-character from a search result. Never construct, complete, or guess a URL — if the page you would like to link to is not present in the results, emit no link for it. A plausible-looking invented URL (e.g. building "/leadership" from the site root) is a bug, not a helpful fallback. Within that limit: when you searched but could not find the specific thing asked about, link the most relevant broader page that IS present in the results. If nothing relevant is present, leave this empty. If a URL is included here, don't repeat it in the response text.
 - quick_replies: up to 3 likely follow-up questions about UHD ACM. Offer them on every answer, including when the answer was "not found" and when the question was off-topic — they need no search results, so there is nothing to ground and no reason to omit them.`;
 

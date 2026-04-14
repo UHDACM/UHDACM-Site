@@ -19,7 +19,7 @@ defaultTest:
     # The judge must not be the gemini-2.5-flash system under test, or it grades
     # its own output class. gemini-flash-latest is a different generation, so
     # that separation holds without the pro tier's 250 requests/day/project cap
-    # — one full suite is ~91 judge calls, so pro-tier grading collapses into
+    # — one full suite is ~113 judge calls, so pro-tier grading collapses into
     # timeouts after roughly two runs in a day.
     #
     # run.ts passes --grader explicitly and is the source of truth; this value
@@ -46,6 +46,12 @@ defaultTest:
     - type: javascript
       value: file://./invariants.ts:actionsAreGrounded
       metric: grounded-links
+    - type: javascript
+      value: file://./invariants.ts:rendersInSupportedMarkdown
+      metric: markdown-supported
+    - type: javascript
+      value: file://./invariants.ts:answerFitsBubble
+      metric: answer-length
     - type: javascript
       value: file://./invariants.ts:respectsSchemaLimits
       metric: schema-limits

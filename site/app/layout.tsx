@@ -21,11 +21,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "UHD ACM",
   description: "Home page of UHD ACM",
+  // the browser icon comes from app/favicon.ico via the app router file
+  // convention, which emits its own <link rel="icon"> — don't repeat it here.
   icons: {
-    icon: "/favicon_io/favicon-32x32.png",
-    shortcut: "/favicon_io/favicon-32x32.png",
     apple: "/favicon_io/apple-touch-icon.png",
   },
+  manifest: "/favicon_io/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -44,7 +45,6 @@ export default function RootLayout({
         async
         defer
       ></script>
-      <link rel="favicon_io/manifest" href="favicon_io/site.webmanifest" />
       <PublicEnvProvider env={public_env_vars}>
         <AuthWrapper>
           <PostHogProvider>

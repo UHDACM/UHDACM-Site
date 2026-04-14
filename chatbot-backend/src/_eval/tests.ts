@@ -9,7 +9,8 @@ import { GradingSpec, loadGoldens } from "./types";
  *
  *   lookup.tool_query   -> the query the model passed to the search tool
  *   lookup.tool_output  -> what the search tool handed back
- *   response.answer.*   -> the user-facing answer, actions, and quick replies
+ *   response.answer.*   -> the user-facing answer (content and formatting),
+ *                          actions, and quick replies
  *
  * On top of those, every case inherits the deterministic invariants in
  * promptfooconfig.yaml's defaultTest — those cost nothing and catch the things a
@@ -115,6 +116,12 @@ function assertionsFor(golden: ReturnType<typeof loadGoldens>[number]) {
   const answer = golden.response.answer;
   if (answer.main_text) {
     asserts.push(judge(answer.main_text, "output.response", "answer-text"));
+  }
+  if (answer.formatting) {
+    // Same slice of the output as main_text, deliberately under its own metric:
+    // "the answer was right but unreadable" and "the answer was wrong" are
+    // different bugs and should not fail as one number.
+    asserts.push(judge(answer.formatting, "output.response", "formatting"));
   }
   if (answer.actions_min) {
     asserts.push(

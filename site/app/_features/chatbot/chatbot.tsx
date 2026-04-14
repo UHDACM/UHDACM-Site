@@ -207,6 +207,14 @@ What are you looking for today?`,
       }
     };
 
+    // puts auth back to its initial state so the effect re-runs and renders a
+    // fresh challenge. also unlocks the close button, so a failed challenge
+    // never leaves the user stuck in the chat window.
+    const resetAuth = () => {
+      if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
+      setAuthenticated(undefined);
+    };
+
     const authWithTurnstile = () => {
       console.log("authing with turnstile");
       if (!window.turnstile || !turnstileRef.current) return;
@@ -239,17 +247,16 @@ What are you looking for today?`,
               setAuthenticated(true);
             } else {
               alert(data.error ?? "Authentication failed");
-              // if (widgetIdRef.current)
-              //   window.turnstile?.reset(widgetIdRef.current);
+              resetAuth();
             }
           } catch (e) {
             alert(`Failed to authenticate: ${(e as Error).message}`);
-            // if (widgetIdRef.current)
-            //   window.turnstile?.reset(widgetIdRef.current);
+            resetAuth();
           }
         },
         "error-callback": () => {
           alert("Turnstile challenge failed. Please try again.");
+          resetAuth();
         },
       });
     };
@@ -473,6 +480,9 @@ What are you looking for today?`,
   const [inputValue, setInputValue] = useState("");
   const isButtonDisabled =
     inputValue.trim() === "" || isLoading || authenticated != true;
+  // closing mid-challenge unmounts the turnstile widget and strands auth, so
+  // the window stays locked until the challenge resolves one way or the other.
+  const isValidating = authenticated === "authenticating";
 
   const handleOpening = () => {
     posthog?.capture("opened_chatbot", {
@@ -483,6 +493,7 @@ What are you looking for today?`,
     setIsOpen(true);
   };
   const handleClosing = () => {
+    if (isValidating) return;
     posthog?.capture("closed_chatbot", {
       href: window.location.href,
     });
@@ -605,9 +616,11 @@ What are you looking for today?`,
                 <p style={{ fontSize: "1rem" }}>Here to help you!</p>
               </div>
             </div>
-            <button className={styles.closeChatButton} onClick={handleClosing}>
-              <MdOutlineClose size={20} />
-            </button>
+            {!isValidating && (
+              <button className={styles.closeChatButton} onClick={handleClosing}>
+                <MdOutlineClose size={20} />
+              </button>
+            )}
           </div>
 
           {/*body */}
