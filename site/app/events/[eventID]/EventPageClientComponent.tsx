@@ -25,7 +25,7 @@ import { getDefaultIconForCMSButton } from "@/app/_utils/types/cms/cmsTypeToolsT
 import GalleryGrid from "@/app/galleries/[galleryID]/_components/GalleryGrid";
 import { usePublicEnv } from "@/app/_context/PublicEnvContext/PublicEnvContext";
 
-const GALLERY_SECTION_ID = "event-gallery";
+const GALLERY_SECTION_ID = "gallery";
 
 function scrollToGallery() {
   document
@@ -207,7 +207,7 @@ export default function EventPageClientComponent({
 
       {hasGallery && (
         <div
-          id={'gallery'}
+          id={GALLERY_SECTION_ID}
           style={{
             scrollMarginTop: "5rem",
             width: "100%",

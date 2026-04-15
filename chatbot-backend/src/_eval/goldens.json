@@ -704,7 +704,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains a link to a general UHD ACM page. No fabricated links."
+            "rubric": "PASS if either (a) relevant_actions is empty, or (b) every action's href appears verbatim in the search results — a grounded link to any UHD ACM page is fine, whether a general page or a specific subpage. An empty list is fully acceptable when nothing relevant was returned. FAIL only if an action's href does not appear verbatim in the search results (a fabricated link)."
           },
           "quick_replies": {
             "grading": "judge",
@@ -733,7 +733,7 @@
         },
         "tool_output": {
           "grading": "judge",
-          "rubric": "Must contain what a QnA is at UHD ACM: its format, purpose, and who runs or attends it"
+          "rubric": "Must contain UHD ACM QnA content — EITHER a description of the QnA format/purpose/host, OR one or more concrete QnA interviews (e.g. titles or guest names) that show what a QnA is. Either alone satisfies this; the corpus stores QnAs as interview entries, so a set of those counts."
         }
       },
 
@@ -741,7 +741,7 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Explains what QnAs are at UHD ACM using the lookup, not a generic dictionary definition of 'Q&A'."
+            "rubric": "Conveys what QnAs are at UHD ACM using the lookup — EITHER by describing their format/purpose, OR by pointing to concrete QnA interviews the org has run (titles/guests). Either satisfies this. Not a generic dictionary definition of 'Q&A', and not invented."
           },
           "formatting": {
             "grading": "judge",
@@ -793,7 +793,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains a link to a general UHD ACM page. No fabricated links."
+            "rubric": "PASS if either (a) relevant_actions is empty, or (b) every action's href appears verbatim in the search results — a grounded link to any UHD ACM page is fine, whether a general page or a specific subpage. An empty list is fully acceptable when nothing relevant was returned. FAIL only if an action's href does not appear verbatim in the search results (a fabricated link)."
           },
           "quick_replies": {
             "grading": "judge",
@@ -821,7 +821,7 @@
         },
         "tool_output": {
           "grading": "judge",
-          "rubric": "Must contain what events are at UHD ACM: the kinds the org runs and their purpose"
+          "rubric": "Must contain UHD ACM event content — EITHER a description of the kinds of events and their purpose, OR one or more concrete events (names/dates/types) that show what the org runs. Either alone satisfies this; the corpus stores events as individual entries, so a set of those counts."
         }
       },
 
@@ -829,7 +829,7 @@
         "answer": {
           "main_text": {
             "grading": "judge",
-            "rubric": "Explains what UHD ACM events are and the kinds it runs, using the lookup. May offer to list upcoming ones."
+            "rubric": "Conveys what UHD ACM events are, using the lookup — EITHER by describing the kinds it runs and their purpose, OR by naming concrete events/types from the lookup. Either satisfies this. Grounded in the lookup; does not invent event types."
           },
           "formatting": {
             "grading": "judge",
@@ -881,7 +881,7 @@
           },
           "actions_min": {
             "grading": "judge",
-            "rubric": "Contains a link to a general UHD ACM page. No fabricated links."
+            "rubric": "PASS if either (a) relevant_actions is empty, or (b) every action's href appears verbatim in the search results — a grounded link to any UHD ACM page is fine, whether a general page or a specific subpage. An empty list is fully acceptable when nothing relevant was returned. FAIL only if an action's href does not appear verbatim in the search results (a fabricated link)."
           },
           "quick_replies": {
             "grading": "judge",

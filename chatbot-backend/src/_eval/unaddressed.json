@@ -1,0 +1,16 @@
+{
+  "description": "this file contains unaddressed issues with the chatbot",
+  "issues": [
+    {
+      "input": "How can I join UHD ACM?",
+      "output_description": "Something went wrong, try again later!"
+    },
+    {
+      "issue_description": "rate limit doesn't seem to work"
+    },
+    {
+      "input": "What's 3+6",
+      "output_description": "3 + 6 = 9."
+    }
+  ]
+}

@@ -50,12 +50,16 @@ const PROFILES: Record<string, AbsenceProfile> = {
   },
 
   events_absent_upcoming: {
-    collections: ["event", "featured-event"],
+    // qna is excluded because a QnA IS an upcoming event at UHD ACM: at top-k 16
+    // qna-3 ("QnA ... feat. MJ ... networking, projects, navigating life in
+    // tech") surfaces and the agent presents it as a scheduled event, inventing a
+    // date. A corpus with nothing scheduled would not surface it either.
+    collections: ["event", "featured-event", "qna"],
     docIds: [
       "page-qnas-1", // "Coming soon... Join us for an inspiring conversation with Arbaz Khan"
       "page-home-3", // "Events Join workshops, hackathons, and meetups..."
     ],
-    note: "Page blurbs about the events page may remain — they list no actual event. page-qnas-1 announces an upcoming one, so it cannot.",
+    note: "Page blurbs about the events page may remain — they list no actual event. page-qnas-1 announces an upcoming one, and qna entries are themselves upcoming events, so both are hidden.",
   },
 
   join_absent_how_to_join: {
@@ -84,7 +88,20 @@ const PROFILES: Record<string, AbsenceProfile> = {
   },
 
   org_benefit_absent_why_join: {
-    collections: ["page-join", "page-about", "page-home"],
+    // event/featured-event/qna are excluded because workshop and Q&A copy read as
+    // benefit pitches: at top-k 16 event-10 ("How to Secure a Full-time Role ...
+    // learn what employers are looking for"), event-22 ("... ways to get
+    // involved"), and the qna entries ("practical insights and advice for anyone
+    // exploring a career") all surface and the agent lists them as things you get
+    // out of joining. Hiding the events alone just floats the qna entries up.
+    collections: [
+      "page-join",
+      "page-about",
+      "page-home",
+      "event",
+      "featured-event",
+      "qna",
+    ],
     docIds: [
       "page-galleries-0", // "From workshops and hackathons to socials and guest talks"
       "page-media-3", // "the latest on events, workshops, socials, and career opportunities"
@@ -93,7 +110,7 @@ const PROFILES: Record<string, AbsenceProfile> = {
       "site-info-0", // socials list — a member-facing perk
       "page-events-2", // "Want to collaborate?"
     ],
-    note: "Benefit language is spread thin across the whole site; these are the remaining benefit pitches that surface at top-k 16.",
+    note: "Benefit language is spread thin across the whole site; at top-k 16 event workshop descriptions read as benefits too, so the event collections are hidden alongside the remaining benefit pitches.",
   },
 
   glossary_absent_qnas: {
@@ -106,7 +123,17 @@ const PROFILES: Record<string, AbsenceProfile> = {
   },
 
   glossary_absent_events: {
-    collections: ["event", "featured-event", "page-events"],
+    // qna/page-qnas are excluded because the monthly "Professional Q&As with
+    // industry leaders and alumni" copy describes an event series; at top-k 16 the
+    // agent lifts it and answers "they host monthly Professional Q&As" — exactly
+    // the kind of event description this case must lack.
+    collections: [
+      "event",
+      "featured-event",
+      "page-events",
+      "qna",
+      "page-qnas",
+    ],
     docIds: [
       "page-home-3", // "Events Join workshops, hackathons, and meetups..."
       "page-home-4", // "View our calendar and find what we have planned for you!"
@@ -114,7 +141,7 @@ const PROFILES: Record<string, AbsenceProfile> = {
       "page-about-3", // "Our Journey" timeline — recounts hackathons and workshops
       "page-galleries-0", // "From workshops and hackathons to socials and guest talks"
     ],
-    note: "These describe what UHD ACM events are, which the rubric requires to be missing.",
+    note: "These describe what UHD ACM events are, which the rubric requires to be missing; the QnA collections describe the Q&A event series, so they are hidden too.",
   },
 };
 
