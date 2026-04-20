@@ -3,9 +3,15 @@
 import { DefaultShareOutline } from "@/app/_icons/Icons";
 import CopyButton from "../Variants/CopyButton";
 import useAnalytics from "@/app/_hooks/useAnalytics";
+import { usePublicEnv } from "@/app/_context/PublicEnvContext/PublicEnvContext";
+import { rewriteShareOrigin } from "@/app/_utils/shareUrl";
 
 export default function ShareButton({ copyText, replaceTextOnCopyString }: { copyText: string; replaceTextOnCopyString: string; }) {
   const { posthog } = useAnalytics();
+  const public_env = usePublicEnv();
+  // Callers build copyText from the build-time NEXT_PUBLIC_SELF_URL, which is
+  // frozen into the bundle and often belongs to a different environment.
+  const shareText = rewriteShareOrigin(copyText, public_env.NEXT_PUBLIC_SELF_URL);
   return (
     <CopyButton
       style={{
@@ -15,9 +21,9 @@ export default function ShareButton({ copyText, replaceTextOnCopyString }: { cop
         border: "1px solid transparent",
         backgroundColor: "rgb(var(--color-font-secondary))",
       }}
-      copyText={copyText}
+      copyText={shareText}
       replaceTextOnCopy={replaceTextOnCopyString}
-      onCopy={() => posthog?.capture("share_click", { url: copyText })}
+      onCopy={() => posthog?.capture("share_click", { url: shareText })}
     >
       <div
         style={{
