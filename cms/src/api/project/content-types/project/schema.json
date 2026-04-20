@@ -1,0 +1,63 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "project"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "urlSlug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "previewImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "dateStart": {
+      "type": "datetime",
+      "required": true
+    },
+    "dateEnd": {
+      "type": "datetime",
+      "required": false
+    },
+    "descriptionShort": {
+      "type": "string",
+      "required": true
+    },
+    "descriptionFull": {
+      "type": "blocks",
+      "required": true
+    },
+    "repoUrl": {
+      "type": "string",
+      "required": false
+    },
+    "demoUrl": {
+      "type": "string",
+      "required": false
+    },
+    "people": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::person.person"
+    }
+  }
+}

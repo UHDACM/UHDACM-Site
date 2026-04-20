@@ -1,0 +1,46 @@
+{
+  "kind": "singleType",
+  "collectionName": "projects_pages",
+  "info": {
+    "singularName": "projects-page",
+    "pluralName": "projects-pages",
+    "displayName": "projects-page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "introImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "introTitle": {
+      "type": "string",
+      "required": true
+    },
+    "introSubtitle": {
+      "type": "text",
+      "required": false
+    },
+    "joinTitle": {
+      "type": "string",
+      "required": true
+    },
+    "joinSubtitle": {
+      "type": "text",
+      "required": false
+    },
+    "joinFormUrl": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
