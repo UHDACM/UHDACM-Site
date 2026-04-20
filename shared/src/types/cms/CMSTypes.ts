@@ -16,21 +16,27 @@ export const cmsCollectionsSingular = [
   "gallery",
   "organization",
   "person",
-  "qna"
+  "qna",
+  "project"
 ] as const;
 export const cmsCollectionsPlural = [
   "events",
   "galleries",
   "organizations",
   "people",
-  "qnas"
+  "qnas",
+  "projects"
 ] as const;
 
 export type cmsCollectionSingular = (typeof cmsCollectionsSingular)[number];
 export type cmsCollectionPlural = (typeof cmsCollectionsPlural)[number];
 
 
-export const cmsSingleTypes = ["featured-event", "leadership", "site-info", "announcement"] as const;
+// NOTE: "projects-page" lives here rather than in cmsSingleTypePages on purpose.
+// Everything in cmsSingleTypePages is assumed to carry a `sections` dynamiczone
+// (see fetchCMSPage/PageRenderer, and the vector writer's page branch). The
+// projects page uses flat fields instead, so it must stay out of that list.
+export const cmsSingleTypes = ["featured-event", "leadership", "site-info", "announcement", "projects-page"] as const;
 export type cmsSingleType = (typeof cmsSingleTypes)[number];
 
 export const cmsSingleTypePages = [
@@ -261,6 +267,45 @@ export type SiteEventSummary = Pick<
   | "descriptionShort"
   | "location"
 > & { gallery?: ObjectUnknown };
+
+export type SiteProject = {
+  id: number;
+  urlSlug: string;
+  name: string;
+  previewImage: StrapiPicture | undefined;
+  dateStart: string;
+  // absent means the project is still ongoing
+  dateEnd?: string;
+  descriptionShort: string;
+  descriptionFull: BlocksContent;
+  repoUrl?: string;
+  demoUrl?: string;
+  people?: Person[];
+};
+
+// Subset of SiteProject used by the listing grid — excludes descriptionFull and
+// the full people records, so the grid fetches a slimmer payload.
+export type SiteProjectSummary = Pick<
+  SiteProject,
+  | "id"
+  | "urlSlug"
+  | "name"
+  | "previewImage"
+  | "dateStart"
+  | "dateEnd"
+  | "descriptionShort"
+> & { peopleCount?: number };
+
+// The "projects-page" single type. Deliberately flat fields rather than a
+// dynamiczone — the org needs to edit this copy without assembling sections.
+export type ProjectsPage = {
+  introImage?: StrapiPicture;
+  introTitle: string;
+  introSubtitle?: string;
+  joinTitle: string;
+  joinSubtitle?: string;
+  joinFormUrl: string;
+};
 
 export type SocialSite =
   | "linkedin"

@@ -141,10 +141,12 @@ const convertFetchableToSingular = (
 export function cmsCollectionSingularToPlural(
   singular: cmsCollectionSingular,
 ): cmsCollectionPlural | undefined {
-  const singulars = ["event", "gallery", "organization", "person", "qna"];
-  const plurals = ["events", "galleries", "organizations", "people", "qnas"];
-  const index = singulars.indexOf(singular);
-  return index !== -1 ? (plurals[index] as cmsCollectionPlural) : undefined;
+  // Read the exported tuples rather than re-listing the names here: a local
+  // copy silently goes stale whenever a collection is added.
+  const index = cmsCollectionsSingular.indexOf(singular);
+  return index !== -1
+    ? (cmsCollectionsPlural[index] as cmsCollectionPlural)
+    : undefined;
 }
 
 export function cmsCollectionPluralToSingular(

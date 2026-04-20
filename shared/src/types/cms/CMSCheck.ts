@@ -43,6 +43,9 @@ import {
   SocialSites,
   SiteEvent,
   SiteEventSummary,
+  SiteProject,
+  SiteProjectSummary,
+  ProjectsPage,
   QnA,
   QnASummary,
   AnnouncementObj,
@@ -673,6 +676,114 @@ export function isValidSiteEventSummary(
   if (gallery && typeof gallery !== "object") return false;
   if (!isValidISODate(dateStart)) return false;
   if (!isValidISODate(dateEnd)) return false;
+  return true;
+}
+
+// Strapi returns `datetime` fields in this exact shape. Note this is why the
+// project date fields must be `datetime` and not `date` in the CMS schema —
+// a `date` field serializes as "YYYY-MM-DD" and fails here.
+const isoDateWithMillisRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+
+function isValidISODateString(dateStr: string) {
+  return isoDateWithMillisRegex.test(dateStr) && !isNaN(Date.parse(dateStr));
+}
+
+export function isValidSiteProject(project: any): project is SiteProject {
+  if (!project || typeof project !== "object") return false;
+  const {
+    id,
+    urlSlug,
+    name,
+    previewImage,
+    dateStart,
+    dateEnd,
+    descriptionShort,
+    descriptionFull,
+    repoUrl,
+    demoUrl,
+    people,
+  } = project as SiteProject;
+
+  if (typeof id !== "number") return false;
+  if (typeof urlSlug !== "string") return false;
+  if (typeof name !== "string") return false;
+  if (previewImage && !isStrapiPicture(previewImage)) return false;
+  if (typeof dateStart !== "string") return false;
+  if (!isValidISODateString(dateStart)) return false;
+  // dateEnd is optional: its absence is what marks a project as ongoing.
+  if (dateEnd !== undefined && dateEnd !== null) {
+    if (typeof dateEnd !== "string") return false;
+    if (!isValidISODateString(dateEnd)) return false;
+  }
+  if (typeof descriptionShort !== "string") return false;
+  if (!Array.isArray(descriptionFull)) return false;
+  if (repoUrl !== undefined && repoUrl !== null && typeof repoUrl !== "string")
+    return false;
+  if (demoUrl !== undefined && demoUrl !== null && typeof demoUrl !== "string")
+    return false;
+  if (people !== undefined && people !== null) {
+    if (!Array.isArray(people) || !people.every(isPerson)) return false;
+  }
+  return true;
+}
+
+// Lighter validator for the listing grid. Skips descriptionFull and the full
+// people records (omitted from the payload via Strapi `fields`/`populate`).
+export function isValidSiteProjectSummary(
+  project: any,
+): project is SiteProjectSummary {
+  if (!project || typeof project !== "object") return false;
+  const {
+    id,
+    urlSlug,
+    name,
+    previewImage,
+    dateStart,
+    dateEnd,
+    descriptionShort,
+  } = project as SiteProjectSummary;
+
+  if (typeof id !== "number") return false;
+  if (typeof urlSlug !== "string") return false;
+  if (typeof name !== "string") return false;
+  if (previewImage && !isStrapiPicture(previewImage)) return false;
+  if (typeof dateStart !== "string") return false;
+  if (!isValidISODateString(dateStart)) return false;
+  if (dateEnd !== undefined && dateEnd !== null) {
+    if (typeof dateEnd !== "string") return false;
+    if (!isValidISODateString(dateEnd)) return false;
+  }
+  if (typeof descriptionShort !== "string") return false;
+  return true;
+}
+
+export function isValidProjectsPage(page: any): page is ProjectsPage {
+  if (!page || typeof page !== "object") return false;
+  const {
+    introImage,
+    introTitle,
+    introSubtitle,
+    joinTitle,
+    joinSubtitle,
+    joinFormUrl,
+  } = page as ProjectsPage;
+
+  if (introImage && !isStrapiPicture(introImage)) return false;
+  if (typeof introTitle !== "string") return false;
+  if (
+    introSubtitle !== undefined &&
+    introSubtitle !== null &&
+    typeof introSubtitle !== "string"
+  )
+    return false;
+  if (typeof joinTitle !== "string") return false;
+  if (
+    joinSubtitle !== undefined &&
+    joinSubtitle !== null &&
+    typeof joinSubtitle !== "string"
+  )
+    return false;
+  if (typeof joinFormUrl !== "string") return false;
   return true;
 }
 
