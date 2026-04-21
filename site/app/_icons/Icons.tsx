@@ -3,7 +3,7 @@
   Each icon is prefixed with Default
  */
 
-import { FiChevronRight, FiChevronLeft, FiSearch, FiShare2, FiCalendar, FiClock, FiUsers, FiMenu } from "react-icons/fi";
+import { FiChevronRight, FiChevronLeft, FiSearch, FiShare2, FiCalendar, FiClock, FiUsers, FiMenu, FiCode } from "react-icons/fi";
 import { FaFacebook, FaGithub, FaGlobe, FaLinkedin, FaInstagram, FaTwitter, FaYoutube, FaDiscord } from "react-icons/fa";
 import { FaEllipsis } from "react-icons/fa6";
 import { CiLocationOn } from "react-icons/ci";
@@ -40,6 +40,8 @@ export const DefaultPeople = FiUsers;
 export const DefaultMenu = FiMenu;
 
 export const DefaultImageCollection = MdOutlineCollections;
+
+export const DefaultCode = FiCode;
 
 export const DefaultOpenInNewTab = MdOpenInNew;
   
