@@ -1,5 +1,5 @@
 
-import { QnA, SiteEvent, StrapiPicture } from "@shared/types/cms/CMSTypes";
+import { QnA, SiteEvent, SiteProject, StrapiPicture } from "@shared/types/cms/CMSTypes";
 import { ProduceCMSResourceURL } from "../../tools";
 
 
@@ -64,6 +64,40 @@ export function ProduceDateRangeText(dateStartStr: string, dateEndStr: string) {
     dateRangeStr = `${formatDate(dateStart)}, ${formatTime(dateStart)}`;
   }
   return dateRangeStr;
+}
+
+/**
+ * Date text for a project.
+ *
+ * Separate from ProduceDateRangeText because that helper always appends a clock
+ * time, which reads wrong for something that ran over weeks. Projects are shown
+ * at month granularity, and a missing end date means "still running".
+ */
+export function ProduceProjectDateText(dateStartStr: string, dateEndStr?: string) {
+  const formatMonth = (date: Date) =>
+    date.toLocaleDateString(undefined, { year: "numeric", month: "short" });
+
+  const dateStart = new Date(dateStartStr);
+  if (!dateEndStr) {
+    return `${formatMonth(dateStart)} - Ongoing`;
+  }
+
+  const dateEnd = new Date(dateEndStr);
+  const sameMonth =
+    dateStart.getFullYear() === dateEnd.getFullYear() &&
+    dateStart.getMonth() === dateEnd.getMonth();
+
+  return sameMonth
+    ? formatMonth(dateStart)
+    : `${formatMonth(dateStart)} - ${formatMonth(dateEnd)}`;
+}
+
+/**
+ * Generates a shareable project text with the project URL.
+ */
+export function generateProjectShareText(project: SiteProject, selfUrl: string): string {
+  const dateStr = ProduceProjectDateText(project.dateStart, project.dateEnd);
+  return `UHDACM Project: ${project.name}\n\nDate: ${dateStr}\n\nDescription: ${project.descriptionShort}\n\n${selfUrl}/projects/${project.urlSlug}`;
 }
 
 /**
