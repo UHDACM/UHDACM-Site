@@ -1,8 +1,8 @@
 import { TryGetImageFormatPath } from "../cms/CMSFuncs";
-import { SiteEvent } from "../cms/CMSTypes";
+import { SiteEvent, SiteProject } from "../cms/CMSTypes";
 import { ObjectUnknown } from "../general/generalTypes";
 import { checkVectorDBBaseMetadata } from "./vectorDBCheck";
-import { PartialSiteEvent, SafeMetadata, VectorDBBaseMetadata } from "./vectorDBTypes";
+import { PartialSiteEvent, PartialSiteProject, SafeMetadata, VectorDBBaseMetadata } from "./vectorDBTypes";
 
 export const convertSiteEventToPartialSiteEvent = (
   event: SiteEvent,
@@ -27,6 +27,42 @@ export const convertSiteEventToPartialSiteEvent = (
     partialSiteEvent.previewImageUrl = previewImageUrl;
   }
   return partialSiteEvent;
+};
+
+export const convertSiteProjectToPartialSiteProject = (
+  project: SiteProject,
+  cmsURL: string,
+  siteURL: string
+) => {
+  const partialSiteProject: PartialSiteProject = {
+    name: project.name,
+    dateStart: project.dateStart,
+    descriptionShort: project.descriptionShort,
+    // Keep this the single place project URLs are built, the same way the
+    // event converter above is the only place event URLs are built.
+    url: siteURL+'/projects/'+project.urlSlug,
+  };
+
+  if (project.dateEnd) {
+    partialSiteProject.dateEnd = project.dateEnd;
+  }
+  if (project.repoUrl) {
+    partialSiteProject.repoUrl = project.repoUrl;
+  }
+  if (project.demoUrl) {
+    partialSiteProject.demoUrl = project.demoUrl;
+  }
+  if (project.people && project.people.length > 0) {
+    partialSiteProject.participantNames = project.people.map((p) => p.name);
+  }
+
+  const previewImageUrl = project.previewImage
+    ? TryGetImageFormatPath(project.previewImage, "thumbnail", cmsURL)
+    : undefined;
+  if (previewImageUrl) {
+    partialSiteProject.previewImageUrl = previewImageUrl;
+  }
+  return partialSiteProject;
 };
 
 export const convertVectorDBMetadataToSafeMetadata = (obj: VectorDBBaseMetadata): SafeMetadata => {

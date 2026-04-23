@@ -11,6 +11,8 @@ import {
   VectorDBLeadershipMetadata,
   VectorDBSiteInfoMetadata,
   VectorDBFeaturedEventMetadata,
+  VectorDBProjectMetadata,
+  PartialSiteProject,
 } from "./vectorDBTypes"; // adjust import as needed
 
 // Helper for type checks
@@ -106,6 +108,60 @@ export function checkVectorDBEventMetadata(
   if (collection !== "event")
     throw new Error('VectorDBEventMetadata: collection must be "event"');
   checkPartialSiteEvent(event);
+}
+
+export function checkPartialSiteProject(
+  param: unknown,
+): asserts param is PartialSiteProject {
+  if (!isObject(param))
+    throw new Error("PartialSiteProject: param is not an object");
+  const {
+    url,
+    name,
+    previewImageUrl,
+    dateStart,
+    dateEnd,
+    descriptionShort,
+    repoUrl,
+    demoUrl,
+    participantNames,
+  } = param as PartialSiteProject;
+  if (typeof url !== "string")
+    throw new Error("PartialSiteProject: url must be a string");
+  if (typeof name !== "string")
+    throw new Error("PartialSiteProject: name must be a string");
+  if (previewImageUrl !== undefined && typeof previewImageUrl !== "string")
+    throw new Error(
+      "PartialSiteProject: previewImageUrl must be a string if defined",
+    );
+  if (typeof dateStart !== "string")
+    throw new Error("PartialSiteProject: dateStart must be a string");
+  // dateEnd is genuinely optional here — an ongoing project has no end date.
+  if (dateEnd !== undefined && typeof dateEnd !== "string")
+    throw new Error("PartialSiteProject: dateEnd must be a string if defined");
+  if (typeof descriptionShort !== "string")
+    throw new Error("PartialSiteProject: descriptionShort must be a string");
+  if (repoUrl !== undefined && typeof repoUrl !== "string")
+    throw new Error("PartialSiteProject: repoUrl must be a string if defined");
+  if (demoUrl !== undefined && typeof demoUrl !== "string")
+    throw new Error("PartialSiteProject: demoUrl must be a string if defined");
+  if (participantNames !== undefined && !Array.isArray(participantNames))
+    throw new Error(
+      "PartialSiteProject: participantNames must be an array of strings if defined",
+    );
+}
+
+export function checkVectorDBProjectMetadata(
+  param: unknown,
+): asserts param is VectorDBProjectMetadata {
+  if (!isObject(param))
+    throw new Error("VectorDBProjectMetadata: param is not an object");
+  const { collection, project } = param as VectorDBProjectMetadata;
+  // Pinned by name for the same reason as checkVectorDBOrganizationMetadata
+  // below: produceDocumentObject dispatches by trying these in order.
+  if (collection !== "project")
+    throw new Error('VectorDBProjectMetadata: collection must be "project"');
+  checkPartialSiteProject(project);
 }
 
 export function checkVectorDBOrganizationMetadata(

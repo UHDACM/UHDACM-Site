@@ -1,4 +1,4 @@
-import { AnnouncementObj, cmsSingleTypePage, QnA, SiteEvent, SocialObj } from "../cms/CMSTypes";
+import { AnnouncementObj, cmsSingleTypePage, QnA, SiteEvent, SiteProject, SocialObj } from "../cms/CMSTypes";
 import { DBTicket } from "../ticket/ticketTypes";
 
 
@@ -23,8 +23,11 @@ export interface VectorDBPageMetadataAction {
 // "page-galleries"
 // "page-qnas"
 // chunked per section on a page
+// "projects-page" is included here even though it is not a cmsSingleTypePage:
+// it is not built from a sections dynamiczone, but it is still one page with a
+// URL and CTAs, so it reuses this metadata shape rather than inventing another.
 export interface VectorDBPageMetadata extends VectorDBBaseMetadata {
-  collection: cmsSingleTypePage,
+  collection: cmsSingleTypePage | 'projects-page',
   url: string,
   actions?: VectorDBPageMetadataAction[]
 };
@@ -48,6 +51,31 @@ export interface PartialSiteEvent {
   location: SiteEvent['location'];
   hasGallery: boolean;
   organizationNames?: string[];
+};
+
+
+// "project"
+export interface VectorDBProjectMetadata extends VectorDBBaseMetadata {
+  collection: 'project',
+  project: PartialSiteProject
+};
+
+// Lighter than SiteProject, and safe to hand to the LLM.
+//
+// NOTE: the project URL lives in here rather than at the top level on purpose.
+// produceDocumentObject tries checkVectorDBPageMetadata first, and that check
+// passes for anything with a string `collection` and a string `url` — a
+// top-level url here would make every project chunk read as a page.
+export interface PartialSiteProject {
+  url: string;
+  name: SiteProject['name'];
+  previewImageUrl?: string;
+  dateStart: SiteProject['dateStart'];
+  dateEnd?: SiteProject['dateEnd'];
+  descriptionShort: SiteProject['descriptionShort'];
+  repoUrl?: string;
+  demoUrl?: string;
+  participantNames?: string[];
 };
 
 

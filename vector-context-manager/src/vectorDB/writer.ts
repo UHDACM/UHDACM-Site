@@ -5,8 +5,10 @@ import {
   cmsCollectionsSingular,
   cmsSingleTypePages,
   cmsSingleTypes,
+  ProjectsPage,
   QnA,
   SiteEvent,
+  SiteProject,
   SiteSection,
   SplitHeroColumn
 } from "@shared/types/cms/CMSTypes";
@@ -24,8 +26,10 @@ import {
   isValidAnnouncement,
   isValidFeaturedEvent,
   isValidLeadership,
+  isValidProjectsPage,
   isValidQnA,
   isValidSiteEvent,
+  isValidSiteProject,
   isValidSiteInfo,
   isValidSiteSection,
   isValidSiteSectionAnnouncement,
@@ -52,11 +56,13 @@ import {
   VectorDBPageMetadata,
   VectorDBPageMetadataAction,
   VectorDBPersonMetadata,
+  VectorDBProjectMetadata,
   VectorDBQnAMetadata,
   VectorDBSiteInfoMetadata,
 } from "@shared/types/vectorDB/vectorDBTypes";
 import {
   convertSiteEventToPartialSiteEvent,
+  convertSiteProjectToPartialSiteProject,
   convertVectorDBMetadataToSafeMetadata,
 } from "@shared/types/vectorDB/vectorDBFuncs";
 import { vectorDBEmptyCollectionMarkerDocument } from "@shared/types/vectorDB/vectorDBData";
@@ -646,6 +652,48 @@ class VectorDBWriter {
           ]);
         }
         console.log('fetched2');
+      } else if (collection == "projects-page") {
+        const { url } = buildCMSFetchURL(
+          `${env_vars.CMS_URL}`,
+          "projects-page",
+          { populate: "*" },
+        );
+
+        const res = await (
+          await fetch(`${url}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${env_vars.CMS_API_TOKEN}`,
+            },
+          })
+        ).json();
+
+        const data: ProjectsPage | undefined = isValidProjectsPage(res?.data)
+          ? res.data
+          : undefined;
+
+        if (data) {
+          const actions: VectorDBPageMetadataAction[] = [
+            {
+              label: "Join Projects",
+              href:
+                (data.joinFormUrl[0] == "/" ? env_vars.FRONTEND_URL : "") +
+                data.joinFormUrl,
+            },
+          ];
+
+          const projectsPageMetaData: VectorDBPageMetadata = {
+            collection: collection,
+            url: `${env_vars.FRONTEND_URL}/projects`,
+            actions,
+          };
+
+          collectionDataMetadataArray.push([
+            `UHD ACM Projects page. ${data.introTitle}. ${data.introSubtitle || ""} ${data.joinTitle}. ${data.joinSubtitle || ""}`,
+            projectsPageMetaData,
+          ]);
+        }
       }
     } else if (isCMSCollectionSingular(collection)) {
       if (collection == "event") {
@@ -688,6 +736,49 @@ class VectorDBWriter {
           collectionDataMetadataArray.push([
             `Event: ${event.name}, ${event.location}, ${event.descriptionShort}`,
             eventMetaData,
+          ]);
+        }
+      } else if (collection == "project") {
+        const { url } = buildCMSFetchURL(`${env_vars.CMS_URL}`, "projects", {
+          "populate[0]": "previewImage",
+          "populate[1]": "people",
+        });
+
+        const res = await (
+          await fetch(`${url}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${env_vars.CMS_API_TOKEN}`,
+            },
+          })
+        ).json();
+
+        // Guarded rather than `res ? res.data : []`: a CMS that does not have
+        // this content type yet answers with a 404 body whose `data` is null,
+        // and iterating null throws — which would burn the ticket's retries
+        // instead of writing an empty-collection marker.
+        const projectsRaw = Array.isArray(res?.data) ? res.data : [];
+        const validProjects: SiteProject[] = [];
+        for (const project of projectsRaw) {
+          if (isValidSiteProject(project)) {
+            validProjects.push(project);
+          }
+        }
+
+        for (const project of validProjects) {
+          const partialSiteProject = convertSiteProjectToPartialSiteProject(
+            project,
+            env_vars.CMS_URL,
+            env_vars.FRONTEND_URL,
+          );
+          const projectMetaData: VectorDBProjectMetadata = {
+            collection: collection,
+            project: partialSiteProject,
+          };
+          collectionDataMetadataArray.push([
+            `Project: ${project.name}, ${project.descriptionShort}`,
+            projectMetaData,
           ]);
         }
       } else if (collection == "gallery") {

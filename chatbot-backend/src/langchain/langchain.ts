@@ -457,6 +457,7 @@ import {
   checkVectorDBOrganizationMetadata,
   checkVectorDBPageMetadata,
   checkVectorDBPersonMetadata,
+  checkVectorDBProjectMetadata,
   checkVectorDBQnAMetadata,
   checkVectorDBSiteInfoMetadata,
 } from "@shared/types/vectorDB/vectorDBCheck";
@@ -477,6 +478,12 @@ export const produceDocumentObject = (
   try {
     checkVectorDBEventMetadata(metadata);
     documentObject.event = metadata.event;
+    return documentObject;
+  } catch {}
+
+  try {
+    checkVectorDBProjectMetadata(metadata);
+    documentObject.project = metadata.project;
     return documentObject;
   } catch {}
 
