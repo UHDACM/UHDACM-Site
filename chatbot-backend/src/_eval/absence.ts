@@ -27,6 +27,13 @@ import { CorpusFilter } from "../tools/evalContext";
  * `npm run eval:probe`, which prints exactly what each filter lets through and
  * makes no LLM calls. The CMS changes over time — when an absent case starts
  * failing, re-run the probe and check whether new content has drifted in.
+ *
+ * NOT YET CALIBRATED: the "project" / "projects-page" entries below were added
+ * by reasoning about what project copy will say, because no project content
+ * existed in the CMS when the collections were introduced. Re-run the probe
+ * once real projects are published — and check the profiles that do NOT list
+ * them (glossary_absent_events in particular, since project blurbs are likely
+ * to name hackathons and workshops).
  */
 
 interface AbsenceProfile {
@@ -54,16 +61,22 @@ const PROFILES: Record<string, AbsenceProfile> = {
     // qna-3 ("QnA ... feat. MJ ... networking, projects, navigating life in
     // tech") surfaces and the agent presents it as a scheduled event, inventing a
     // date. A corpus with nothing scheduled would not surface it either.
-    collections: ["event", "featured-event", "qna"],
+    // project is excluded for the same reason as qna: a project chunk carries a
+    // dateStart and, when still running, no dateEnd — so an ongoing project
+    // reads as something currently scheduled.
+    collections: ["event", "featured-event", "qna", "project"],
     docIds: [
       "page-qnas-1", // "Coming soon... Join us for an inspiring conversation with Arbaz Khan"
       "page-home-3", // "Events Join workshops, hackathons, and meetups..."
     ],
-    note: "Page blurbs about the events page may remain — they list no actual event. page-qnas-1 announces an upcoming one, and qna entries are themselves upcoming events, so both are hidden.",
+    note: "Page blurbs about the events page may remain — they list no actual event. page-qnas-1 announces an upcoming one, and qna entries and ongoing projects are themselves upcoming activity, so all are hidden.",
   },
 
   join_absent_how_to_join: {
-    collections: ["page-join"],
+    // projects-page carries a {"label":"Join Projects","href":<form>} action —
+    // a real sign-up path delivered through action metadata, same as the two
+    // docIds noted below.
+    collections: ["page-join", "projects-page"],
     docIds: [
       "page-home-6", // "Join Today!" CTA
       "event-22", // General Interest Meeting — "Join us for our General Meeting"
@@ -94,6 +107,9 @@ const PROFILES: Record<string, AbsenceProfile> = {
     // involved"), and the qna entries ("practical insights and advice for anyone
     // exploring a career") all surface and the agent lists them as things you get
     // out of joining. Hiding the events alone just floats the qna entries up.
+    // project/projects-page are excluded because the projects pitch is a benefit
+    // pitch almost word for word — "develop skill and valuable network" — and
+    // project chunks list participants, which reads as the community on offer.
     collections: [
       "page-join",
       "page-about",
@@ -101,6 +117,8 @@ const PROFILES: Record<string, AbsenceProfile> = {
       "event",
       "featured-event",
       "qna",
+      "project",
+      "projects-page",
     ],
     docIds: [
       "page-galleries-0", // "From workshops and hackathons to socials and guest talks"
@@ -110,7 +128,7 @@ const PROFILES: Record<string, AbsenceProfile> = {
       "site-info-0", // socials list — a member-facing perk
       "page-events-2", // "Want to collaborate?"
     ],
-    note: "Benefit language is spread thin across the whole site; at top-k 16 event workshop descriptions read as benefits too, so the event collections are hidden alongside the remaining benefit pitches.",
+    note: "Benefit language is spread thin across the whole site; at top-k 16 event workshop descriptions read as benefits too, so the event and project collections are hidden alongside the remaining benefit pitches.",
   },
 
   glossary_absent_qnas: {
