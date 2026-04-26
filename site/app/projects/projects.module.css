@@ -46,8 +46,36 @@
   }
 }
 
+/* The empty state stands in for the whole grid, so it holds the same vertical
+   space a populated grid would — otherwise the page collapses to a thin strip
+   between the intro and the join CTA. */
 .empty {
-  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 60vh;
+  padding: 4rem 1rem;
+  box-sizing: border-box;
   text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  max-width: 30rem;
+}
+
+.emptySubtitle {
+  margin: 0;
+  max-width: 34rem;
   color: rgb(var(--color-font-secondary));
+}
+
+@media (max-width: 600px) {
+  .empty {
+    min-height: 50vh;
+    padding: 3rem 0.5rem;
+  }
 }

@@ -49,8 +49,13 @@ export default async function ProjectsGrid() {
     <div className="SectionRoot">
       <div className={`SectionInner ${styles.innerStyling}`}>
         {projects.length === 0 ? (
-          <div className={`BodyLargeHeavy ${styles.empty}`}>
-            No projects to show yet — check back soon.
+          <div className={styles.empty}>
+            <h2 className={`H2 ${styles.emptyTitle}`}>
+              No Projects :(
+            </h2>
+            <p className={`SubtitleRegular`}>
+              Check around some other day, we will make something soon!
+            </p>
           </div>
         ) : (
           <div className={styles.grid}>
