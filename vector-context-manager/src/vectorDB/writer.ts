@@ -652,10 +652,10 @@ class VectorDBWriter {
           ]);
         }
         console.log('fetched2');
-      } else if (collection == "projects-page") {
+      } else if (collection == "page-projects") {
         const { url } = buildCMSFetchURL(
           `${env_vars.CMS_URL}`,
-          "projects-page",
+          "page-projects",
           { populate: "*" },
         );
 

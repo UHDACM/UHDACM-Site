@@ -955,12 +955,12 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiProjectsPageProjectsPage extends Struct.SingleTypeSchema {
-  collectionName: 'projects_pages';
+export interface ApiPageProjectsPageProjects extends Struct.SingleTypeSchema {
+  collectionName: 'page_projects_plural';
   info: {
-    displayName: 'projects-page';
-    pluralName: 'projects-pages';
-    singularName: 'projects-page';
+    displayName: 'page-projects';
+    pluralName: 'page-projects-plural';
+    singularName: 'page-projects';
   };
   options: {
     draftAndPublish: true;
@@ -980,7 +980,7 @@ export interface ApiProjectsPageProjectsPage extends Struct.SingleTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::projects-page.projects-page'
+      'api::page-projects.page-projects'
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
@@ -1578,7 +1578,7 @@ declare module '@strapi/strapi' {
       'api::page-qnas.page-qnas': ApiPageQnasPageQnas;
       'api::person.person': ApiPersonPerson;
       'api::project.project': ApiProjectProject;
-      'api::projects-page.projects-page': ApiProjectsPageProjectsPage;
+      'api::page-projects.page-projects': ApiPageProjectsPageProjects;
       'api::qna.qna': ApiQnaQna;
       'api::site-info.site-info': ApiSiteInfoSiteInfo;
       'plugin::content-releases.release': PluginContentReleasesRelease;

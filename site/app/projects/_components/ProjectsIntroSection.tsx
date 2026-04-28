@@ -10,7 +10,7 @@ import { getProjectsPageData } from "./projectsPageData";
  *
  * The projects page deliberately skips PageRenderer (which only understands a
  * sections dynamiczone) and instead composes SplitHeroSection directly from the
- * flat `projects-page` fields. SplitHeroSection's props are
+ * flat `page-projects` fields. SplitHeroSection's props are
  * Omit<SiteSectionSplitHero, "__component" | "id">, so a plain object literal
  * is all it needs.
  */

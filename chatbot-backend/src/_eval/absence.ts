@@ -28,7 +28,7 @@ import { CorpusFilter } from "../tools/evalContext";
  * makes no LLM calls. The CMS changes over time — when an absent case starts
  * failing, re-run the probe and check whether new content has drifted in.
  *
- * NOT YET CALIBRATED: the "project" / "projects-page" entries below were added
+ * NOT YET CALIBRATED: the "project" / "page-projects" entries below were added
  * by reasoning about what project copy will say, because no project content
  * existed in the CMS when the collections were introduced. Re-run the probe
  * once real projects are published — and check the profiles that do NOT list
@@ -73,10 +73,10 @@ const PROFILES: Record<string, AbsenceProfile> = {
   },
 
   join_absent_how_to_join: {
-    // projects-page carries a {"label":"Join Projects","href":<form>} action —
+    // page-projects carries a {"label":"Join Projects","href":<form>} action —
     // a real sign-up path delivered through action metadata, same as the two
     // docIds noted below.
-    collections: ["page-join", "projects-page"],
+    collections: ["page-join", "page-projects"],
     docIds: [
       "page-home-6", // "Join Today!" CTA
       "event-22", // General Interest Meeting — "Join us for our General Meeting"
@@ -107,7 +107,7 @@ const PROFILES: Record<string, AbsenceProfile> = {
     // involved"), and the qna entries ("practical insights and advice for anyone
     // exploring a career") all surface and the agent lists them as things you get
     // out of joining. Hiding the events alone just floats the qna entries up.
-    // project/projects-page are excluded because the projects pitch is a benefit
+    // project/page-projects are excluded because the projects pitch is a benefit
     // pitch almost word for word — "develop skill and valuable network" — and
     // project chunks list participants, which reads as the community on offer.
     collections: [
@@ -118,7 +118,7 @@ const PROFILES: Record<string, AbsenceProfile> = {
       "featured-event",
       "qna",
       "project",
-      "projects-page",
+      "page-projects",
     ],
     docIds: [
       "page-galleries-0", // "From workshops and hackathons to socials and guest talks"

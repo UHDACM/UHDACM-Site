@@ -23,11 +23,11 @@ export interface VectorDBPageMetadataAction {
 // "page-galleries"
 // "page-qnas"
 // chunked per section on a page
-// "projects-page" is included here even though it is not a cmsSingleTypePage:
+// "page-projects" is included here even though it is not a cmsSingleTypePage:
 // it is not built from a sections dynamiczone, but it is still one page with a
 // URL and CTAs, so it reuses this metadata shape rather than inventing another.
 export interface VectorDBPageMetadata extends VectorDBBaseMetadata {
-  collection: cmsSingleTypePage | 'projects-page',
+  collection: cmsSingleTypePage | 'page-projects',
   url: string,
   actions?: VectorDBPageMetadataAction[]
 };

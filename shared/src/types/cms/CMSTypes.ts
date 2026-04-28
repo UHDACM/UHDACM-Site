@@ -32,11 +32,12 @@ export type cmsCollectionSingular = (typeof cmsCollectionsSingular)[number];
 export type cmsCollectionPlural = (typeof cmsCollectionsPlural)[number];
 
 
-// NOTE: "projects-page" lives here rather than in cmsSingleTypePages on purpose.
-// Everything in cmsSingleTypePages is assumed to carry a `sections` dynamiczone
-// (see fetchCMSPage/PageRenderer, and the vector writer's page branch). The
+// NOTE: "page-projects" lives here rather than in cmsSingleTypePages, despite
+// the shared naming. Everything in cmsSingleTypePages is assumed to carry a
+// `sections` dynamiczone (see fetchCMSPage/PageRenderer, and the vector
+// writer's page branch, which reads `sections` and would find none). The
 // projects page uses flat fields instead, so it must stay out of that list.
-export const cmsSingleTypes = ["featured-event", "leadership", "site-info", "announcement", "projects-page"] as const;
+export const cmsSingleTypes = ["featured-event", "leadership", "site-info", "announcement", "page-projects"] as const;
 export type cmsSingleType = (typeof cmsSingleTypes)[number];
 
 export const cmsSingleTypePages = [
@@ -296,7 +297,7 @@ export type SiteProjectSummary = Pick<
   | "descriptionShort"
 > & { peopleCount?: number };
 
-// The "projects-page" single type. Deliberately flat fields rather than a
+// The "page-projects" single type. Deliberately flat fields rather than a
 // dynamiczone — the org needs to edit this copy without assembling sections.
 export type ProjectsPage = {
   introImage?: StrapiPicture;

@@ -5,7 +5,7 @@ import { isValidProjectsPage } from "@shared/types/cms/CMSCheck";
 import { ProjectsPage } from "@shared/types/cms/CMSTypes";
 
 /**
- * Fetches the `projects-page` single type — the CMS-editable copy for the
+ * Fetches the `page-projects` single type — the CMS-editable copy for the
  * projects intro and the "Join Projects" call to action.
  *
  * Returns undefined rather than throwing when the CMS is unreachable or the
@@ -13,7 +13,7 @@ import { ProjectsPage } from "@shared/types/cms/CMSTypes";
  * of taking the page down.
  */
 export async function getProjectsPageData(): Promise<ProjectsPage | undefined> {
-  const res = await fetchCMS("projects-page", { populate: "*" });
+  const res = await fetchCMS("page-projects", { populate: "*" });
   const data = res?.data;
   if (!isValidProjectsPage(data)) {
     return undefined;

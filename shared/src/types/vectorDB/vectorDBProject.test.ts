@@ -62,10 +62,10 @@ describe("project vector metadata", () => {
     expect(() => checkVectorDBProjectMetadata(back)).not.toThrow();
   });
 
-  it("projects-page metadata still reads as a page", () => {
+  it("page-projects metadata still reads as a page", () => {
     expect(() =>
       checkVectorDBPageMetadata({
-        collection: "projects-page",
+        collection: "page-projects",
         url: "https://uhdacm.org/projects",
         actions: [{ label: "Join Projects", href: "https://forms.example" }],
       }),
