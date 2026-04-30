@@ -1,9 +1,23 @@
+/* Fixed reading measure rather than width: 100%. .SectionInner is a centered
+   flex column, so a bounded width gets centered on the page; stretching to
+   100% instead pins the body to the left edge and runs lines the full width of
+   --page-max-width. Matches .eventDescription so both detail pages line up. */
 .projectDescription {
+  width: 36rem;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 1rem;
-  width: 100%;
-  max-width: 100%;
+  margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+  .projectDescription {
+    width: 100%;
+    padding: 0rem 1rem;
+    box-sizing: border-box;
+  }
 }
 
 .buttonRow {

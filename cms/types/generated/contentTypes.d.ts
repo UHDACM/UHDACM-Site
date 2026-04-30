@@ -839,6 +839,41 @@ export interface ApiPageMediaPageMedia extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiPageProjectsPageProjects extends Struct.SingleTypeSchema {
+  collectionName: 'page_projects_plural';
+  info: {
+    displayName: 'page-projects';
+    pluralName: 'page-projects-plural';
+    singularName: 'page-projects';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    introImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    introSubtitle: Schema.Attribute.Text;
+    introTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    joinFormUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    joinSubtitle: Schema.Attribute.Text;
+    joinTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-projects.page-projects'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPageQnasPageQnas extends Struct.SingleTypeSchema {
   collectionName: 'page_qnas_plural';
   info: {
@@ -952,41 +987,6 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     urlSlug: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-  };
-}
-
-export interface ApiPageProjectsPageProjects extends Struct.SingleTypeSchema {
-  collectionName: 'page_projects_plural';
-  info: {
-    displayName: 'page-projects';
-    pluralName: 'page-projects-plural';
-    singularName: 'page-projects';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    introImage: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
-    introSubtitle: Schema.Attribute.Text;
-    introTitle: Schema.Attribute.String & Schema.Attribute.Required;
-    joinFormUrl: Schema.Attribute.String & Schema.Attribute.Required;
-    joinSubtitle: Schema.Attribute.Text;
-    joinTitle: Schema.Attribute.String & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::page-projects.page-projects'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
   };
 }
 
@@ -1575,10 +1575,10 @@ declare module '@strapi/strapi' {
       'api::page-home.page-home': ApiPageHomePageHome;
       'api::page-join.page-join': ApiPageJoinPageJoin;
       'api::page-media.page-media': ApiPageMediaPageMedia;
+      'api::page-projects.page-projects': ApiPageProjectsPageProjects;
       'api::page-qnas.page-qnas': ApiPageQnasPageQnas;
       'api::person.person': ApiPersonPerson;
       'api::project.project': ApiProjectProject;
-      'api::page-projects.page-projects': ApiPageProjectsPageProjects;
       'api::qna.qna': ApiQnaQna;
       'api::site-info.site-info': ApiSiteInfoSiteInfo;
       'plugin::content-releases.release': PluginContentReleasesRelease;

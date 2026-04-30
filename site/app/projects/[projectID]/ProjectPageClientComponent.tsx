@@ -123,7 +123,7 @@ export default function ProjectPageClientComponent({
           </div>
         </div>
       </div>
-
+      <div style={{ height: "6rem" }} />
       {people.length > 0 && (
         <div className={`SectionRoot ${styles.peopleSection}`}>
           <div className="SectionInner">
@@ -131,7 +131,7 @@ export default function ProjectPageClientComponent({
               className="H1"
               style={{ textAlign: "center", marginBottom: "0.5rem" }}
             >
-              Who Built It
+              The Builders
             </h1>
             <PersonTileCarousel
               people={people}

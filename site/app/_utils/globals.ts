@@ -14,10 +14,10 @@ export const NavigationTree: NavigationEntryObj[] = [
     title: "Projects",
     path: "/projects",
   },
-  {
-    title: "Media",
-    path: "/media",
-  },
+  // {
+  //   title: "Media",
+  //   path: "/media",
+  // },
   {
     title: "Contact",
     path: "/contact-us",

@@ -22,7 +22,7 @@ export default async function ProjectsIntroSection() {
     type: "textBlock",
     textBlock: {
       header: data.introTitle,
-      headerType: "Title",
+      headerType: "H1",
       alignment: "left",
       buttonsVisible: false,
       ...(data.introSubtitle ? { subheader: data.introSubtitle } : {}),
