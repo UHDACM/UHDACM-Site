@@ -1,5 +1,5 @@
 import { HeroTextBlock as HeroTextBlockProps } from "@shared/types/cms/CMSTypes";
-import { Fragment, ReactNode } from "react";
+import { CSSProperties, Fragment, ReactNode } from "react";
 import styles from "./HeroTextBlock.module.css";
 import CMSButton from "@/app/_components/Button/CMSButton/CMSButton";
 
@@ -12,6 +12,8 @@ export function HeroTextBlock({
   buttons,
   alignment,
 }: HeroTextBlockProps) {
+  // Alignment rides on CSS variables rather than inline styles so a page can
+  // override it at a breakpoint (inline styles can't be beaten by a media query).
   let trueAlignment = "start";
   if (alignment === "center") trueAlignment = "center";
   else if (alignment === "right") trueAlignment = "end";
@@ -41,34 +43,26 @@ export function HeroTextBlock({
       }}
     >
       <div
-        style={{
-          alignItems: trueAlignment,
-        }}
+        style={
+          {
+            "--hero-text-block-align": trueAlignment,
+            "--hero-text-block-text-align": alignment,
+          } as CSSProperties
+        }
         className={styles.textBlockInner}
       >
         <div className={styles.heroHeader}>
           {preheader && (
-            <span
-              style={{ textAlign: alignment }}
-              className={`BodySmall ${styles.span}`}
-            >
-              {preheaderNode}
-            </span>
+            <span className={`BodySmall ${styles.span}`}>{preheaderNode}</span>
           )}
           {header && (
-            <div
-              className={headerType ? ` ${headerType}` : "Title"}
-              style={{ textAlign: alignment }}
-            >
+            <div className={headerType ? ` ${headerType}` : "Title"}>
               {headerNode}
             </div>
           )}
         </div>
         {subheader && (
-          <div
-            style={{ whiteSpace: "pre-line", textAlign: alignment }}
-            className="SubtitleRegular"
-          >
+          <div style={{ whiteSpace: "pre-line" }} className="SubtitleRegular">
             {subheaderNode}
           </div>
         )}

@@ -48,6 +48,11 @@ export default async function ProjectsGrid() {
   return (
     <div className="SectionRoot">
       <div className={`SectionInner ${styles.innerStyling}`}>
+        {/* The empty state carries its own "No Projects :(" heading, so this
+            one would only be a duplicate above it. */}
+        {projects.length > 0 && (
+          <h2 className={`H2 ${styles.gridHeading}`}>Projects</h2>
+        )}
         {projects.length === 0 ? (
           <div className={styles.empty}>
             <h2 className={`H2 ${styles.emptyTitle}`}>

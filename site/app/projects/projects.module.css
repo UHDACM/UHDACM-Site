@@ -20,6 +20,19 @@
   }
 }
 
+.gridHeading {
+  margin: 0;
+  width: 100%;
+}
+
+/* Matches the breakpoint where the intro hero centers, so the whole page
+   switches to a centered column at the same width. */
+@media (max-width: 768px) {
+  .gridHeading {
+    text-align: center;
+  }
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -77,5 +90,17 @@
   .empty {
     min-height: 50vh;
     padding: 3rem 0.5rem;
+  }
+}
+
+/* The intro hero is left-aligned beside its image on desktop, but once
+   SplitHeroSection stacks the columns (768px) a left rag under a centered
+   image reads as a misalignment — so center the copy there. Overriding the
+   HeroTextBlock alignment variables is the only way in: the component would
+   otherwise set alignment inline, which no media query can beat. */
+@media (max-width: 768px) {
+  .introMobileCenter {
+    --hero-text-block-align: center;
+    --hero-text-block-text-align: center;
   }
 }

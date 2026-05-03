@@ -4,6 +4,7 @@ import {
   SplitHeroColumnTextBlock,
 } from "@shared/types/cms/CMSTypes";
 import { getProjectsPageData } from "./projectsPageData";
+import styles from "../projects.module.css";
 
 /**
  * Intro hero for /projects.
@@ -34,13 +35,15 @@ export default async function ProjectsIntroSection() {
     : undefined;
 
   return (
-    <SplitHeroSection
-      sectionID="intro"
-      leftComponent={textBlock}
-      centerIfPossible={!image}
-      reverseOnDesktop={false}
-      reverseOnMobile={false}
-      {...(image ? { rightComponent: image } : {})}
-    />
+    <div className={styles.introMobileCenter}>
+      <SplitHeroSection
+        sectionID="intro"
+        leftComponent={textBlock}
+        centerIfPossible={!image}
+        reverseOnDesktop={false}
+        reverseOnMobile={false}
+        {...(image ? { rightComponent: image } : {})}
+      />
+    </div>
   );
 }

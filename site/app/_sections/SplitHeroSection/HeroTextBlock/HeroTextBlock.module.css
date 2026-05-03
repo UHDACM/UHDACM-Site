@@ -23,6 +23,8 @@
 	gap: 0.5rem;
 	width: 100%;
 	box-sizing: border-box;
+	align-items: var(--hero-text-block-align, start);
+	text-align: var(--hero-text-block-text-align, left);
 }
 
 @media (max-width: 768px) {
