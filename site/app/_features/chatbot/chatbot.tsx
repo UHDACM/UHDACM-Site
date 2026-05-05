@@ -389,6 +389,7 @@ What are you looking for today?`,
         }
       }
 
+      console.log('qr', query_response);
       checkQueryResponse(query_response);
 
       setMessages((prev) => [
