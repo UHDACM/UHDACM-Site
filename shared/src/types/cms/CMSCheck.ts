@@ -722,6 +722,7 @@ export function isValidSiteProject(project: any): project is SiteProject {
   if (demoUrl !== undefined && demoUrl !== null && typeof demoUrl !== "string")
     return false;
   if (people !== undefined && people !== null) {
+    console.log(JSON.stringify(people, null, 2));
     if (!Array.isArray(people) || !people.every(isPerson)) return false;
   }
   return true;

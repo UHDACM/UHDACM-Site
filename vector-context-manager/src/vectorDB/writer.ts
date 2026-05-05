@@ -742,6 +742,7 @@ class VectorDBWriter {
         const { url } = buildCMSFetchURL(`${env_vars.CMS_URL}`, "projects", {
           "populate[0]": "previewImage",
           "populate[1]": "people",
+          "populate[people][populate]": "*"
         });
 
         const res = await (
@@ -753,7 +754,6 @@ class VectorDBWriter {
             },
           })
         ).json();
-
         // Guarded rather than `res ? res.data : []`: a CMS that does not have
         // this content type yet answers with a 404 body whose `data` is null,
         // and iterating null throws — which would burn the ticket's retries

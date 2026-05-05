@@ -235,7 +235,7 @@ app.post(
         return res.send({ success: true });
       }
 
-      // console.log('cias', context);
+      console.log('cias', context);
       const validContext: QueryMessage[] = [];
       if (Array.isArray(context)) {
         for (const msg of context) {
