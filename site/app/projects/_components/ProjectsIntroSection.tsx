@@ -41,7 +41,7 @@ export default async function ProjectsIntroSection() {
         leftComponent={textBlock}
         centerIfPossible={!image}
         reverseOnDesktop={false}
-        reverseOnMobile={false}
+        reverseOnMobile={true}
         {...(image ? { rightComponent: image } : {})}
       />
     </div>
