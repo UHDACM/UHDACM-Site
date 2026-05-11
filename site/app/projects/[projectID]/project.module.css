@@ -36,4 +36,7 @@
 .peopleSection {
   width: 100%;
   margin-top: 2rem;
+  /* Clears the fixed navbar when the hero's "Meet the Builders" button jumps
+     here, so the heading is not tucked underneath it. */
+  scroll-margin-top: 5rem;
 }

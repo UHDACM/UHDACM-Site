@@ -938,7 +938,8 @@ export interface ApiPersonPerson extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     nameShort: Schema.Attribute.String & Schema.Attribute.Required;
-    picture: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    picture: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     role: Schema.Attribute.String & Schema.Attribute.Required;
     roleShort: Schema.Attribute.String & Schema.Attribute.Required;

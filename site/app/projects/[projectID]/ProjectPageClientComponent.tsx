@@ -5,7 +5,11 @@ import ShareButton from "@/app/_components/Button/CommonVariants/ShareButton";
 import PersonTileCarousel from "@/app/_components/PersonTileCarousel/PersonTileCarousel";
 import StrapiRichTextRenderer from "@/app/_components/StrapiRichTextRenderer/StrapiRichTextRenderer";
 import { usePublicEnv } from "@/app/_context/PublicEnvContext/PublicEnvContext";
-import { DefaultCode, DefaultOpenInNewTab } from "@/app/_icons/Icons";
+import {
+  DefaultCode,
+  DefaultOpenInNewTab,
+  DefaultPeople,
+} from "@/app/_icons/Icons";
 import useAnalytics from "@/app/_hooks/useAnalytics";
 import MainHeroSection from "@/app/_sections/MainHeroSection/MainHeroSection";
 import HeroSingleImage from "@/app/_sections/SplitHeroSection/HeroSingleImage/HeroSingleImage";
@@ -16,6 +20,23 @@ import {
 import { isStrapiPicture } from "@shared/types/cms/CMSCheck";
 import { SiteProject } from "@shared/types/cms/CMSTypes";
 import styles from "./project.module.css";
+
+const BUILDERS_SECTION_ID = "builders";
+
+function scrollToBuilders() {
+  document
+    .getElementById(BUILDERS_SECTION_ID)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function MeetBuildersButton() {
+  return (
+    <Button onClick={scrollToBuilders} className={styles.linkButtonContent}>
+      <span>Meet the Builders</span>
+      <DefaultPeople fontSize={"inherit"} />
+    </Button>
+  );
+}
 
 function ShareProjectButton({ project }: { project: SiteProject }) {
   const public_env = usePublicEnv();
@@ -86,6 +107,7 @@ export default function ProjectPageClientComponent({
         />
       )}
       <ShareProjectButton project={project} />
+      {people.length > 0 && <MeetBuildersButton />}
     </div>
   );
 
@@ -125,7 +147,10 @@ export default function ProjectPageClientComponent({
       </div>
       <div style={{ height: "6rem" }} />
       {people.length > 0 && (
-        <div className={`SectionRoot ${styles.peopleSection}`}>
+        <div
+          id={BUILDERS_SECTION_ID}
+          className={`SectionRoot ${styles.peopleSection}`}
+        >
           <div className="SectionInner">
             <h1
               className="H1"

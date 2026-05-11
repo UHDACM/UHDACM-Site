@@ -57,6 +57,7 @@ export default async function ProjectPage({
     return <ProjectPage404 />;
   }
 
+
   return (
     <WrapInNavbarAndFooter>
       <NavbarPadding />
