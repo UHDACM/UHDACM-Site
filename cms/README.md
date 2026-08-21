@@ -141,6 +141,60 @@ Railway Postgres has managed backups. Media is in R2 and is not part of them.
 There is a standalone snapshot of the pre-migration Strapi Cloud state (843
 media objects + all content as JSON) taken 2026-08-20, kept outside the repo.
 
+## Migrating data between instances
+
+`strapi transfer` has two problems in 5.22.0. Both are worked around below; read
+this before trying the documented-looking command, which does not work.
+
+**1. `--from` / `--to` are ignored and the CLI prompts anyway.** In
+`cli/commands/transfer/command.js`, `determineDirection()` returns the parsed URL
+object instead of the string `'from'`/`'to'`. The next line does
+`opts[direction]`, indexes with a URL object, gets `undefined`, and falls through
+to an interactive prompt - which also mislabels the direction. Work around it by
+*also* passing the values as environment variables, which `determineUrl()` and
+`determineToken()` check before prompting. The `--from`/`--to` flags still drive
+the real transfer, so pass both:
+
+```bash
+STRAPI_TRANSFER_URL="$URL" STRAPI_TRANSFER_TOKEN="$TOKEN" \
+  ./node_modules/.bin/strapi transfer --from "$URL" --from-token "$TOKEN" --force
+```
+
+Use `./node_modules/.bin/strapi`, not `npx strapi`, and redirect stdin from
+`/dev/null` in scripts so a stray prompt fails loudly instead of hanging.
+
+**2. The assets stage is not reliable and takes the whole transfer down with
+it.** Migrating off Strapi Cloud, it stalled after 15s on the first 1.7 MB image
+("transfer stalled, aborting"), closed the websocket, and rolled back the entire
+transaction - including the entities that had already succeeded. This is a known
+class of bug (strapi/strapi#25093, #16473, #20087).
+
+Transfer content and media separately instead:
+
+```bash
+# 1. content only - the plugin::upload.file DB rows still come across,
+#    --exclude files skips only the binaries
+strapi transfer --from ... --exclude files --force
+
+# 2. media straight into the bucket, keyed by filename. Strapi's filenames are
+#    already content-hashed and flat, so they map 1:1 onto R2 object keys.
+aws s3 sync ./media "s3://$R2_BUCKET/" --endpoint-url "$R2_ENDPOINT"
+
+# 3. point the DB rows at the new host. Do this on the SOURCE instance before
+#    pushing, so the destination never needs direct database access.
+UPDATE files SET url = REPLACE(url, '<old-host>', '<new-host>'),
+                 formats = REPLACE(formats, '<old-host>', '<new-host>'),
+                 provider = 'aws-s3';
+```
+
+Media URLs live in three places per row: `url`, every `formats[*].url` (stored as
+JSON text), and the `provider` column. `preview_url` and `provider_metadata` were
+both null for every row here, but check before assuming that.
+
+Verify afterwards that no URL still points at the old host - a transfer that
+"succeeds" can still leave every image pointing somewhere that is about to be
+switched off.
+
 ## Types
 There are many types.
 
