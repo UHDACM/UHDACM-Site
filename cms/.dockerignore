@@ -1,0 +1,13 @@
+node_modules
+build
+dist
+.cache
+.tmp
+.git
+.env
+.env.*
+*.bak
+*.bak-*
+package.json.bak
+.strapi
+.strapi-updater.json

@@ -122,6 +122,10 @@ coverage
 ############################
 
 .env
+# also catch .env.local, .env.production, and hand-made .env.bak-* copies -
+# plain `.env` alone let a secrets backup sit untracked-but-committable
+.env.*
+!.env.example
 license.txt
 exports
 .strapi

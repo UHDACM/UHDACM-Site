@@ -28,10 +28,16 @@ API_TOKEN_SALT=yourApiTokenSalt
 ADMIN_JWT_SECRET=yourAdminJwtSecret
 TRANSFER_TOKEN_SALT=yourTransferTokenSalt
 
-# Database (SQLite default)
+ENCRYPTION_KEY=yourEncryptionKey
+JWT_SECRET=yourJwtSecret
+
+# Database (SQLite for local dev)
 DATABASE_CLIENT=sqlite
 DATABASE_FILENAME=.tmp/data.db
 ```
+
+Media uploads go to the local `public/uploads` folder unless `R2_BUCKET` is set,
+so the vars in the Hosting section below are optional for local development.
 
 ---
 ### `develop`
@@ -81,6 +87,59 @@ ENSURE SITE and VECTOR-CONTEXT-MANAGER has the `CMS_AUTH_TOKEN` and `CMS_URL` en
 Do the same thing for `http://localhost:5500/update` (vector db manager).
 
 
+
+## Hosting
+
+The CMS is self-hosted on **Railway** (it used to be on Strapi Cloud, whose free
+plan was deleted on 2026-09-01). Media lives in a **Cloudflare R2** bucket served
+from `cdn.uhdacm.org`, which is deliberately separate from the app host: the
+Strapi container is disposable, and moving it again does not mean moving 200+ MB
+of photos again.
+
+### Railway service settings
+- **Root Directory** must be `cms` - the repo is a monorepo and the build uses
+  `cms/Dockerfile`. Nothing outside `cms/` is referenced.
+- Postgres comes from the Railway Postgres plugin; point `DATABASE_URL` at its
+  reference variable and set `DATABASE_CLIENT=postgres`.
+
+### Production env vars
+On top of the local vars above:
+
+```env
+DATABASE_CLIENT=postgres
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+
+PUBLIC_URL=https://<railway-domain>   # Strapi builds admin links from this
+IS_PROXIED=true                       # Railway terminates TLS in front of us
+
+# Cloudflare R2. Setting R2_BUCKET is what switches the upload provider from
+# the local disk to R2 - without it Strapi silently uses local storage.
+R2_BUCKET=uhdacm-media
+R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
+R2_ACCESS_KEY_ID=...
+R2_ACCESS_SECRET=...
+CDN_URL=https://cdn.uhdacm.org        # written into every media url in the DB
+CDN_HOST=cdn.uhdacm.org               # host only; added to the admin panel CSP
+
+# Optional: overrides the default browser-origin allowlist in config/middlewares.ts
+CORS_ORIGINS=https://uhdacm.org,https://www.uhdacm.org
+```
+
+`CDN_URL` is the important one. It becomes the `url` on every row of the `files`
+table, so it must be a domain we control - if it ever points at someone else's
+host, losing that host means losing every image reference.
+
+### Things that do NOT survive a `strapi transfer`
+Admin users, API tokens, and webhooks are all excluded. After any restore:
+1. Recreate the first admin user, then invite the other officers.
+2. Mint a new API token and update `STRAPI_API_TOKEN` (site) and `CMS_API_TOKEN`
+   (vector-context-manager).
+3. Re-register both webhooks - see "Registering webhooks" above.
+
+### Backups
+Railway Postgres has managed backups. Media is in R2 and is not part of them.
+There is a standalone snapshot of the pre-migration Strapi Cloud state (843
+media objects + all content as JSON) taken 2026-08-20, kept outside the repo.
 
 ## Types
 There are many types.
