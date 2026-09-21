@@ -103,3 +103,76 @@ See `./cms` for more
 ## Known Limitations
 - Event data stored in vectorDB uses shortDescription, but no fullDecription.
   - This makes the fullDescription unreachable to the chatbot.
+
+## Hosting
+
+Self-hosted on **Railway**, alongside the CMS. The service is stateless - tickets
+live in Firestore and vectors in Chroma Cloud - so the container is disposable
+and needs no volume. The `chroma/` directory in this folder is created by the
+local `npm run chroma-server` dev server only; it is never used in production.
+
+### Railway service settings
+Unlike `cms/`, **Root Directory must stay at the repo root.** This service's
+`tsconfig.json` sets `rootDir: "../"` and includes `../shared/src`, so `shared/`
+is compiled into this service's own `dist/` and has to be in the build context.
+Pointing Root Directory at `vector-context-manager` makes every `@shared/*`
+import unresolvable.
+
+    Root Directory   /                                   (leave at the repo root)
+    Dockerfile Path  vector-context-manager/Dockerfile
+    Watch Paths      /vector-context-manager/**, /shared/**
+    Healthcheck      /status
+    Replicas         1
+
+**Replicas must stay at 1.** `VectorDBWriter`'s concurrency guard is an
+in-process `state` field, so two replicas would drain the Firestore ticket queue
+and write the same Chroma collection concurrently. Its constructor also throws
+if a second writer is ever constructed.
+
+Because `rootDir` is `../`, the compiled entrypoint lands at
+`dist/vector-context-manager/src/index.js` - that nesting is why `npm start` is
+`node ./dist/vector-context-manager/src`.
+
+### Production env vars
+Same as the local list above, with these differences:
+
+    NODE_ENV=production
+
+    # Do NOT set PORT. Railway injects it, and the app reads process.env.PORT.
+
+    TESTING=false            # the local .env sets this true for vitest
+
+    # Must be the Railway Strapi domain, NOT the retired Strapi Cloud host.
+    # This doubles as the CORS allowlist, so a stale value breaks more than
+    # outbound fetches.
+    CMS_URL=https://<strapi-railway-domain>
+
+    FRONTEND_URL=https://uhdacm.org   # baked into every vector's metadata as
+                                      # the page URL the chatbot links to
+
+`FB_ADMIN_JSON` is the whole Firebase service-account JSON as a single env
+value; paste it as **one line**. It is `JSON.parse`d eagerly at import, so a
+malformed value crashes the process before the logger is up and the Railway log
+shows only a bare `SyntaxError`.
+
+`env_vars` throws at module load when a required variable is missing, so a
+misconfiguration shows up as an immediate boot crash in the deploy log.
+
+### Boot behaviour on Railway
+`VectorDBWriter`'s constructor runs `healthCheck()` on **every start**, which
+checks each CMS collection for at least one vector and enqueues a ticket for any
+that are empty, then drains the queue. Every restart or redeploy therefore
+triggers a reconciliation pass that hits Strapi and Chroma - expect a busy first
+minute after deploy, and expect it again on any crash-restart loop.
+
+### After redeploying
+The Strapi webhook points at an absolute URL, so if the Railway domain changes,
+re-register it: Strapi dashboard -> Settings -> Webhooks -> URL
+`https://<vcm-railway-domain>/update`, header `Authorization: <CMS_AUTH_TOKEN>`,
+events `create`, `update`, `delete`. The endpoint is safe to expose publicly -
+it rejects anything whose `Authorization` header does not match `CMS_AUTH_TOKEN`
+under a timing-safe compare - but it is useless without that header, so a
+forgotten re-registration looks like "the chatbot stopped noticing CMS edits".
+
+Note that a CMS restore does not carry API tokens over: after one, mint a new
+Strapi token and update `CMS_API_TOKEN` here.

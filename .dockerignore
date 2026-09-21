@@ -1,0 +1,34 @@
+# Build context for chatbot-backend and vector-context-manager is the REPO ROOT,
+# not the service directory, because both compile ../shared/src into their own
+# dist (tsconfig rootDir is "../"). Docker reads the .dockerignore next to the
+# context root, so this file - not a per-service one - is what applies to them.
+#
+# cms/ has its own context (Root Directory = cms) and its own .dockerignore;
+# nothing here affects it.
+
+**/node_modules
+
+# Must be excluded. vector-context-manager's tsconfig "include" is ["./"], so a
+# stale dist/**/*.d.ts copied into the image makes tsc fail with duplicate
+# declarations - this is the same hazard its `rm -rf ./dist` build step guards
+# against locally.
+**/dist
+
+# Secrets are supplied by Railway's environment, never baked into a layer.
+**/.env
+**/.env.*
+
+**/.git
+
+# Local Chroma server data dir (created by `npm run chroma-server`). Production
+# uses Chroma Cloud, so this is dev-only bulk.
+**/chroma
+
+# promptfoo eval artifacts - dev tooling, never runs in the deployed image.
+**/.promptfoo
+chatbot-backend/src/_eval/output
+
+# The other two services in the monorepo. Neither Dockerfile references them,
+# and site/ in particular drags in a very large .next build.
+cms
+site

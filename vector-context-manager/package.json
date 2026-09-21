@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register ./src/index.ts",
     "start": "node ./dist/vector-context-manager/src",
-
     "setup-shared": "cd ../shared && npm i",
     "build": "rm -rf ./dist && npm run setup-shared && npm i && tsc -b && tsc-alias",
+    "build:ci": "tsc -b && tsc-alias",
     "test": "vitest",
     "chroma-server": "chroma run --port 5477"
   },
@@ -22,7 +22,9 @@
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",
@@ -30,8 +32,6 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "firebase": "^12.8.0",
-    "firebase-admin": "^13.6.0",
-    "vitest": "^4.0.18"
+    "firebase-admin": "^13.6.0"
   }
 }

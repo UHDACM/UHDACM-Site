@@ -122,3 +122,61 @@ Three things to know before running it:
 **See [`src/_eval/readme.md`](./src/_eval/readme.md)** for how cases are written,
 how the `present`/`absent` pairs work, the judge quota, and how to calibrate
 after a CMS change.
+
+## Hosting
+
+Self-hosted on **Railway**, alongside the CMS. The service is stateless - all
+durable state is in Chroma Cloud - so the container is disposable and needs no
+volume.
+
+### Railway service settings
+Unlike `cms/`, **Root Directory must stay at the repo root.** This service's
+`tsconfig.json` sets `rootDir: "../"` and includes `../shared/src`, so `shared/`
+is compiled into this service's own `dist/` and has to be in the build context.
+Pointing Root Directory at `chatbot-backend` makes every `@shared/*` import
+unresolvable.
+
+    Root Directory   /                            (leave at the repo root)
+    Dockerfile Path  chatbot-backend/Dockerfile
+    Watch Paths      /chatbot-backend/**, /shared/**
+    Healthcheck      /health_check
+    Replicas         1
+
+**Replicas must stay at 1.** The rate limiter is a process-local object in
+`src/index.ts`; a second replica would multiply every published limit, since
+neither instance sees the other's counters.
+
+Because `rootDir` is `../`, the compiled entrypoint lands at
+`dist/chatbot-backend/src/index.js` - that nesting is why `npm start` is
+`node ./dist/chatbot-backend/src`, and why the Dockerfile copies the whole
+`dist/` (it also contains `dist/shared/src`).
+
+### Production env vars
+Same as the local list above, with these differences:
+
+    NODE_ENV=production      # REQUIRED: gates the auth cookie's
+                             # secure + sameSite=none attributes. Without it the
+                             # browser drops the cookie on cross-origin requests
+                             # and every /chat call 401s.
+
+    # Do NOT set PORT. Railway injects it, and the app reads process.env.PORT.
+
+    # Comma-separated; apex and www both need to be listed or one of them gets
+    # a CORS failure. This is the browser-facing origin allowlist.
+    FRONTEND_ADDRESS=https://uhdacm.org,https://www.uhdacm.org
+
+    EVAL_MODE=false          # leave false/unset in production
+
+`env_vars` throws at module load when a required variable is missing, so a
+misconfiguration shows up as an immediate boot crash in the Railway deploy log
+rather than a half-working service.
+
+Chroma stays on **Chroma Cloud** (`CHROMA_IS_CLOUD=true`); there is no Chroma
+service on Railway. `vector-context-manager` writes the collection this service
+reads, so both must point at the same tenant/database/collection, and both must
+keep `chromadb` and `@chroma-core/default-embed` on matching versions - a
+different default embedding model on either side silently breaks retrieval.
+
+### After changing the deployment URL
+`NEXT_PUBLIC_CHATBOT_ENDPOINT` in `site/` is inlined at **build** time, so
+changing it in Vercel requires a site redeploy, not just an env edit.

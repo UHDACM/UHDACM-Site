@@ -1,4 +1,7 @@
 node_modules
 chroma
 .env
+# also catch .env.local, .env.production, and hand-made .env.bak-* copies
+.env.*
+!.env.example
 dist

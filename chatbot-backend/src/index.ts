@@ -12,6 +12,13 @@ import { rateLimitHourError, rateLimitMinuteError } from "@shared/types/rate_lim
 
 console.log('v0.5', `mode=${process.env.NODE_ENV}`);
 const app = express();
+
+// Railway terminates TLS and proxies to us, so the socket peer is always the
+// edge, never the visitor. Without this, req.ip below is identical for every
+// request and the whole site shares one 30/min IP bucket. 1 = trust exactly
+// one proxy hop, which is what Railway puts in front of the container.
+app.set("trust proxy", 1);
+
 const PORT = env_vars.PORT;
 const FRONTEND_ADDRESS = env_vars.FRONTEND_ADDRESS;
 
@@ -33,7 +40,11 @@ app.get("/health_check", (_, res) => {
   res.send({ online: true });
 });
 
-const allowedOrigins = [FRONTEND_ADDRESS];
+// Comma-separated so apex and www can both be allowed, matching the
+// CORS_ORIGINS idiom in cms/config/middlewares.ts. A single value still works.
+const allowedOrigins = FRONTEND_ADDRESS.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // app.use((req: Request, res: Response, next) => {
@@ -125,7 +136,6 @@ async function rateLimitMiddleware(
   res: Response,
   next: NextFunction,
 ) {
-  console.log('rating...', JSON.stringify(req.cookies, null, 2));
   // Prefer the Authorization: Bearer header (works on browsers that block
   // third-party cookies, e.g. Samsung Internet / iOS Safari). Fall back to the
   // auth_token cookie for browsers that still send it (desktop).
@@ -270,8 +280,6 @@ app.post(
 app.post("/auth", async (req: Request, res: Response) => {
   const turnstileToken = req.headers["x-turnstile-token"] as string | undefined;
 
-  console.log('??!!', env_vars.AUTH_COOKIE_JWT_SECRET);
-  console.log('auth req', turnstileToken);
   if (!turnstileToken) {
     res.status(400).json({ error: "Missing x-turnstile-token header" });
     return;

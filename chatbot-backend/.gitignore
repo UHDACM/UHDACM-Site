@@ -2,6 +2,9 @@ node_modules
 dist
 
 .env
+# also catch .env.local, .env.production, and hand-made .env.bak-* copies
+.env.*
+!.env.example
 chroma
 
 # promptfoo eval artifacts
